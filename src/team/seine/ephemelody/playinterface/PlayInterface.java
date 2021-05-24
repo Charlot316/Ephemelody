@@ -49,9 +49,12 @@ public class PlayInterface extends JPanel {//Set up the play interface
         layeredPane.setSize(TestPlayInterface.Frame.getWidth(), TestPlayInterface.Frame.getHeight());
         KeyBoardListener keyBoardListener = new KeyBoardListener();
         keyBoardListener.start();
-        textArea = new JTextArea(9, 30);
+        JTextArea textArea = new JTextArea(9, 30);
+        Button button = new Button();
         textArea.addKeyListener(keyBoardListener);
         layeredPane.add(textArea);
+        layeredPane.add(button);
+        textArea.append("阿巴阿巴阿巴阿巴阿巴阿巴");
         layeredPane.setVisible(true);
         textArea.setVisible(true);
 

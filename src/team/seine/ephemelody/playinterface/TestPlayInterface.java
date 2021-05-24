@@ -14,6 +14,7 @@ public class TestPlayInterface {
 
         PlayInterface playInterface = new PlayInterface(1, 1);
         playInterface.setOpaque(true);
+        Frame.add(playInterface);
         Frame.setContentPane(playInterface);
     }
 }
