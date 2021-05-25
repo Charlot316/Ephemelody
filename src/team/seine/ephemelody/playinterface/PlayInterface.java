@@ -21,7 +21,6 @@ public class PlayInterface extends JPanel {//Set up the play interface
     public AtomicInteger missCount;
     public AtomicInteger combo;
     public AtomicInteger currentScore;
-
     public static long startTime;
     public static long currentTime;//Used to tell the current time
     public static double finalY;
@@ -72,9 +71,6 @@ public class PlayInterface extends JPanel {//Set up the play interface
         for (Map.Entry<Integer, PlayOperations> entry : currentOperations.entrySet()) {
             entry.wait();
         }
-        for (Map.Entry<Integer, Note> entry : currentNotes.entrySet()) {
-            entry.wait();
-        }
     }
 
     /**
@@ -85,9 +81,6 @@ public class PlayInterface extends JPanel {//Set up the play interface
             entry.notify();
         }
         for (Map.Entry<Integer, PlayOperations> entry : currentOperations.entrySet()) {
-            entry.notify();
-        }
-        for (Map.Entry<Integer, Note> entry : currentNotes.entrySet()) {
             entry.notify();
         }
     }

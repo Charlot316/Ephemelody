@@ -8,7 +8,6 @@ public abstract class Note extends Thread {//Note, main article of the play inte
     int noteType;//Denotes the type of the note. type=0 "hit" type=1 "hold"
     char key;//The keyboard keys corresponding to that note
     long timing;//The standard timing of a note
-    long startTiming;//
     long endTiming;//
     double length;//The length of a hold calculated from startTiming and endTiming
     long lastTime;
@@ -25,9 +24,9 @@ public abstract class Note extends Thread {//Note, main article of the play inte
         this.basedTrack = basedTrack;
         this.noteType = noteType;
         this.key = key;
-        this.startTiming = startTiming;
+        this.timing = startTiming;
         this.endTiming = endTiming;
-        this.length=((double)(this.endTiming-this.startTiming)/(double)PlayInterface.remainingTime)*PlayInterface.finalY;
+        this.length=((double)(this.endTiming-this.timing)/(double)PlayInterface.remainingTime)*PlayInterface.finalY;
     }
 
     /**
