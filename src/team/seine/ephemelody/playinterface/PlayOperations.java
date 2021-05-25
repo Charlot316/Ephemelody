@@ -12,7 +12,6 @@ public abstract class PlayOperations extends Thread {//Denotes the operations th
     int endG;
     int endB;
     String background;
-
     /**
      * Responsible for calculating the positionX at each moment, starting from positionX at currentTime, and endX at endTime
      *

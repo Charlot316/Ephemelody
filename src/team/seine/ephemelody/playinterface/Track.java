@@ -1,5 +1,6 @@
 package team.seine.ephemelody.playinterface;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public abstract class Track extends Thread {// The track of the note.
@@ -21,7 +22,7 @@ public abstract class Track extends Thread {// The track of the note.
     ArrayList<Note> notes = new ArrayList<>();//Notes that this track contains
     int frontNote;
     int rearNote;
-
+    Graphics2D Instance;
     public abstract void Judge();
 
     /**

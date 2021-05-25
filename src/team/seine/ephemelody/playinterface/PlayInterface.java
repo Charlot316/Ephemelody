@@ -22,21 +22,21 @@ public class PlayInterface extends JPanel {//Set up the play interface
     public AtomicInteger combo;
     public AtomicInteger currentScore;
 
-    public long startTime;
-    public long currentTime;//Used to tell the current time
-
+    public static long startTime;
+    public static long currentTime;//Used to tell the current time
+    public static double finalY;
+    public static long remainingTime;
     public long finalEndTime;
     public HashMap<Integer, Track> currentTracks = new HashMap<>();
     public HashMap<Integer, PlayOperations> currentOperations = new HashMap<>();
     public HashMap<Integer, Note> currentNotes = new HashMap<>();
     public ArrayList<PlayOperations> allOperations = new ArrayList<>();
-    public ArrayList<PlayOperations> allTracks = new ArrayList<>();
+    public ArrayList<Track> allTracks = new ArrayList<>();
     String background = "";
     int frontTrack;
     int frontOperation;
     private JLayeredPane layeredPane;
     public static JTextArea textArea;
-
     /**
      * read in information of the display
      * display the notes whose timing is less than retention time
@@ -48,13 +48,13 @@ public class PlayInterface extends JPanel {//Set up the play interface
         layeredPane = new JLayeredPane();
         layeredPane.setSize(TestPlayInterface.Frame.getWidth(), TestPlayInterface.Frame.getHeight());
         KeyBoardListener keyBoardListener = new KeyBoardListener();
-        keyBoardListener.start();
+
         JTextArea textArea = new JTextArea(9, 30);
         JPanel panel = new JPanel(new GridLayout(1, 1));
         panel.setBounds(30, 30, 100, 100);
         Button button = new Button();
-        textArea.addKeyListener(keyBoardListener);
         panel.add(textArea);
+        textArea.addKeyListener(keyBoardListener);
         layeredPane.add(panel);
         textArea.append("阿巴阿巴阿巴阿巴阿巴阿巴");
         layeredPane.setVisible(true);
@@ -105,5 +105,14 @@ public class PlayInterface extends JPanel {//Set up the play interface
     public void finish() {
 
     }
+
+    public Track getTrackByID(int id){
+        for(Track i: this.allTracks){
+            if(id==i.id)
+                return i;
+        }
+        return null;
+    }
+
 
 }
