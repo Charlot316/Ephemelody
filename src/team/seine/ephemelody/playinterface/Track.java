@@ -53,6 +53,7 @@ public abstract class Track extends Thread {// The track of the note.
             }*/
             // paintnotes
             // painttracks
+            //...
         }
     }
 }
