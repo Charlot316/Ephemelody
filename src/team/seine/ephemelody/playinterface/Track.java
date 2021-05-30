@@ -43,14 +43,16 @@ public abstract class Track extends Thread {// The track of the note.
                 while(this.notes.get(rearNote+1).timing<this.trackCurrentTime){
                     rearNote++;
                 }
-            for(int i=frontNote;i<=rearNote;i++){
+            /*for(int i=frontNote;i<=rearNote;i++){
                 notes.get(i).moveNote();
-                /*
+                *//*
 
                 please paint the note here.
 
-                 */
-            }
+                 *//*
+            }*/
+            // paintnotes
+            // painttracks
         }
     }
 }
