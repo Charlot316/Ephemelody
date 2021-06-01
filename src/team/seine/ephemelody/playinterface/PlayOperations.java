@@ -1,5 +1,6 @@
 package team.seine.ephemelody.playinterface;
 
+// 改变轨道移动
 public abstract class PlayOperations extends Thread {//Denotes the operations the game should implement
     int id;
     int type;//Define which type of operation it is

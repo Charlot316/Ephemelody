@@ -26,7 +26,7 @@ public abstract class Note extends Thread {//Note, main article of the play inte
         this.key = key;
         this.timing = startTiming;
         this.endTiming = endTiming;
-        this.length=((double)(this.endTiming-this.timing)/(double)PlayInterface.remainingTime)*PlayInterface.finalY;
+        this.length = ((double) (this.endTiming - this.timing) / (double) PlayInterface.remainingTime) * PlayInterface.finalY;
     }
 
     /**
@@ -34,17 +34,16 @@ public abstract class Note extends Thread {//Note, main article of the play inte
      * Refer to the formula: current position = last time position - ((last time position - final position)/(retention time - (standard time of the note - current time))* (1/ screen refresh rate)
      */
 
-    public void moveNote(){
-        this.lastTime=this.noteCurrentTime;
-        this.noteCurrentTime=PlayInterface.currentTime;
+    public void moveNote() {
+        this.lastTime = this.noteCurrentTime;
+        this.noteCurrentTime = PlayInterface.currentTime;
 
-        this.positionX=this.basedTrack.positionX;
-        if(this.noteType==0||this.noteType==1&&this.timing<this.noteCurrentTime){
-            this.positionY=this.positionY+((PlayInterface.finalY-this.positionY)/(double)(PlayInterface.remainingTime-(this.timing-this.noteCurrentTime)))*(double)(this.noteCurrentTime-this.lastTime);
-        }
-        else {
-            this.positionY=PlayInterface.finalY;
-            this.length=((double)(this.endTiming-this.noteCurrentTime)/(double)PlayInterface.remainingTime)*PlayInterface.finalY;
+        this.positionX = this.basedTrack.positionX;
+        if (this.noteType == 0 || this.noteType == 1 && this.timing < this.noteCurrentTime) {
+            this.positionY = this.positionY + ((PlayInterface.finalY - this.positionY) / (double) (PlayInterface.remainingTime - (this.timing - this.noteCurrentTime))) * (double) (this.noteCurrentTime - this.lastTime);
+        } else {
+            this.positionY = PlayInterface.finalY;
+            this.length = ((double) (this.endTiming - this.noteCurrentTime) / (double) PlayInterface.remainingTime) * PlayInterface.finalY;
         }
     }
 

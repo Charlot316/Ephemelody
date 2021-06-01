@@ -34,8 +34,9 @@ public class PlayInterface extends JPanel {//Set up the play interface
     String background = "";
     int frontTrack;
     int frontOperation;
-    private JLayeredPane layeredPane;
+    public JLayeredPane layeredPane;
     public static JTextArea textArea;
+
     /**
      * read in information of the display
      * display the notes whose timing is less than retention time
@@ -99,9 +100,9 @@ public class PlayInterface extends JPanel {//Set up the play interface
 
     }
 
-    public Track getTrackByID(int id){
-        for(Track i: this.allTracks){
-            if(id==i.id)
+    public Track getTrackByID(int id) {
+        for (Track i : this.allTracks) {
+            if (id == i.id)
                 return i;
         }
         return null;
