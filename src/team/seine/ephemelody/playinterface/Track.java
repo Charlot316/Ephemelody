@@ -23,6 +23,9 @@ public class Track extends Thread {// The track of the note.
     ArrayList<PlayOperations> moveOperations = new ArrayList<>();
     ArrayList<PlayOperations> changeWidthOperations = new ArrayList<>();
     ArrayList<PlayOperations> changeColorOperations = new ArrayList<>();
+    PlayOperations currentMove=null;
+    PlayOperations currentWidth=null;
+    PlayOperations currentColor=null;
     int frontNote=0;
     int rearNote=-1;
     int frontMove=0;
@@ -69,23 +72,23 @@ public class Track extends Thread {// The track of the note.
     }
     /**
      * Responsible for calculating the positionX at each moment, starting from positionX at currentTime, and endX at endTime
-     *
-     * @param id      track's id
-     * @param endX    the destination of the track
-     * @param endTime time when the move should be finished
      */
-    public void moveTrack(int id, double endX, long endTime) {
+    public void moveTrack() {
+        if(this.currentMove!=null){
 
+        }
     }
 
     /**
      * Responsible for calculating the width at each moment, starting from width at currentTime, and endWidth at endTime
-     *
-     * @param id       track's id
-     * @param endWidth the final width of the track
-     * @param endTime  time when the distortion should be finished
      */
-    public void changeWidth(int id, double endWidth, long endTime){
+    public void changeWidth(){
+    }
+
+    /**
+     * Responsible for calculating the current color at each moment, starting from width at currentTime, and endWidth at endTime
+     */
+    public void changeColor(){
     }
     /**
      * Displays the track and notes on the screen according to the positionX and width and the currentNotes list of the current frame
