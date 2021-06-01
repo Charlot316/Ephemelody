@@ -18,6 +18,7 @@ public class Home extends JPanel{
     public Image upButton;
     public Image downButton;
     public Image song1;
+    public Image selectedImg;
     public Home() {
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setLayout(null);
@@ -32,6 +33,7 @@ public class Home extends JPanel{
         upButton = Load.image("home/up.png");
         downButton = Load.image("home/down.png");
         song1 = Load.image("home/song1.png");
+        selectedImg = Load.image("home/被选中的.png");
         setBackground(null);
         setOpaque(false);
     }
@@ -47,6 +49,7 @@ public class Home extends JPanel{
         g.drawImage(ratingButton, Data.WIDTH / 2 - 60, -16, null);
         g.drawImage(setupBackButton, 900, 0, null);
         g.drawImage(setupButton, 934, 8, null);
-        g.drawImage(homeButton, 1050, 0, null);
+        g.drawImage(homeButton, 1150, -7, null);
+        g.drawImage(selectedImg, 0, Data.HEIGHT / 2 - 30, null);
     }
 }
