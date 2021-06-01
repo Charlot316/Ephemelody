@@ -1,10 +1,8 @@
 package team.seine.ephemelody.playinterface;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-// 音符所在花瓣
 public abstract class Track extends Thread {// The track of the note.
     int id;//Uniquely defines a track
     String type;//Denotes the type of the track. type=0 virtual track type=1 real track
@@ -22,30 +20,46 @@ public abstract class Track extends Thread {// The track of the note.
     boolean currentStatus;//current status of currentKey
     int tempJudge;
     ArrayList<Note> notes = new ArrayList<>();//Notes that this track contains
-    int frontNote = 0;
-    int rearNote = -1;
+    int frontNote=0;
+    int rearNote=-1;
     Graphics2D Instance;
     long lastTime;
     long trackCurrentTime;
 
-    public JPanel notesPanel;
-    public JPanel trackPanel;
-    public void Judge() {
+    public void Judge(){
+
+    }
+    /**
+     * Responsible for calculating the positionX at each moment, starting from positionX at currentTime, and endX at endTime
+     *
+     * @param id      track's id
+     * @param endX    the destination of the track
+     * @param endTime time when the move should be finished
+     */
+    public void moveTrack(int id, double endX, long endTime) {
 
     }
 
     /**
+     * Responsible for calculating the width at each moment, starting from width at currentTime, and endWidth at endTime
+     *
+     * @param id       track's id
+     * @param endWidth the final width of the track
+     * @param endTime  time when the distortion should be finished
+     */
+    public void changeWidth(int id, double endWidth, long endTime){
+    }
+    /**
      * Displays the track and notes on the screen according to the positionX and width and the currentNotes list of the current frame
      * Note: display must be after the move and change operations are finished
      */
-    public void run() {
-
-        this.trackCurrentTime = this.lastTime = PlayInterface.currentTime;
-        while (this.trackCurrentTime < this.endTiming && this.startTiming > this.trackCurrentTime) {
-            this.lastTime = this.trackCurrentTime;
-            this.trackCurrentTime = PlayInterface.currentTime;
-            if (rearNote + 1 < this.notes.size())
-                while (this.notes.get(rearNote + 1).timing < this.trackCurrentTime) {
+    public void run(){
+        this.trackCurrentTime=this.lastTime=System.currentTimeMillis();
+        while(this.trackCurrentTime<this.endTiming&&this.startTiming<=this.trackCurrentTime){
+            this.lastTime=this.trackCurrentTime;
+            this.trackCurrentTime=System.currentTimeMillis();
+            if(rearNote+1<this.notes.size())
+                while(this.notes.get(rearNote+1).timing<this.trackCurrentTime){
                     rearNote++;
                 }
             /*for(int i=frontNote;i<=rearNote;i++){
