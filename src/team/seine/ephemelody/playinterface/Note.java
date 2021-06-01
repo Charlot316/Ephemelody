@@ -36,7 +36,7 @@ public abstract class Note extends Thread {//Note, main article of the play inte
 
     public void moveNote(){
         this.lastTime=this.noteCurrentTime;
-        this.noteCurrentTime=PlayInterface.currentTime;
+        this.noteCurrentTime=System.currentTimeMillis();
 
         this.positionX=this.basedTrack.positionX;
         if(this.noteType==0||this.noteType==1&&this.timing<this.noteCurrentTime){

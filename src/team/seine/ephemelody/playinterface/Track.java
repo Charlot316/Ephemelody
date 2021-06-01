@@ -29,16 +29,35 @@ public abstract class Track extends Thread {// The track of the note.
     public void Judge(){
 
     }
+    /**
+     * Responsible for calculating the positionX at each moment, starting from positionX at currentTime, and endX at endTime
+     *
+     * @param id      track's id
+     * @param endX    the destination of the track
+     * @param endTime time when the move should be finished
+     */
+    public void moveTrack(int id, double endX, long endTime) {
 
+    }
+
+    /**
+     * Responsible for calculating the width at each moment, starting from width at currentTime, and endWidth at endTime
+     *
+     * @param id       track's id
+     * @param endWidth the final width of the track
+     * @param endTime  time when the distortion should be finished
+     */
+    public void changeWidth(int id, double endWidth, long endTime){
+    }
     /**
      * Displays the track and notes on the screen according to the positionX and width and the currentNotes list of the current frame
      * Note: display must be after the move and change operations are finished
      */
     public void run(){
-        this.trackCurrentTime=this.lastTime=PlayInterface.currentTime;
-        while(this.trackCurrentTime<this.endTiming&&this.startTiming>this.trackCurrentTime){
+        this.trackCurrentTime=this.lastTime=System.currentTimeMillis();
+        while(this.trackCurrentTime<this.endTiming&&this.startTiming<=this.trackCurrentTime){
             this.lastTime=this.trackCurrentTime;
-            this.trackCurrentTime=PlayInterface.currentTime;
+            this.trackCurrentTime=System.currentTimeMillis();
             if(rearNote+1<this.notes.size())
                 while(this.notes.get(rearNote+1).timing<this.trackCurrentTime){
                     rearNote++;

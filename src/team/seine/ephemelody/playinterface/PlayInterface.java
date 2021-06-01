@@ -34,8 +34,9 @@ public class PlayInterface extends JPanel {//Set up the play interface
     String background = "";
     int frontTrack;
     int frontOperation;
-    private JLayeredPane layeredPane;
+    public JLayeredPane layeredPane;
     public static JTextArea textArea;
+    public String displayPath;
     /**
      * read in information of the display
      * display the notes whose timing is less than retention time
@@ -43,11 +44,19 @@ public class PlayInterface extends JPanel {//Set up the play interface
     public PlayInterface(int songID, int difficulty) {
         this.songID = songID;
         this.difficulty = difficulty;
+
+
+
+
+
+
+
+
+
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         layeredPane = new JLayeredPane();
         layeredPane.setSize(TestPlayInterface.Frame.getWidth(), TestPlayInterface.Frame.getHeight());
         KeyBoardListener keyBoardListener = new KeyBoardListener();
-
         JTextArea textArea = new JTextArea(9, 30);
         JPanel panel = new JPanel(new GridLayout(1, 1));
         panel.setBounds(30, 30, 100, 100);
