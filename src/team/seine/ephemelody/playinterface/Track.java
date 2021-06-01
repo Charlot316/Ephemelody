@@ -29,11 +29,8 @@ public class Track extends Thread {// The track of the note.
     int frontNote=0;
     int rearNote=-1;
     int frontMove=0;
-    int rearMove=-1;
     int frontWidth=0;
-    int rearWidth=-1;
     int frontColor=0;
-    int rearColor=-1;
     Graphics2D Instance;
     long lastTime;
     long trackCurrentTime;
@@ -74,21 +71,44 @@ public class Track extends Thread {// The track of the note.
      * Responsible for calculating the positionX at each moment, starting from positionX at currentTime, and endX at endTime
      */
     public void moveTrack() {
-        if(this.currentMove!=null){
-
+        currentMove=moveOperations.get(frontMove);
+        if(currentMove.startTime<this.trackCurrentTime){
+            if(currentMove.startTime==currentMove.endTime) this.positionX=currentMove.endX;
+            else if(currentMove.endTime-this.trackCurrentTime!=0) this.positionX=this.positionX-((this.positionX-currentMove.endX)/(double)(currentMove.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime);
         }
+        if(currentMove.endTime<this.trackCurrentTime&&(frontMove+1)<this.moveOperations.size()) frontMove++;
     }
 
     /**
      * Responsible for calculating the width at each moment, starting from width at currentTime, and endWidth at endTime
      */
     public void changeWidth(){
+        currentWidth=changeWidthOperations.get(frontWidth);
+        if(currentWidth.startTime<this.trackCurrentTime){
+            if(currentWidth.startTime==currentWidth.endTime) this.width=currentWidth.endWidth;
+            else if(currentWidth.endTime-this.trackCurrentTime!=0) this.width=this.width-((this.width-currentWidth.endWidth)/(double)(currentWidth.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime);
+        }
+        if(currentWidth.endTime<this.trackCurrentTime&&(frontWidth+1)<this.changeWidthOperations.size()) frontWidth++;
     }
 
     /**
      * Responsible for calculating the current color at each moment, starting from width at currentTime, and endWidth at endTime
      */
     public void changeColor(){
+        currentColor=changeColorOperations.get(frontColor);
+        if(currentColor.startTime<this.trackCurrentTime){
+            if(currentColor.startTime==currentColor.endTime){
+                this.R=currentColor.endR;
+                this.G=currentColor.endG;
+                this.B=currentColor.endB;
+            }
+            else if(currentColor.endTime-this.trackCurrentTime!=0){
+                this.R=this.R-(int)(((this.R-currentColor.endR)/(currentColor.endTime-this.trackCurrentTime))*(this.trackCurrentTime-this.lastTime));
+                this.G=this.G-(int)(((this.G-currentColor.endR)/(currentColor.endTime-this.trackCurrentTime))*(this.trackCurrentTime-this.lastTime));
+                this.B=this.B-(int)(((this.B-currentColor.endR)/(currentColor.endTime-this.trackCurrentTime))*(this.trackCurrentTime-this.lastTime));
+            }
+        }
+        if(currentColor.endTime<this.trackCurrentTime&&(frontColor+1)<this.changeColorOperations.size()) frontColor++;
     }
     /**
      * Displays the track and notes on the screen according to the positionX and width and the currentNotes list of the current frame
@@ -99,12 +119,17 @@ public class Track extends Thread {// The track of the note.
         while(this.trackCurrentTime<this.endTiming&&this.startTiming<=this.trackCurrentTime){
             this.lastTime=this.trackCurrentTime;
             this.trackCurrentTime=System.currentTimeMillis()-PlayInterface.startTime;
+            this.changeColor();
+            this.changeWidth();
+            this.moveTrack();
             if(rearNote+1<this.notes.size())
-                while(this.notes.get(rearNote+1).timing<this.trackCurrentTime){
+                while(this.notes.get(rearNote+1).timing+PlayInterface.remainingTime<this.trackCurrentTime){
                     rearNote++;
                 }
-            if (this.notes.get(frontNote).timing>this.trackCurrentTime+150){
+            if (this.notes.get(frontNote).timing<this.trackCurrentTime+150){
                 frontNote++;
+                PlayInterface.combo.set(0);
+                PlayInterface.lostCount.getAndIncrement();
             }
             /*for(int i=frontNote;i<=rearNote;i++){
                 notes.get(i).moveNote();
