@@ -28,7 +28,7 @@ public class Data {
                 Load.image("home/rating_0.png"), Load.image("home/rating_1.png"),
                 Load.image("home/rating_2.png"), Load.image("home/rating_3.png"),
                 Load.image("home/rating_4.png"), Load.image("home/rating_5.png"),
-                Load.image("home/rating_6.png"), Load.image("home/rating_down.png"),
+                Load.image("home/潜力值_6.png"), Load.image("home/rating_down.png"),
                 Load.image("home/rating_keep.png"), Load.image("home/rating_up.png"),
         };
         backgroundImg = Load.image("home/背景.png");

@@ -9,19 +9,15 @@ import java.awt.*;
 
 // 画布类
 public class Canvas extends JLayeredPane {
-    Scenes bgScenes = null;
-    JPanel nowScenes = null;
+    Background background = null;
+    Home home = null;
     public Canvas() {
-        bgScenes = new Background();
-        nowScenes = new Home();
-        add((Background) bgScenes, new Integer(0));
-        add(nowScenes, new Integer(1));
+        background = new Background();
+        home = new Home();
+        add(background, new Integer(0));
+        add(home, new Integer(1));
         setVisible(true);
     }
 
-    public void paint(Graphics g) {
-        // 绘制当前场景
-        bgScenes.draw(g);
-    }
 }
 
