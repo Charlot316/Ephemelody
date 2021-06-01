@@ -16,12 +16,12 @@ public class PlayInterface extends JPanel {//Set up the play interface
     int operationsCount;
     int scorePerNote;
     int scoreForLastNote;
-    public AtomicInteger perfectCount;
-    public AtomicInteger greatCount;
-    public AtomicInteger goodCount;
-    public AtomicInteger missCount;
-    public AtomicInteger combo;
-    public AtomicInteger currentScore;
+    public static AtomicInteger pureCount;
+    public static AtomicInteger farCount;
+    public static AtomicInteger lostCount;
+    public static AtomicInteger combo;
+    public int maxCombo;
+    public static AtomicInteger currentScore;
     public static long startTime;
     public static long currentTime;//Used to tell the current time
     public static double finalY;
@@ -201,6 +201,11 @@ public class PlayInterface extends JPanel {//Set up the play interface
      * @param difficulty difficulty of the song (both are used to find the source file)
      */
     public PlayInterface(int songID, int difficulty) {
+        pureCount.set(0);
+        farCount.set(0);
+        lostCount.set(0);
+        combo.set(0);
+        currentScore.set(0);
         this.songID = songID;
         this.difficulty = difficulty;
         this.loadData();
