@@ -1,7 +1,7 @@
 package team.seine.ephemelody.playinterface;
 
 
-public abstract class Note extends Thread {//Note, main article of the play interface
+public class Note extends Thread {//Note, main article of the play interface
     Track basedTrack;//Track that this note belongs to
     double positionX;//The ratio of the horizontal axis of the note to the the length of the entire screen, equals to the x of the track which it belongs to
     double positionY;//The ratio of the vertical axis of the note to the the width of the entire screen
@@ -48,10 +48,19 @@ public abstract class Note extends Thread {//Note, main article of the play inte
         }
     }
 
-
-    /**
-     * Displays tracks on the screen according to the current frame's positionX and positionY
-     * Note: display must be the last function to be called. It waits for the move operation to finish
-     */
-    public abstract void run();
+    @Override
+    public String toString() {
+        return "Note{" +
+                "basedTrack=" + basedTrack +
+                ", positionX=" + positionX +
+                ", positionY=" + positionY +
+                ", noteType=" + noteType +
+                ", key=" + key +
+                ", timing=" + timing +
+                ", endTiming=" + endTiming +
+                ", length=" + length +
+                ", lastTime=" + lastTime +
+                ", noteCurrentTime=" + noteCurrentTime +
+                '}';
+    }
 }
