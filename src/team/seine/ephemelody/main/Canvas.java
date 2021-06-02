@@ -2,6 +2,7 @@ package team.seine.ephemelody.main;
 
 import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.scenes.Background;
+import team.seine.ephemelody.scenes.End;
 import team.seine.ephemelody.scenes.Home;
 import team.seine.ephemelody.scenes.Scenes;
 
@@ -11,43 +12,35 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
 // 画布类
-public class Canvas extends JLayeredPane implements MouseMotionListener {
+public class Canvas extends JLayeredPane{
     Scenes nowScenes = null;
+    Scenes bgScenes = null;
     Background background = null;
     Home home = null;
     public Canvas() {
         nowScenes = new Home();
-        background = new Background();
-        home = new Home();
-        add(background, new Integer(0));
-        add(home, new Integer(1));
+        bgScenes = new Background();
+        /*background = new Background();
+        home = new Home();*/
+        switchScenes("Home");
         setVisible(true);
-        /*addMouseMotionListener(this);
-        new Canvas.UpdateUI().start();*/
     }
 
-    @Override
-    public void mouseDragged(MouseEvent e) {
-
+    public void switchScenes(String name) {
+        if (name.equals("Home")) {
+            this.bgScenes = new Background();
+            this.nowScenes = new Home();
+            this.removeAll();
+            this.add((Background) bgScenes, new Integer(0));
+            this.add((Home) nowScenes, new Integer(1));
+        } else if (name.equals("End")) {
+            this.nowScenes = new End();
+            this.removeAll();
+            this.add((End) nowScenes, new Integer(1));
+        }
     }
 
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        nowScenes.onMouse(e.getX(), e.getY(), Scenes.MOUSE_MOVED);
-    }
-//    class UpdateUI extends Thread {
-//        public void run() {
-//            int sleepTime = 1000 / Data.FPS;
-//            while (true) {
-//                try {
-//                    updateUI();
-//                    Thread.sleep(sleepTime);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
+
 
 }
 

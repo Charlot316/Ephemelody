@@ -31,8 +31,8 @@ public class PlayInterface extends JPanel {//Set up the play interface
     public ArrayList<Track> allTracks = new ArrayList<>();
     ArrayList<PlayOperations> backgroundOperations = new ArrayList<>();
     public String background = "";
-    int frontTrack;
-    int frontOperation;
+    int frontTrack=0;
+    int frontOperation=0;
     public JLayeredPane layeredPane;
     public static JTextArea textArea;
     public String Path;
@@ -232,7 +232,19 @@ public class PlayInterface extends JPanel {//Set up the play interface
      * Constantly update currentTracks and run the game
      */
     public void display() {
-
+        startTime=System.currentTimeMillis();
+        currentTime=startTime;
+        while(currentTime<this.finalEndTime){
+            currentTime=System.currentTimeMillis();
+            if(allTracks.get(frontTrack).startTiming<currentTime){
+                allTracks.get(frontTrack).start();
+                if(frontTrack+1<allTracks.size()) frontTrack++;
+            }
+            if(backgroundOperations.get(frontOperation).startTime<currentTime){
+                this.background=backgroundOperations.get(frontOperation).background;
+                if(frontOperation+1<allTracks.size()) frontOperation++;
+            }
+        }
     }
 
     /**

@@ -73,7 +73,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
     }
 
     public void onMouse(int x, int y, int struts) {
-        System.out.println(x + " " + y);
+//        System.out.println(x + " " + y);
         buttonRatingStatus = buttonSetUpBackStatus = buttonHomeStatus = buttonEasyStatus = buttonNormalStatus = buttonDifficultStatus = 0;
 
         int buttonStruts = struts == Scenes.MOUSE_MOVED ? 1 : struts == Scenes.MOUSE_DOWN ? 2 : 0;
@@ -88,6 +88,8 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         }else if(Rect.isInternal(x, y, 503, 580, 202, 125)) {
             buttonEasyStatus = buttonStruts;
             if(struts == Scenes.MOUSE_DOWN) {
+                System.out.println("666");
+                Data.canvas.switchScenes("End");
 //                Data.canvas.switchScenes("About");
             }
         }else if(Rect.isInternal(x, y, 783, 580, 202, 125)) {
@@ -103,6 +105,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         }else if(Rect.isInternal(x, y, 1150, -7, 131, 69)) {
             buttonHomeStatus = buttonStruts;
             if(struts == Scenes.MOUSE_DOWN) {
+//                Data.canvas.switchScenes("End");
 //                System.exit(0);
             }
         }
