@@ -16,6 +16,8 @@ public class Main {
         frame.setContentPane(Data.canvas);
 //        frame.add(background);
         frame.setSize(Data.WIDTH, Data.HEIGHT);
+        // 窗口大小固定
+        frame.setResizable(false);
         // 窗口居中显示
         frame.setLocationRelativeTo(frame.getOwner());
         // 窗口关闭时结束程序
