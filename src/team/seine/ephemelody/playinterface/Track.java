@@ -4,36 +4,36 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Track extends Thread {// The track of the note.
-    int id;
-    int type;
-    char key;
-    long startTiming;
-    long endTiming;
-    double positionX;
-    double width;
-    int R;
-    int G;
-    int B;
-    char currentKey;//Equals to the key of the first note
-    boolean isHolding;//Check if is holding a note
-    boolean lastStatus;//last status of currentKey
-    boolean currentStatus;//current status of currentKey
-    int tempJudge;
-    ArrayList<Note> notes = new ArrayList<>();//Notes that this track contains
-    ArrayList<PlayOperations> moveOperations = new ArrayList<>();
-    ArrayList<PlayOperations> changeWidthOperations = new ArrayList<>();
-    ArrayList<PlayOperations> changeColorOperations = new ArrayList<>();
-    PlayOperations currentMove=null;
-    PlayOperations currentWidth=null;
-    PlayOperations currentColor=null;
-    int frontNote=0;
-    int rearNote=-1;
-    int frontMove=0;
-    int frontWidth=0;
-    int frontColor=0;
-    Graphics2D Instance;
-    long lastTime;
-    long trackCurrentTime;
+    public int id;
+    public int type;
+    public char key;
+    public long startTiming;
+    public long endTiming;
+    public double positionX;
+    public double width;
+    public int R;
+    public int G;
+    public int B;
+    public char currentKey;//Equals to the key of the first note
+    public boolean isHolding;//Check if is holding a note
+    public boolean lastStatus;//last status of currentKey
+    public boolean currentStatus;//current status of currentKey
+    public int tempJudge;
+    public ArrayList<Note> notes = new ArrayList<>();//Notes that this track contains
+    public ArrayList<PlayOperations> moveOperations = new ArrayList<>();
+    public ArrayList<PlayOperations> changeWidthOperations = new ArrayList<>();
+    public ArrayList<PlayOperations> changeColorOperations = new ArrayList<>();
+    public PlayOperations currentMove=null;
+    public PlayOperations currentWidth=null;
+    public PlayOperations currentColor=null;
+    public int frontNote=0;
+    public int rearNote=-1;
+    public int frontMove=0;
+    public int frontWidth=0;
+    public int frontColor=0;
+    public Graphics2D Instance;
+    public long lastTime;
+    public long trackCurrentTime;
 
     /**
      *
