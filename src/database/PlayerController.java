@@ -47,14 +47,13 @@ public class PlayerController {
      */
     public static void insertPlayer(String playerID, String password1) {
         PreparedStatement sql;
-        ResultSet rs;
         try {
             con = DriverManager.getConnection(uri, user, password);
             String sqlStr = "INSERT INTO seine.players(playerID, password, potential) VALUES(?,?,0) ";
             sql = con.prepareStatement(sqlStr);
             sql.setString(1, playerID);
             sql.setString(2, password1);
-            rs = sql.executeQuery();
+            sql.executeQuery();
             con.close();
         } catch (Exception e) {
             System.out.println(e);
