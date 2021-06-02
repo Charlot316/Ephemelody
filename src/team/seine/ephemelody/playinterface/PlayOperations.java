@@ -1,16 +1,16 @@
 package team.seine.ephemelody.playinterface;
 
 public class PlayOperations {//Denotes the operations the game should implement
-    int trackId;
-    int type;
-    long startTime;
-    long endTime;
-    double endX;
-    double endWidth;
-    int endR;
-    int endG;
-    int endB;
-    String background;
+    public int trackId;
+    public int type;
+    public long startTime;
+    public long endTime;
+    public double endX;
+    public double endWidth;
+    public int endR;
+    public int endG;
+    public int endB;
+    public String background;
 
     /**
      * Constructor of the operation

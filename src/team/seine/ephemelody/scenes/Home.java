@@ -10,9 +10,11 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.font.GlyphVector;
 
 public class Home extends JPanel implements Scenes, MouseMotionListener, MouseListener{
     int buttonRatingStatus = 0, buttonSetUpBackStatus = 0, buttonHomeStatus = 0, buttonEasyStatus = 0, buttonNormalStatus = 0, buttonDifficultStatus = 0;
+    public Double rate; //潜力值
     public Image ratingButton[];
     public Image setupButton;
     public Image setupBackButton[];
@@ -85,25 +87,30 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             if(struts == Scenes.MOUSE_DOWN) {
 //                Data.canvas.switchScenes("Game");
             }
-        }else if(Rect.isInternal(x, y, 503, 580, 202, 125)) {
+        }else if (Rect.isInternal(x, y, 503, 580, 202, 125)) {
             buttonEasyStatus = buttonStruts;
             if(struts == Scenes.MOUSE_DOWN) {
                 System.out.println("666");
                 Data.canvas.switchScenes("End");
 //                Data.canvas.switchScenes("About");
             }
-        }else if(Rect.isInternal(x, y, 783, 580, 202, 125)) {
+        }else if (Rect.isInternal(x, y, 783, 580, 202, 125)) {
             buttonNormalStatus = buttonStruts;
             if(struts == Scenes.MOUSE_DOWN) {
 //                Data.canvas.switchScenes("Site");
             }
-        }else if(Rect.isInternal(x, y, 1063, 580, 202, 125)) {
+        }else if (Rect.isInternal(x, y, 1063, 580, 202, 125)) {
             buttonDifficultStatus = buttonStruts;
             if(struts == Scenes.MOUSE_DOWN) {
 //                Data.canvas.switchScenes("Recording");
             }
-        }else if(Rect.isInternal(x, y, 1150, -7, 131, 69)) {
+        }else if (Rect.isInternal(x, y, 1150, -7, 131, 69)) {
             buttonHomeStatus = buttonStruts;
+            if(struts == Scenes.MOUSE_DOWN) {
+//                Data.canvas.switchScenes("End");
+//                System.exit(0);
+            }
+        } else if (Rect.isInternal(x, y, 643, 750, 500, 114)) {
             if(struts == Scenes.MOUSE_DOWN) {
 //                Data.canvas.switchScenes("End");
 //                System.exit(0);
@@ -123,6 +130,16 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         g.drawImage(setupButton, 934, 8, null);
         g.drawImage(homeButton[buttonHomeStatus], 1150, -7, null);
         g.drawImage(selectedImg, 0, Data.HEIGHT / 2 - 30, null);
+        Integer countX = 65, count = 1;
+        for (String song : Data.songList) { // 到时候改成待展示的歌曲名单列表
+            if (count == 3) {
+                Data.canvas.paintString(song, g, countX, 200, 60);
+            } else {
+                Data.canvas.paintString(song, g, countX, 200, 40);
+            }
+            g.translate(-countX, -50);
+            count += 1;
+        }
     }
 
     @Override

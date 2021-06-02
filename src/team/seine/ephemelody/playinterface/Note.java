@@ -2,16 +2,16 @@ package team.seine.ephemelody.playinterface;
 
 
 public class Note extends Thread {//Note, main article of the play interface
-    Track basedTrack;//Track that this note belongs to
-    double positionX;//The ratio of the horizontal axis of the note to the the length of the entire screen, equals to the x of the track which it belongs to
-    double positionY;//The ratio of the vertical axis of the note to the the width of the entire screen
-    int noteType;//Denotes the type of the note. type=0 "hit" type=1 "hold"
-    char key;//The keyboard keys corresponding to that note
-    long timing;//The standard timing of a note
-    long endTiming;//
-    double length;//The length of a hold calculated from startTiming and endTiming
-    long lastTime;
-    long noteCurrentTime;
+    public Track basedTrack;//Track that this note belongs to
+    public double positionX;//The ratio of the horizontal axis of the note to the the length of the entire screen, equals to the x of the track which it belongs to
+    public double positionY;//The ratio of the vertical axis of the note to the the width of the entire screen
+    public int noteType;//Denotes the type of the note. type=0 "hit" type=1 "hold"
+    public char key;//The keyboard keys corresponding to that note
+    public long timing;//The standard timing of a note
+    public long endTiming;//
+    public double length;//The length of a hold calculated from startTiming and endTiming
+    public long lastTime;
+    public long noteCurrentTime;
 
     public Note(Track basedTrack, int noteType, char key, long timing) {
         this.basedTrack = basedTrack;

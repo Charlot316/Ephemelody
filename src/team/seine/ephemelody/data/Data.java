@@ -3,19 +3,24 @@ package team.seine.ephemelody.data;
 import team.seine.ephemelody.utils.Load;
 import team.seine.ephemelody.main.Canvas;
 import java.awt.*;
+import java.awt.font.GlyphVector;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Data {
     public static final int WIDTH = 1286, HEIGHT = 965, FPS = 100;
     // 显示游戏画面的面板
     public static Canvas canvas;
-
-    private static Image[] setupButton;
+    public static List<String> songList; // 歌曲列表，存放歌曲名
+    /*private static Image[] setupButton;
     private static Image[] ratingButton;
     private static Image[] difficultyButton;
-    private static Image backgroundImg, startButton;
+    private static Image backgroundImg, startButton;*/
 
     public static void init() {
-        setupButton = new Image[]{
+        /*setupButton = new Image[]{
                 Load.image("home/设置.png"), Load.image("home/设置_按下.png"),
                 Load.image("home/设置_未选中.png"), Load.image("home/设置_鼠标悬停.png")
         };
@@ -32,7 +37,10 @@ public class Data {
                 Load.image("home/rating_keep.png"), Load.image("home/rating_up.png"),
         };
         backgroundImg = Load.image("home/背景.png");
-        startButton = Load.image("home/开始游戏.png");
+        startButton = Load.image("home/开始游戏.png");*/
+        songList = Arrays.asList("最炫民族风", "你是我的小呀小苹果", "怎么爱你都不嫌多", "我到底在干啥", "这就是最后一首歌");
 
     }
+
+
 }
