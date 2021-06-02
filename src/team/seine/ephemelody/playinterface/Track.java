@@ -104,8 +104,8 @@ public class Track extends Thread {// The track of the note.
             }
             else if(currentColor.endTime-this.trackCurrentTime!=0){
                 this.R=this.R-(int)(((this.R-currentColor.endR)/(currentColor.endTime-this.trackCurrentTime))*(this.trackCurrentTime-this.lastTime));
-                this.G=this.G-(int)(((this.G-currentColor.endR)/(currentColor.endTime-this.trackCurrentTime))*(this.trackCurrentTime-this.lastTime));
-                this.B=this.B-(int)(((this.B-currentColor.endR)/(currentColor.endTime-this.trackCurrentTime))*(this.trackCurrentTime-this.lastTime));
+                this.G=this.G-(int)(((this.G-currentColor.endG)/(currentColor.endTime-this.trackCurrentTime))*(this.trackCurrentTime-this.lastTime));
+                this.B=this.B-(int)(((this.B-currentColor.endB)/(currentColor.endTime-this.trackCurrentTime))*(this.trackCurrentTime-this.lastTime));
             }
         }
         if(currentColor.endTime<this.trackCurrentTime&&(frontColor+1)<this.changeColorOperations.size()) frontColor++;
