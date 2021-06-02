@@ -79,31 +79,71 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
 
     public void onMouse(int x, int y, int struts) {
 //        System.out.println(x + " " + y);
-        buttonRatingStatus = buttonSetUpBackStatus = buttonHomeStatus = buttonEasyStatus = buttonNormalStatus = buttonDifficultStatus = buttonPlayStatus = 0;
+        if (buttonEasyStatus != MOUSE_DOWN) {
+            buttonEasyStatus = 0;
+        }
+        if (buttonNormalStatus != MOUSE_DOWN) {
+            buttonNormalStatus = 0;
+        }
+        if (buttonDifficultStatus != MOUSE_DOWN) {
+            buttonDifficultStatus = 0;
+        }
+        if (buttonSetUpBackStatus != MOUSE_DOWN) {
+            buttonSetUpBackStatus = 0;
+        }
+        buttonRatingStatus = buttonHomeStatus = buttonPlayStatus = 0;
 
         int buttonStruts = struts == Scenes.MOUSE_MOVED ? 1 : struts == Scenes.MOUSE_DOWN ? 2 : 0;
         // e.getY() 获取的坐标包含了 窗口标题栏的高度，判断点击位置时，需要减去，如果监听鼠标事件时，监听对象为JPanel，则不需要此步骤,, 本程序监听的是JFrame对象
         // 275 + Data.TITLE_BOX_HEIGHT, 这里因为以上原因，在画面上看到的位置，还需要加一个标题栏高度
         // 这里判断的就是 鼠标点击的位置，是否在相应的按钮上方
         if(Rect.isInternal(x, y, 900, 0, 98, 50)) {
-            buttonSetUpBackStatus = buttonStruts;
+            if (buttonSetUpBackStatus != MOUSE_DOWN) {
+                buttonSetUpBackStatus = buttonStruts;
+            } else {
+                buttonEasyStatus = MOUSE_UP;
+                buttonNormalStatus = MOUSE_UP;
+                buttonDifficultStatus = MOUSE_UP;
+            }
+
             if(struts == Scenes.MOUSE_DOWN) {
 //                Data.canvas.switchScenes("Game");
             }
         }else if (Rect.isInternal(x, y, 503, 580, 202, 125)) {
-            buttonEasyStatus = buttonStruts;
+
+            if (buttonEasyStatus != MOUSE_DOWN) {
+                buttonEasyStatus = buttonStruts;
+            } else {
+                buttonSetUpBackStatus = MOUSE_UP;
+                buttonNormalStatus = MOUSE_UP;
+                buttonDifficultStatus = MOUSE_UP;
+            }
             if(struts == Scenes.MOUSE_DOWN) {
-                System.out.println("666");
-                Data.canvas.switchScenes("End");
+//                System.out.println("666");
+//                Data.canvas.switchScenes("End");
 //                Data.canvas.switchScenes("About");
             }
         }else if (Rect.isInternal(x, y, 783, 580, 202, 125)) {
-            buttonNormalStatus = buttonStruts;
+
+            if (buttonNormalStatus != MOUSE_DOWN) {
+                buttonNormalStatus = buttonStruts;
+            } else {
+                buttonSetUpBackStatus = MOUSE_UP;
+                buttonEasyStatus = MOUSE_UP;
+                buttonDifficultStatus = MOUSE_UP;
+            }
             if(struts == Scenes.MOUSE_DOWN) {
 //                Data.canvas.switchScenes("Site");
             }
         }else if (Rect.isInternal(x, y, 1063, 580, 202, 125)) {
-            buttonDifficultStatus = buttonStruts;
+            if (buttonDifficultStatus != MOUSE_DOWN) {
+                buttonDifficultStatus = buttonStruts;
+            } else {
+                buttonSetUpBackStatus = MOUSE_UP;
+                buttonEasyStatus = MOUSE_UP;
+                buttonNormalStatus = MOUSE_UP;
+            }
+
             if(struts == Scenes.MOUSE_DOWN) {
 //                Data.canvas.switchScenes("Recording");
             }
@@ -163,7 +203,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        onMouse(e.getX(), e.getY(), Scenes.MOUSE_DOWN);
     }
 
     @Override
