@@ -11,16 +11,16 @@ public class Background extends JPanel{
 
     public Image backgroundImg;
     public Image menuImg;
-    public JButton button;
+//    public JButton button;
     public Background() {
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setVisible(true);
         setLayout(null);
         backgroundImg = Load.image("home/背景.png");
         menuImg = Load.image("home/菜单.png");
-        button = new JButton("da");
+        /*button = new JButton("da");
         button.setBounds(100, 100, 100, 100);
-        add(button);
+        add(button);*/
     }
 
     public void paint(Graphics g) {
