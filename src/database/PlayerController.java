@@ -14,8 +14,8 @@ public class PlayerController {
     /**
      * 从数据库中根据玩家ID返回玩家信息
      *
-     * @param playerID
-     * @return selectedPlayer
+     * @param playerID 玩家ID
+     * @return 查询所得玩家
      */
     public static Player selectPlayerById(String playerID) {
         Player selectedPlayer = null;
@@ -40,16 +40,20 @@ public class PlayerController {
         return selectedPlayer;
     }
 
+    /**
+     * 向数据库中插入新玩家
+     * @param playerID 玩家ID
+     * @param password1 玩家密码
+     */
     public static void insertPlayer(String playerID, String password1) {
         PreparedStatement sql;
-        ResultSet rs;
         try {
             con = DriverManager.getConnection(uri, user, password);
             String sqlStr = "INSERT INTO seine.players(playerID, password, potential) VALUES(?,?,0) ";
             sql = con.prepareStatement(sqlStr);
             sql.setString(1, playerID);
             sql.setString(2, password1);
-            rs = sql.executeQuery();
+            sql.executeQuery();
             con.close();
         } catch (Exception e) {
             System.out.println(e);

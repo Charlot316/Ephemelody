@@ -16,8 +16,8 @@ public class SongController {
 
     /**
      * 从数据库中根据歌曲ID和歌曲难度得到歌曲信息
-     * @param songID
-     * @param songDifficulty
+     * @param songID 歌曲ID
+     * @param songDifficulty 歌曲难度
      * @return selectedSong
      */
     public static Song selectSongById(int songID, int songDifficulty) {
