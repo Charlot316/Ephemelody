@@ -40,6 +40,11 @@ public class PlayerController {
         return selectedPlayer;
     }
 
+    /**
+     * 向数据库中插入新玩家
+     * @param playerID
+     * @param password1
+     */
     public static void insertPlayer(String playerID, String password1) {
         PreparedStatement sql;
         ResultSet rs;
