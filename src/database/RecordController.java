@@ -1,8 +1,6 @@
 package database;
 
-import database.Entity.Player;
 import database.Entity.Record;
-import database.Entity.Song;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,7 +18,8 @@ public class RecordController {
 
     /**
      * 向数据库中插入游玩记录，personal_recent_records记录个人最近30条
-     * @param record
+     *
+     * @param record 插入记录
      */
     public static void insertRecentRecord(Record record) {
         PreparedStatement sql;
@@ -39,7 +38,7 @@ public class RecordController {
                 String sqlStr1 = "DELETE FROM seine.personal_recent_records WHERE playerID = ? ORDER BY time LIMIT 1";
                 sql = con.prepareStatement(sqlStr1);
                 sql.setString(1, record.getPlayerID());
-                rs = sql.executeQuery();
+                sql.executeQuery();
             }
             //插入最近记录
             String sqlStr1 = "INSERT INTO seine.personal_recent_records(playerID, time, songID, songDifficulty, pureCount, farCount, lostCount, maxCombo, potential, score) " +
@@ -55,7 +54,7 @@ public class RecordController {
             sql.setInt(8, record.getMaxCombo());
             sql.setDouble(9, record.getPotential());
             sql.setInt(10, record.getScore());
-            rs = sql.executeQuery();
+            sql.executeQuery();
             con.close();
         } catch (Exception e) {
             System.out.println(e);
@@ -64,12 +63,12 @@ public class RecordController {
 
     /**
      * 向数据库中插入游玩记录，personal_best_records记录个人单曲最好成绩
-     * @param record
+     *
+     * @param record 插入记录
      */
     public static void insertBestRecord(Record record) {
         PreparedStatement sql;
         ResultSet rs;
-        int rowCount;
         try {
             con = DriverManager.getConnection(uri, user, password);
             //查看同一首歌最佳分数
@@ -94,7 +93,7 @@ public class RecordController {
                 sql.setInt(8, record.getMaxCombo());
                 sql.setDouble(9, record.getPotential());
                 sql.setInt(10, record.getScore());
-                rs = sql.executeQuery();
+                sql.executeQuery();
             }
             //有记录且刷新纪录就更新
             else if (rs.next()) {
@@ -106,7 +105,7 @@ public class RecordController {
                     sql.setString(3, record.getPlayerID());
                     sql.setInt(4, record.getSongID());
                     sql.setInt(5, record.getSongDifficulty());
-                    rs = sql.executeQuery();
+                    sql.executeQuery();
                 }
             }
             con.close();
@@ -117,7 +116,8 @@ public class RecordController {
 
     /**
      * 插入远程数据库最佳分数记录
-     * @param record
+     *
+     * @param record 插入记录
      */
     public static void insertRemoteBestRecord(Record record) {
         PreparedStatement sql;
@@ -147,7 +147,7 @@ public class RecordController {
                 sql.setInt(8, record.getMaxCombo());
                 sql.setDouble(9, record.getPotential());
                 sql.setInt(10, record.getScore());
-                rs = sql.executeQuery();
+                sql.executeQuery();
             }
             //有记录且刷新纪录就更新
             else if (rs.next()) {
@@ -159,7 +159,7 @@ public class RecordController {
                     sql.setString(3, record.getPlayerID());
                     sql.setInt(4, record.getSongID());
                     sql.setInt(5, record.getSongDifficulty());
-                    rs = sql.executeQuery();
+                    sql.executeQuery();
                 }
             }
             remoteCon.close();
@@ -171,8 +171,8 @@ public class RecordController {
     /**
      * 从数据库中返回3条个人最好成绩
      *
-     * @param playerID
-     * @return
+     * @param playerID 玩家ID
+     * @return 成绩集
      */
     public static ResultSet getPersonalBestRecords(String playerID) {
         PreparedStatement sql;
@@ -193,8 +193,8 @@ public class RecordController {
     /**
      * 从数据库中返回10条最近的最好成绩
      *
-     * @param playerID
-     * @return
+     * @param playerID 玩家ID
+     * @return 成绩集
      */
     public static ResultSet getPersonalRecentRecords(String playerID) {
         PreparedStatement sql;

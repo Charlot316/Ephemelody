@@ -14,8 +14,8 @@ public class PlayerController {
     /**
      * 从数据库中根据玩家ID返回玩家信息
      *
-     * @param playerID
-     * @return selectedPlayer
+     * @param playerID 玩家ID
+     * @return 查询所得玩家
      */
     public static Player selectPlayerById(String playerID) {
         Player selectedPlayer = null;
@@ -42,8 +42,8 @@ public class PlayerController {
 
     /**
      * 向数据库中插入新玩家
-     * @param playerID
-     * @param password1
+     * @param playerID 玩家ID
+     * @param password1 玩家密码
      */
     public static void insertPlayer(String playerID, String password1) {
         PreparedStatement sql;
