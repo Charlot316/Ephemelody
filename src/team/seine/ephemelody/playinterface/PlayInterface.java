@@ -16,12 +16,12 @@ public class PlayInterface extends JPanel {//Set up the play interface
     int operationsCount;
     int scorePerNote;
     int scoreForLastNote;
-    public static AtomicInteger pureCount;
-    public static AtomicInteger farCount;
-    public static AtomicInteger lostCount;
-    public static AtomicInteger combo;
+    public static AtomicInteger pureCount=new AtomicInteger();
+    public static AtomicInteger farCount=new AtomicInteger();
+    public static AtomicInteger lostCount=new AtomicInteger();
+    public static AtomicInteger combo=new AtomicInteger();
     public int maxCombo;
-    public static AtomicInteger currentScore;
+    public static AtomicInteger currentScore=new AtomicInteger();
     public static long startTime;
     public static long currentTime;//Used to tell the current time
     public static double finalY;
@@ -41,15 +41,13 @@ public class PlayInterface extends JPanel {//Set up the play interface
      * read in information of the display
      */
     public void loadData(){
-        this.Path=".\\team\\seine\\ephemelody\\assets\\"+this.songID+"\\"+this.difficulty+"\\";
+        this.Path="/resources/display/"+this.songID+"/"+this.difficulty+"/";
         String displayPath=this.Path+"display.txt";
-        File displayFile=new File(displayPath);
-        FileReader sourceFile=null;
-        BufferedReader bufferedReader=null;
+        System.out.println(displayPath);
+        InputStream is=this.getClass().getResourceAsStream(displayPath);
+        BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(is));
 
         try {
-            sourceFile = new FileReader(displayFile);
-            bufferedReader  = new BufferedReader(sourceFile);
             String command = bufferedReader.readLine();
             String []arguments=command.split("\\s+");
             this.trackCount=Integer.parseInt(arguments[0]);
@@ -82,18 +80,19 @@ public class PlayInterface extends JPanel {//Set up the play interface
                         break;
                     case 10:
                         width=Double.parseDouble(arguments[6]);
-                        R=Integer.parseInt(arguments[6]);
-                        G=Integer.parseInt(arguments[7]);
-                        B=Integer.parseInt(arguments[8]);
+                        R=Integer.parseInt(arguments[7]);
+                        G=Integer.parseInt(arguments[8]);
+                        B=Integer.parseInt(arguments[9]);
                         break;
                     default:
                         break;
                 }
                 Track track=new Track(id,type,key,startTiming,endTiming,positionX,width,R,G,B);
                 this.allTracks.add(track);
+                System.out.println(track);
             }
 
-            for(int i=0;i<this.trackCount;i++){
+            for(int i=0;i<this.notesCount;i++){
                 command = bufferedReader .readLine();
                 arguments=command.split("\\s+");
                 int trackID=Integer.parseInt(arguments[0]);
@@ -114,7 +113,7 @@ public class PlayInterface extends JPanel {//Set up the play interface
                 }
             }
 
-            for(int i=0;i<this.trackCount;i++){
+            for(int i=0;i<this.operationsCount;i++){
                 command = bufferedReader.readLine();
                 arguments=command.split("\\s+");
                 int trackID=Integer.parseInt(arguments[0]);
@@ -165,9 +164,6 @@ public class PlayInterface extends JPanel {//Set up the play interface
         }
         finally {
             try {
-                assert sourceFile != null;
-                sourceFile.close();
-                assert bufferedReader != null;
                 bufferedReader.close();
             } catch (IOException e) {
                 e.printStackTrace();
