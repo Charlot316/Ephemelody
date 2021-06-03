@@ -34,9 +34,13 @@ public class Canvas extends JLayeredPane{
             this.add((Background) firstScenes, new Integer(0));
             this.add((Home) secondScenes, new Integer(1));
         } else if (name.equals("End")) {
-            this.firstScenes = new End();
+            this.firstScenes = new Background();
+            this.secondScenes = new Home();
+            this.thirdScenes = new End();
             this.removeAll();
-            this.add((End) firstScenes, new Integer(1));
+            this.add((Background) firstScenes, new Integer(0));
+            this.add((Home) secondScenes, new Integer(1));
+            this.add((End) thirdScenes, new Integer(2));
         } else if (name.equals("PlayInterface")) {
         //    this.nowScenes =
             this.firstScenes = new PlayInterface(1, 1);
@@ -57,7 +61,7 @@ public class Canvas extends JLayeredPane{
             this.thirdScenes = new SetUp();
             this.add((SetUp) thirdScenes, new Integer(3));
         }
-        System.out.println("前面都执行完了");
+//        System.out.println("前面都执行完了");
     }
 
     public void paintString(String str, Graphics g, Integer x, Integer y, Integer size) {

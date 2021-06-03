@@ -26,15 +26,15 @@ public class SetUp extends JPanel implements Scenes, MouseMotionListener, MouseL
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setVisible(true);
         setOpaque(false);
-        setupBackground = Load.image("setup/设置背景1.png");
+        setupBackground = Load.image("setup/设置背景.png");
         upButton = new Image[] {
-                Load.image("setup/上.png"), Load.image("setup/上_经过.png"), Load.image("setup/上_按下.png")
+                Load.image("setup/上.png"), Load.image("setup/上_鼠标悬停.png"), Load.image("setup/上_按下.png")
         };
         downButton = new Image[] {
-                Load.image("setup/下.png"), Load.image("setup/下_经过.png"), Load.image("setup/下_按下.png")
+                Load.image("setup/下.png"), Load.image("setup/下_鼠标悬停.png"), Load.image("setup/下_按下.png")
         };
         finishButton = new Image[] {
-                Load.image("setup/完成.png"), Load.image("setup/完成_经过.png"), Load.image("setup/完成_按下.png")
+                Load.image("setup/完成.png"), Load.image("setup/完成_鼠标悬停.png"), Load.image("setup/完成_按下.png")
         };
         addMouseMotionListener(this);
         addMouseListener(this);
