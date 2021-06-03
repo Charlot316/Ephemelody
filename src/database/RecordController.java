@@ -32,7 +32,7 @@ public class RecordController {
             rs = sql.executeQuery();
             rs.last();
             //该分数大于数据库中30条最近数据中潜力值最高的10个值最小的值，且分数大于9800000，即可插入
-            if(rs.getDouble(9)>record.getPotential()&&record.getScore()>9800000){
+            if (record.getScore() < 9800000 || (record.getScore() >= 9800000 && rs.getDouble(9) > record.getPotential())) {
                 //查找最近记录条数
                 String sqlStr1 = "SELECT * FROM seine.personal_recent_records WHERE playerID = ? ";
                 sql = con.prepareStatement(sqlStr1);
