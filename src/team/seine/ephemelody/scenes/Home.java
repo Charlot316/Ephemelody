@@ -28,7 +28,6 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
     public Image downButton;
     public Image song1;
     public Image selectedImg;
-    public Boolean playFlag = false;
     public Home() {
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setLayout(null);
@@ -60,12 +59,12 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         downButton = Load.image("home/down.png");
         song1 = Load.image("home/song1.png");
         selectedImg = Load.image("home/被选中的.png");
-        playFlag = buttonEasyStatus == MOUSE_DOWN || buttonNormalStatus == MOUSE_DOWN || buttonDifficultStatus == MOUSE_DOWN;
         setBackground(null);
         setOpaque(false);
         new UpdateUI().start();
         addMouseMotionListener(this);
         addMouseListener(this);
+
     }
 
     @Override
@@ -79,7 +78,6 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
     }
 
     public void onMouse(int x, int y, int struts) {
-        playFlag = false;
 //        System.out.println(x + " " + y);
         if (buttonEasyStatus != MOUSE_DOWN) {
             buttonEasyStatus = 0;
@@ -109,7 +107,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             }
 
             if(struts == Scenes.MOUSE_DOWN) {
-                Data.canvas.switchScenes("SetUp");
+//                Data.canvas.switchScenes("Game");
             }
         }else if (Rect.isInternal(x, y, 503, 580, 202, 125)) {
 
@@ -157,20 +155,18 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             }
         } else if (Rect.isInternal(x, y, 643, 750, 500, 114)) {
             buttonPlayStatus = buttonStruts;
-            playFlag = buttonEasyStatus == MOUSE_DOWN || buttonNormalStatus == MOUSE_DOWN || buttonDifficultStatus == MOUSE_DOWN;
-            if(struts == Scenes.MOUSE_DOWN && playFlag) {
+            if(struts == Scenes.MOUSE_DOWN) {
                 Data.canvas.switchScenes("PlayInterface");
 //                System.exit(0);
             }
         }
     }
     public void paint(Graphics g) {
-        playFlag = buttonEasyStatus == MOUSE_DOWN || buttonNormalStatus == MOUSE_DOWN || buttonDifficultStatus == MOUSE_DOWN;
         g.drawImage(song1, Data.WIDTH / 2, 100, null);
         g.drawImage(easyButton[buttonEasyStatus], Data.WIDTH / 2 - 140, 580, null);
         g.drawImage(normalButton[buttonNormalStatus], Data.WIDTH / 2 + 140, 580, null);
         g.drawImage(difficultButton[buttonDifficultStatus], Data.WIDTH / 2 + 420, 580, null);
-        if (playFlag) {
+        if (buttonEasyStatus == MOUSE_DOWN || buttonNormalStatus == MOUSE_DOWN || buttonDifficultStatus == MOUSE_DOWN) {
             g.drawImage(playButton[buttonPlayStatus], Data.WIDTH / 2, 750, null);
         }
         g.drawImage(upButton, 100, 60, null);
@@ -180,19 +176,19 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         g.drawImage(setupButton, 934, 8, null);
         g.drawImage(homeButton[buttonHomeStatus], 1150, -7, null);
         g.drawImage(selectedImg, 0, Data.HEIGHT / 2 - 30, null);
-        int countX = 65, count = 1;
-        for (String song : Data.songList) { // 到时候改成待展示的歌曲名单列表
-            if (count == 3) {
-                countX += 20;
-                Data.canvas.paintString(song, g, countX, 200, 60);
-                countX -= 20;
-                g.translate(-20, 0);
-            } else {
-                Data.canvas.paintString(song, g, countX, 200, 40);
-            }
-            g.translate(-countX, -50);
-            count += 1;
-        }
+        Integer countX = 65, count = 1;
+//        for (String song : Data.songList) { // 到时候改成待展示的歌曲名单列表
+//            if (count == 3) {
+//                countX += 20;
+//                Data.canvas.paintString(song, g, countX, 200, 60);
+//                countX -= 20;
+//                g.translate(-20, 0);
+//            } else {
+//                Data.canvas.paintString(song, g, countX, 200, 40);
+//            }
+//            g.translate(-countX, -50);
+//            count += 1;
+//        }
     }
 
     @Override

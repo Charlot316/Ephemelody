@@ -10,11 +10,9 @@ import java.sql.ResultSet;
 public class RecordController {
 
     static Connection con;
-    static String uri = "jdbc:mysql://localhost:3306/seine? useSSL=true&characterEncoding=utf-8";
+    static String uri = "jdbc:mariadb://47.93.249.243:3306/seine? useSSL=true&characterEncoding=utf-8";
     static String user = "root";
     static String password = "123456";
-    static Connection remoteCon;
-    static String remoteUri = "jdbc:mariadb://47.93.249.243:3306/seine1? useSSL=true&characterEncoding=utf-8";
 
     /**
      * 向数据库中插入游玩记录，personal_recent_records记录个人最近30条
@@ -24,37 +22,46 @@ public class RecordController {
     public static void insertRecentRecord(Record record) {
         PreparedStatement sql;
         ResultSet rs;
+        double leastPotential = 0;
         int rowCount;
         try {
             con = DriverManager.getConnection(uri, user, password);
-            //查找最近记录条数
-            String sqlStr = "SELECT * FROM seine.personal_recent_records WHERE playerID = ? ";
+            String sqlStr = "SELECT * FROM seine.personal_recent_records WHERE playerID = ? ORDER BY potential LIMIT 10";
             sql = con.prepareStatement(sqlStr);
             sql.setString(1, record.getPlayerID());
             rs = sql.executeQuery();
-            rowCount = rs.getRow();
-            if (rowCount == 30) {
-                //等于30条就删掉最近一条
-                String sqlStr1 = "DELETE FROM seine.personal_recent_records WHERE playerID = ? ORDER BY time LIMIT 1";
+            rs.last();
+            //该分数大于数据库中30条最近数据中潜力值最高的10个值最小的值，且分数大于9800000，即可插入
+            if (record.getScore() < 9800000 || (record.getScore() >= 9800000 && rs.getDouble(9) > record.getPotential())) {
+                //查找最近记录条数
+                String sqlStr1 = "SELECT * FROM seine.personal_recent_records WHERE playerID = ? ";
                 sql = con.prepareStatement(sqlStr1);
                 sql.setString(1, record.getPlayerID());
+                rs = sql.executeQuery();
+                rowCount = rs.getRow();
+                if (rowCount > 30) {
+                    //等于30条就删掉时间最早的一条
+                    String sqlStr2 = "DELETE FROM seine.personal_recent_records WHERE playerID = ? ORDER BY time LIMIT 1";
+                    sql = con.prepareStatement(sqlStr2);
+                    sql.setString(1, record.getPlayerID());
+                    sql.executeQuery();
+                }
+                //插入最近记录
+                String sqlStr3 = "INSERT INTO seine.personal_recent_records(playerID, time, songID, songDifficulty, pureCount, farCount, lostCount, maxCombo, potential, score) " +
+                        "VALUES (?,?,?,?,?,?,?,?,?,?)";
+                sql = con.prepareStatement(sqlStr3);
+                sql.setString(1, record.getPlayerID());
+                sql.setDate(2, record.getTime());
+                sql.setInt(3, record.getSongID());
+                sql.setInt(4, record.getSongDifficulty());
+                sql.setInt(5, record.getPureCount());
+                sql.setInt(6, record.getFarCount());
+                sql.setInt(7, record.getLostCount());
+                sql.setInt(8, record.getMaxCombo());
+                sql.setDouble(9, record.getPotential());
+                sql.setInt(10, record.getScore());
                 sql.executeQuery();
             }
-            //插入最近记录
-            String sqlStr1 = "INSERT INTO seine.personal_recent_records(playerID, time, songID, songDifficulty, pureCount, farCount, lostCount, maxCombo, potential, score) " +
-                    "VALUES (?,?,?,?,?,?,?,?,?,?)";
-            sql = con.prepareStatement(sqlStr1);
-            sql.setString(1, record.getPlayerID());
-            sql.setDate(2, record.getTime());
-            sql.setInt(3, record.getSongID());
-            sql.setInt(4, record.getSongDifficulty());
-            sql.setInt(5, record.getPureCount());
-            sql.setInt(6, record.getFarCount());
-            sql.setInt(7, record.getLostCount());
-            sql.setInt(8, record.getMaxCombo());
-            sql.setDouble(9, record.getPotential());
-            sql.setInt(10, record.getScore());
-            sql.executeQuery();
             con.close();
         } catch (Exception e) {
             System.out.println(e);
@@ -119,15 +126,15 @@ public class RecordController {
      *
      * @param record 插入记录
      */
-    public static void insertRemoteBestRecord(Record record) {
+    public static void insertAllBestRecord(Record record) {
         PreparedStatement sql;
         ResultSet rs;
         int rowCount;
         try {
-            remoteCon = DriverManager.getConnection(remoteUri, user, password);
+            con = DriverManager.getConnection(uri, user, password);
             //查看同一首歌最佳分数
             String sqlStr = "SELECT * FROM seine.all_best_records WHERE playerID = ? and songID = ? and songDifficulty = ?";
-            sql = remoteCon.prepareStatement(sqlStr);
+            sql = con.prepareStatement(sqlStr);
             sql.setString(1, record.getPlayerID());
             sql.setInt(2, record.getSongID());
             sql.setInt(3, record.getSongDifficulty());
@@ -136,7 +143,7 @@ public class RecordController {
             if (rs.getRow() == 0) {
                 String sqlStr1 = "INSERT INTO seine.all_best_records(playerID, time, songID, songDifficulty, pureCount, farCount, lostCount, maxCombo, potential, score) " +
                         "VALUES (?,?,?,?,?,?,?,?,?,?)";
-                sql = remoteCon.prepareStatement(sqlStr1);
+                sql = con.prepareStatement(sqlStr1);
                 sql.setString(1, record.getPlayerID());
                 sql.setDate(2, record.getTime());
                 sql.setInt(3, record.getSongID());
@@ -153,7 +160,7 @@ public class RecordController {
             else if (rs.next()) {
                 if (record.getScore() > rs.getInt(10)) {
                     String sqlStr2 = "UPDATE seine.all_best_records SET score = ?,time = ? WHERE playerID = ? and songID = ? and songDifficulty = ?";
-                    sql = remoteCon.prepareStatement(sqlStr2);
+                    sql = con.prepareStatement(sqlStr2);
                     sql.setInt(1, record.getScore());
                     sql.setDate(2, record.getTime());
                     sql.setString(3, record.getPlayerID());
@@ -162,7 +169,7 @@ public class RecordController {
                     sql.executeQuery();
                 }
             }
-            remoteCon.close();
+            con.close();
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -219,11 +226,11 @@ public class RecordController {
         PreparedStatement sql;
         ResultSet rs = null;
         try {
-            remoteCon = DriverManager.getConnection(remoteUri, user, password);
+            con = DriverManager.getConnection(uri, user, password);
             String sqlStr = "SELECT * FROM seine.all_best_records ORDER BY score DESC LIMIT 10";
-            sql = remoteCon.prepareStatement(sqlStr);
+            sql = con.prepareStatement(sqlStr);
             rs = sql.executeQuery();
-            remoteCon.close();
+            con.close();
         } catch (Exception e) {
             System.out.println(e);
         }

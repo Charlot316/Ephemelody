@@ -2,8 +2,11 @@ package team.seine.ephemelody.playinterface;
 
 import java.awt.*;
 import java.util.ArrayList;
+import team.seine.ephemelody.scenes.PlayInterface;
 
-public class Track extends Thread {// The track of the note.
+import javax.swing.*;
+
+public class Track extends JPanel implements Runnable {// The track of the note.
     public int id;
     public int type;
     public char key;

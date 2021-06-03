@@ -1,5 +1,6 @@
 package team.seine.ephemelody.playinterface;
 
+import team.seine.ephemelody.scenes.PlayInterface;
 
 public class Note extends Thread {//Note, main article of the play interface
     public Track basedTrack;//Track that this note belongs to
@@ -26,7 +27,7 @@ public class Note extends Thread {//Note, main article of the play interface
         this.key = key;
         this.timing = startTiming;
         this.endTiming = endTiming;
-        this.length=((double)(this.endTiming-this.timing)/(double)PlayInterface.remainingTime)*PlayInterface.finalY;
+        this.length=((double)(this.endTiming-this.timing)/(double) PlayInterface.remainingTime)*PlayInterface.finalY;
     }
 
     /**
