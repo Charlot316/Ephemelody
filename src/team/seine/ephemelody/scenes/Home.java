@@ -53,7 +53,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
                 Load.image("home/普通.png"), Load.image("home/普通_鼠标悬停.png"), Load.image("home/普通_按下.png")
         };
         difficultButton = new Image[] {
-                Load.image("home/困难.png"), Load.image("home//困难_鼠标悬停.png"), Load.image("home/困难_按下.png")
+                Load.image("home/困难.png"), Load.image("home/困难_鼠标悬停.png"), Load.image("home/困难_按下.png")
         };
         upButton = Load.image("home/up.png");
         downButton = Load.image("home/down.png");
@@ -111,6 +111,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
 //                Data.canvas.switchScenes("Game");
             }
         }else if (Rect.isInternal(x, y, 503, 580, 202, 125)) {
+
 
             if (buttonEasyStatus != MOUSE_DOWN) {
                 buttonEasyStatus = buttonStruts;

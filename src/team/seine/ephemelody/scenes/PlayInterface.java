@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class PlayInterface extends JPanel implements Scenes {//Set up the play interface
+public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up the play interface
     int songID;
     int difficulty;
     int trackCount;
@@ -230,15 +230,19 @@ public class PlayInterface extends JPanel implements Scenes {//Set up the play i
     /**
      * run the game
      */
-    public void display() {
+    public void run() {
         startTime = System.currentTimeMillis();
         currentTime = 0;
         this.repaint();
         while (currentTime < this.finalEndTime) {
             currentTime = System.currentTimeMillis() - startTime;
-            if (allTracks.get(frontTrack).startTiming < currentTime) {
+            //System.out.println(currentTime+" "+this.finalEndTime);
+            if (frontTrack<allTracks.size()&&allTracks.get(frontTrack).startTiming < currentTime) {
+                currentTime = System.currentTimeMillis() - startTime;
                 new Thread(allTracks.get(frontTrack)).start();
-                if (frontTrack + 1 < allTracks.size()) frontTrack++;
+                System.out.println(currentTime+" "+this.finalEndTime);
+                System.out.println(allTracks.get(frontTrack).startTiming);
+                 frontTrack++;
             }
             if (!backgroundOperations.isEmpty() && backgroundOperations.get(frontOperation).startTime < currentTime) {
                 this.frontBackground++;
@@ -252,7 +256,7 @@ public class PlayInterface extends JPanel implements Scenes {//Set up the play i
      * Finish the play and go to the next interface
      */
     public void finish() {
-        //Data.canvas.switchScenes("Home");
+        Data.canvas.switchScenes("Home");
         System.out.println("嘿");
     }
 

@@ -46,21 +46,20 @@ public class Canvas extends JLayeredPane{
             this.firstScenes = new PlayInterface(1, 1);
             this.removeAll();
             this.add((PlayInterface)firstScenes, new Integer(0));
-            this.repaint();
-            ((PlayInterface) firstScenes).display();
+            new Thread((PlayInterface) firstScenes).start();
 
 //            this.add((PlayInterface) nowScenes, new Integer(1));
-        } else if (name.equals("Login")) {
+    } else if (name.equals("Login")) {
 //            System.out.println("1");
-            this.thirdScenes = new Login();
-            this.loginComScenes = new LoginComponent();
+        this.thirdScenes = new Login();
+        this.loginComScenes = new LoginComponent();
 //            this.removeAll();
-            this.add((Login) thirdScenes, new Integer(3));
-            this.add((LoginComponent) loginComScenes, new Integer(4));
-        } else if (name.equals("SetUp")) {
-            this.thirdScenes = new SetUp();
-            this.add((SetUp) thirdScenes, new Integer(3));
-        }
+        this.add((Login) thirdScenes, new Integer(3));
+        this.add((LoginComponent) loginComScenes, new Integer(4));
+    } else if (name.equals("SetUp")) {
+        this.thirdScenes = new SetUp();
+        this.add((SetUp) thirdScenes, new Integer(3));
+    }
 //        System.out.println("前面都执行完了");
     }
 
