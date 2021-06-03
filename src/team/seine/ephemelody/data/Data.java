@@ -2,6 +2,8 @@ package team.seine.ephemelody.data;
 
 import team.seine.ephemelody.utils.Load;
 import team.seine.ephemelody.main.Canvas;
+
+import javax.swing.plaf.PanelUI;
 import java.awt.*;
 import java.awt.font.GlyphVector;
 import java.lang.reflect.Array;
@@ -11,9 +13,10 @@ import java.util.List;
 
 public class Data {
     public static final int WIDTH = 1286, HEIGHT = 965, FPS = 100;
-    // 显示游戏画面的面板
     public static Canvas canvas;
     public static List<String> songList; // 歌曲列表，存放歌曲名
+    public static int offset = 0, noteVolume = 1, volume = 1; // 存放设置中的偏移、音效、音量
+    public static double noteSpeed = 1.1; // 存放设置中的流速
     /*private static Image[] setupButton;
     private static Image[] ratingButton;
     private static Image[] difficultyButton;
