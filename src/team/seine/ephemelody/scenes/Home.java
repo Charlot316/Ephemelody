@@ -101,6 +101,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             if (buttonSetUpBackStatus != MOUSE_DOWN) {
                 buttonSetUpBackStatus = buttonStruts;
             } else {
+                Data.canvas.switchScenes("SetUp");
                 /*buttonEasyStatus = MOUSE_UP;
                 buttonNormalStatus = MOUSE_UP;
                 buttonDifficultStatus = MOUSE_UP;*/

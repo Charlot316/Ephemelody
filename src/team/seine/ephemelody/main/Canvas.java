@@ -50,6 +50,9 @@ public class Canvas extends JLayeredPane{
 //            this.removeAll();
             this.add((Login) thirdScenes, new Integer(3));
             this.add((LoginComponent) loginComScenes, new Integer(4));
+        } else if (name.equals("SetUp")) {
+            this.thirdScenes = new SetUp();
+            this.add((SetUp) thirdScenes, new Integer(3));
         }
     }
 
