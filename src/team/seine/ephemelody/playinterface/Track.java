@@ -74,6 +74,9 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * Responsible for calculating the positionX at each moment, starting from positionX at currentTime, and endX at endTime
      */
     public void moveTrack() {
+        if(moveOperations.isEmpty()){
+            return;
+        }
         currentMove=moveOperations.get(frontMove);
         if(currentMove.startTime<this.trackCurrentTime){
             if(currentMove.startTime==currentMove.endTime) this.positionX=currentMove.endX;
@@ -86,6 +89,9 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * Responsible for calculating the width at each moment, starting from width at currentTime, and endWidth at endTime
      */
     public void changeWidth(){
+        if(changeWidthOperations.isEmpty()){
+            return;
+        }
         currentWidth=changeWidthOperations.get(frontWidth);
         if(currentWidth.startTime<this.trackCurrentTime){
             if(currentWidth.startTime==currentWidth.endTime) this.width=currentWidth.endWidth;
@@ -98,6 +104,9 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * Responsible for calculating the current color at each moment, starting from width at currentTime, and endWidth at endTime
      */
     public void changeColor(){
+        if(changeColorOperations.isEmpty()){
+            return;
+        }
         currentColor=changeColorOperations.get(frontColor);
         if(currentColor.startTime<this.trackCurrentTime){
             if(currentColor.startTime==currentColor.endTime){
@@ -125,15 +134,16 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             this.changeColor();
             this.changeWidth();
             this.moveTrack();
-            if(rearNote+1<this.notes.size())
-                while(this.notes.get(rearNote+1).timing+PlayInterface.remainingTime<this.trackCurrentTime){
-                    rearNote++;
+            if(!this.notes.isEmpty()){
+                if(rearNote+1<this.notes.size())
+                    while(this.notes.get(rearNote+1).timing+PlayInterface.remainingTime<this.trackCurrentTime){
+                        rearNote++;
+                    }
+                if (this.notes.get(frontNote).timing<this.trackCurrentTime+150){
+                    frontNote++;
+                    PlayInterface.combo.set(0);
+                    PlayInterface.lostCount.getAndIncrement();
                 }
-            if (this.notes.get(frontNote).timing<this.trackCurrentTime+150){
-                frontNote++;
-                PlayInterface.combo.set(0);
-                PlayInterface.lostCount.getAndIncrement();
-            }
             /*for(int i=frontNote;i<=rearNote;i++){
                 notes.get(i).moveNote();
                 *//*
@@ -142,9 +152,11 @@ public class Track extends JPanel implements Runnable {// The track of the note.
 
                  *//*
             }*/
-            // paintnotes
-            // painttracks
-            //...
+                // paintNotes
+
+                //...
+            }
+            // paintTracks
         }
     }
 

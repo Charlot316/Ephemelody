@@ -53,7 +53,6 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
     public void loadData(){
         this.Path=this.songID+"/";
         String displayPath=this.Path+this.difficulty+".txt";
-        System.out.println(displayPath);
         BufferedReader bufferedReader=Load.File(displayPath);
         try {
             String command = bufferedReader.readLine();
@@ -188,7 +187,7 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
      */
     public void setInterface(){
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
-        setVisible(true);
+        this.setVisible(true);
         setLayout(null);
     }
     /**
@@ -206,8 +205,7 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
         this.difficulty = difficulty;
         this.loadData();
         this.setInterface();
-        this.display();
-        this.finish();
+        this.repaint();
     }
 
     /**
@@ -233,26 +231,28 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
      */
     public void display() {
         startTime=System.currentTimeMillis();
-        currentTime=startTime;
-        System.out.println("running");
-        while(currentTime<this.finalEndTime){
-            currentTime=System.currentTimeMillis()-startTime;
-            if(allTracks.get(frontTrack).startTiming<currentTime){
+        currentTime=0;
+        this.repaint();
+        while(currentTime<this.finalEndTime) {
+            currentTime = System.currentTimeMillis() - startTime;
+            if (allTracks.get(frontTrack).startTiming < currentTime) {
                 new Thread(allTracks.get(frontTrack)).start();
-                if(frontTrack+1<allTracks.size()) frontTrack++;
+                if (frontTrack + 1 < allTracks.size()) frontTrack++;
             }
-            if(backgroundOperations.get(frontOperation).startTime<currentTime){
+            if (!backgroundOperations.isEmpty() && backgroundOperations.get(frontOperation).startTime < currentTime) {
                 this.frontBackground++;
                 this.repaint();
             }
         }
+        this.finish();
     }
 
     /**
      * Finish the play and go to the next interface
      */
     public void finish() {
-
+        //Data.canvas.switchScenes("Home");
+        System.out.println("嘿");
     }
 
     public Track getTrackByID(int id){
