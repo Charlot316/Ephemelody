@@ -1,6 +1,7 @@
 package team.seine.ephemelody.scenes;
 
 import team.seine.ephemelody.data.Data;
+import team.seine.ephemelody.main.Canvas;
 import team.seine.ephemelody.playinterface.*;
 import team.seine.ephemelody.utils.Load;
 
@@ -233,6 +234,7 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
     public void display() {
         startTime=System.currentTimeMillis();
         currentTime=startTime;
+        System.out.println("running");
         while(currentTime<this.finalEndTime){
             currentTime=System.currentTimeMillis()-startTime;
             if(allTracks.get(frontTrack).startTiming<currentTime){
