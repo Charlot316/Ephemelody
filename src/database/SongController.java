@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 public class SongController {
 
     static Connection con;
-    static String uri = "jdbc:mysql://localhost:3306/seine? useSSL=true&characterEncoding=utf-8";
+    static String uri = "jdbc:mariadb://47.93.249.243:3306/seine1? useSSL=true&characterEncoding=utf-8";
     static String user = "root";
     static String password = "123456";
 
