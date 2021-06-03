@@ -227,7 +227,7 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
     }
 
     /**
-     * Constantly update currentTracks and run the game
+     * run the game
      */
     public void display() {
         startTime=System.currentTimeMillis();
