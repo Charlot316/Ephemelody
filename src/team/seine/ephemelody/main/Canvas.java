@@ -11,13 +11,15 @@ import java.awt.font.GlyphVector;
 
 // 画布类
 public class Canvas extends JLayeredPane{
-    Scenes nowScenes = null;
-    Scenes bgScenes = null;
+    Scenes firstScenes = null;
+    Scenes secondScenes = null;
+    Scenes thirdScenes = null;
+    Scenes loginComScenes = null; // 登录界面的组件所在页面
     Background background = null;
     Home home = null;
     public Canvas() {
-        nowScenes = new Home();
-        bgScenes = new Background();
+        /*nowScenes = new Home();
+        bgScenes = new Background();*/
         /*background = new Background();
         home = new Home();*/
         switchScenes("Home");
@@ -26,21 +28,28 @@ public class Canvas extends JLayeredPane{
 
     public void switchScenes(String name) {
         if (name.equals("Home")) {
-            this.bgScenes = new Background();
-            this.nowScenes = new Home();
+            this.firstScenes = new Background();
+            this.secondScenes = new Home();
             this.removeAll();
-            this.add((Background) bgScenes, new Integer(0));
-            this.add((Home) nowScenes, new Integer(1));
+            this.add((Background) firstScenes, new Integer(0));
+            this.add((Home) secondScenes, new Integer(1));
         } else if (name.equals("End")) {
-            this.nowScenes = new End();
+            this.firstScenes = new End();
             this.removeAll();
-            this.add((End) nowScenes, new Integer(1));
-        } else if (name.equals("PlayInterFace")) {
-            this.nowScenes = new PlayInterface(1, 1);
-            this.bgScenes = new Background();
+            this.add((End) firstScenes, new Integer(1));
+        } else if (name.equals("PlayInterface")) {
+//            this.nowScenes = new PlayInterface(1, 1);
+            this.firstScenes = new Background();
             this.removeAll();
-            this.add((Background) bgScenes, new Integer(0));
-            this.add((PlayInterface) nowScenes, new Integer(1));
+            this.add((Background) firstScenes, new Integer(0));
+//            this.add((PlayInterface) nowScenes, new Integer(1));
+        } else if (name.equals("Login")) {
+//            System.out.println("1");
+            this.thirdScenes = new Login();
+            this.loginComScenes = new LoginComponent();
+//            this.removeAll();
+            this.add((Login) thirdScenes, new Integer(3));
+            this.add((LoginComponent) loginComScenes, new Integer(4));
         }
     }
 
