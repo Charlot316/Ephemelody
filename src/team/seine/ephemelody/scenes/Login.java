@@ -1,5 +1,7 @@
 package team.seine.ephemelody.scenes;
 
+import database.Entity.Player;
+import database.PlayerController;
 import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.utils.Load;
 import team.seine.ephemelody.utils.Rect;
@@ -50,7 +52,14 @@ public class Login extends JPanel implements Scenes, MouseMotionListener, MouseL
                 username = LoginComponent.usernameField.getText();
                 password = String.valueOf(LoginComponent.passwordField.getPassword());
                 System.out.println(username + "---" + password);
-                Data.canvas.switchScenes("Home"); // 到时候改成如果登录成功，用户名显示出来
+                Player player = PlayerController.selectPlayerById(username);
+                if (player != null) {
+                    System.out.println("用户名已存在, 注册失败");
+                } else {
+                    PlayerController.insertPlayer(username, password);
+                    Data.canvas.switchScenes("Home"); // 到时候改成如果登录成功，用户名显示出来
+                }
+
             }
         } else if (Rect.isInternal(x, y, 757, 0, Data.WIDTH - 757, Data.HEIGHT)) {
             if (struts == Scenes.MOUSE_DOWN) {

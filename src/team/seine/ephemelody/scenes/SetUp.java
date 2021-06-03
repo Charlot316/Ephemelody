@@ -26,15 +26,15 @@ public class SetUp extends JPanel implements Scenes, MouseMotionListener, MouseL
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setVisible(true);
         setOpaque(false);
-        setupBackground = Load.image("setup/设置背景1.png");
+        setupBackground = Load.image("setup/设置背景.png");
         upButton = new Image[] {
-                Load.image("setup/上.png"), Load.image("setup/上_经过.png"), Load.image("setup/上_按下.png")
+                Load.image("setup/上.png"), Load.image("setup/上_鼠标悬停.png"), Load.image("setup/上_按下.png")
         };
         downButton = new Image[] {
-                Load.image("setup/下.png"), Load.image("setup/下_经过.png"), Load.image("setup/下_按下.png")
+                Load.image("setup/下.png"), Load.image("setup/下_鼠标悬停.png"), Load.image("setup/下_按下.png")
         };
         finishButton = new Image[] {
-                Load.image("setup/完成.png"), Load.image("setup/完成_经过.png"), Load.image("setup/完成_按下.png")
+                Load.image("setup/完成.png"), Load.image("setup/完成_鼠标悬停.png"), Load.image("setup/完成_按下.png")
         };
         addMouseMotionListener(this);
         addMouseListener(this);
@@ -95,57 +95,57 @@ public class SetUp extends JPanel implements Scenes, MouseMotionListener, MouseL
         if(Rect.isInternal(x, y, 233, 360, 78, 57)) {
             upButtonStatus[0] = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
-                if (Data.offset > -1000) {
-                    Data.offset -= 1;
+                if (Data.offset < 1000) {
+                    Data.offset += 1;
                 }
             }
         } else if (Rect.isInternal(x, y, 478, 360, 78, 57)) {
             upButtonStatus[1] = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
-                if (Data.noteSpeed > 1.0) {
-                    Data.noteSpeed -= 0.1;
+                if (Data.noteSpeed < 6.0) {
+                    Data.noteSpeed += 0.1;
                 }
             }
         } else if (Rect.isInternal(x, y, 723, 360, 78, 57)) {
             upButtonStatus[2] = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
-                if (Data.noteVolume > 0) {
-                    Data.noteVolume -= 1;
+                if (Data.noteVolume < 10) {
+                    Data.noteVolume += 1;
                 }
             }
         } else if (Rect.isInternal(x, y, 968, 360, 78, 57)) {
             upButtonStatus[3] = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
-                if (Data.volume > 0) {
-                    Data.volume -= 1;
+                if (Data.volume < 10) {
+                    Data.volume += 1;
                 }
             }
         } else if (Rect.isInternal(x, y, 233, 650, 78, 57)) {
             downButtonStatus[0] = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
-                if (Data.offset < 1000) {
-                    Data.offset += 1;
+                if (Data.offset > -1000) {
+                    Data.offset -= 1;
                 }
             }
         } else if (Rect.isInternal(x, y, 478, 650, 78, 57)) {
             downButtonStatus[1] = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
-                if (Data.noteSpeed < 6.0) {
-                    Data.noteSpeed += 0.1;
+                if (Data.noteSpeed > 1.0) {
+                    Data.noteSpeed -= 0.1;
                 }
             }
         } else if (Rect.isInternal(x, y, 723, 650, 78, 57)) {
             downButtonStatus[2] = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
-                if (Data.noteVolume < 10) {
-                    Data.noteVolume += 1;
+                if (Data.noteVolume > 0) {
+                    Data.noteVolume -= 1;
                 }
             }
         } else if (Rect.isInternal(x, y, 968, 650, 78, 57)) {
             downButtonStatus[3] = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
-                if (Data.volume < 10) {
-                    Data.volume += 1;
+                if (Data.volume > 0) {
+                    Data.volume -= 1;
                 }
             }
         } else if (Rect.isInternal(x, y, (Data.WIDTH - 988) / 2, 738, 980, 42)) {

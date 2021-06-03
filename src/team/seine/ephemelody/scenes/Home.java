@@ -146,7 +146,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             }
 
             if(struts == Scenes.MOUSE_DOWN) {
-//                Data.canvas.switchScenes("Recording");
+//                Data.canvas.switchScenes("End");
             }
         }else if (Rect.isInternal(x, y, 1150, -7, 131, 69)) {
             buttonHomeStatus = buttonStruts;
@@ -159,6 +159,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             if(struts == Scenes.MOUSE_DOWN) {
                 Data.canvas.switchScenes("PlayInterface");
 //                System.exit(0);
+//                Data.canvas.switchScenes("End");
             }
         }
     }
