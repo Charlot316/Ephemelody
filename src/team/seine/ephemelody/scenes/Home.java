@@ -61,7 +61,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         selectedImg = Load.image("home/被选中的.png");
         setBackground(null);
         setOpaque(false);
-        new Home.UpdateUI().start();
+        new UpdateUI().start();
         addMouseMotionListener(this);
         addMouseListener(this);
 
@@ -101,9 +101,9 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             if (buttonSetUpBackStatus != MOUSE_DOWN) {
                 buttonSetUpBackStatus = buttonStruts;
             } else {
-                buttonEasyStatus = MOUSE_UP;
+                /*buttonEasyStatus = MOUSE_UP;
                 buttonNormalStatus = MOUSE_UP;
-                buttonDifficultStatus = MOUSE_UP;
+                buttonDifficultStatus = MOUSE_UP;*/
             }
 
             if(struts == Scenes.MOUSE_DOWN) {
@@ -114,7 +114,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             if (buttonEasyStatus != MOUSE_DOWN) {
                 buttonEasyStatus = buttonStruts;
             } else {
-                buttonSetUpBackStatus = MOUSE_UP;
+//                buttonSetUpBackStatus = MOUSE_UP;
                 buttonNormalStatus = MOUSE_UP;
                 buttonDifficultStatus = MOUSE_UP;
             }
@@ -128,7 +128,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             if (buttonNormalStatus != MOUSE_DOWN) {
                 buttonNormalStatus = buttonStruts;
             } else {
-                buttonSetUpBackStatus = MOUSE_UP;
+//                buttonSetUpBackStatus = MOUSE_UP;
                 buttonEasyStatus = MOUSE_UP;
                 buttonDifficultStatus = MOUSE_UP;
             }
@@ -139,7 +139,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             if (buttonDifficultStatus != MOUSE_DOWN) {
                 buttonDifficultStatus = buttonStruts;
             } else {
-                buttonSetUpBackStatus = MOUSE_UP;
+//                buttonSetUpBackStatus = MOUSE_UP;
                 buttonEasyStatus = MOUSE_UP;
                 buttonNormalStatus = MOUSE_UP;
             }
@@ -150,7 +150,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         }else if (Rect.isInternal(x, y, 1150, -7, 131, 69)) {
             buttonHomeStatus = buttonStruts;
             if(struts == Scenes.MOUSE_DOWN) {
-//                Data.canvas.switchScenes("End");
+                Data.canvas.switchScenes("Login");
 //                System.exit(0);
             }
         } else if (Rect.isInternal(x, y, 643, 750, 500, 114)) {
