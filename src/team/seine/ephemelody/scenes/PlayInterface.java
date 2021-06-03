@@ -138,27 +138,27 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
                     case 1:
                         endTiming= Long.parseLong(arguments[3]);
                         endX=Double.parseDouble(arguments[4]);
-                        operation=new PlayOperations(trackID,type,startTiming,endTiming,endX,width,R,G,B,tempBackground);
-                        track.moveOperations.add(operation);
+//                        operation=new PlayOperations(trackID,type,startTiming,endTiming,endX,width,R,G,B,tempBackground);
+//                        track.moveOperations.add(operation);
                         break;
                     case 2:
                         endTiming= Long.parseLong(arguments[3]);
                         width=Double.parseDouble(arguments[4]);
-                        operation=new PlayOperations(trackID,type,startTiming,endTiming,endX,width,R,G,B,tempBackground);
-                        track.changeWidthOperations.add(operation);
+                       /* operation=new PlayOperations(trackID,type,startTiming,endTiming,endX,width,R,G,B,tempBackground);
+                        track.changeWidthOperations.add(operation);*/
                         break;
                     case 3:
                         endTiming= Long.parseLong(arguments[3]);
                         R=Integer.parseInt(arguments[4]);
                         G=Integer.parseInt(arguments[5]);
                         B=Integer.parseInt(arguments[6]);
-                        operation=new PlayOperations(trackID,type,startTiming,endTiming,endX,width,R,G,B,tempBackground);
-                        track.changeColorOperations.add(operation);
+                        /*operation=new PlayOperations(trackID,type,startTiming,endTiming,endX,width,R,G,B,tempBackground);
+                        track.changeColorOperations.add(operation);*/
                         break;
                     case 4:
                         tempBackground=arguments[3];
-                        operation=new PlayOperations(trackID,type,startTiming,endTiming,endX,width,R,G,B,tempBackground);
-                        this.backgroundOperations.add(operation);
+                       /* operation=new PlayOperations(trackID,type,startTiming,endTiming,endX,width,R,G,B,tempBackground);
+                        this.backgroundOperations.add(operation);*/
                         break;
                     default:
                         break;
@@ -232,9 +232,9 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
                 new Thread(allTracks.get(frontTrack)).start();
                 if(frontTrack+1<allTracks.size()) frontTrack++;
             }
-            if(backgroundOperations.get(frontOperation).startTime<currentTime){
+            /*if(backgroundOperations.get(frontOperation).startTime<currentTime){
 
-            }
+            }*/
         }
     }
 
