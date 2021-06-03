@@ -1,5 +1,6 @@
 package team.seine.ephemelody.playinterface;
 
+import team.seine.ephemelody.scenes.PlayInterface;
 import javax.swing.*;
 import java.awt.*;
 

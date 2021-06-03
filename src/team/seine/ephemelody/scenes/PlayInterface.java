@@ -1,5 +1,6 @@
 package team.seine.ephemelody.scenes;
 
+import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.playinterface.*;
 
 import javax.swing.*;
@@ -35,7 +36,7 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
     public HashMap<Integer, Track> currentTracks = new HashMap<>();
     public ArrayList<Track> allTracks = new ArrayList<>();
     ArrayList<PlayOperations> backgroundOperations = new ArrayList<>();
-    public String background = "";
+    public ArrayList<String> backgrounds =new ArrayList<>();
     int frontTrack=0;
     int frontOperation=0;
     public JLayeredPane layeredPane;
@@ -58,7 +59,7 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
             this.trackCount=Integer.parseInt(arguments[0]);
             this.notesCount=Integer.parseInt(arguments[1]);
             this.operationsCount=Integer.parseInt(arguments[2]);
-            this.background=arguments[3];
+            this.backgrounds.add(arguments[3]);
 
             for(int i=0;i<this.trackCount;i++){
                 command = bufferedReader .readLine();
@@ -130,7 +131,7 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
                 int R=160;
                 int G=160;
                 int B=160;
-                String tempBackground=this.background;
+                String tempBackground=this.backgrounds.get(0);
                 PlayOperations operation;
                 Track track=getTrackByID(trackID);
                 switch(type){
@@ -180,21 +181,7 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
      * Set up the interface of the play
      */
     public void setInterface(){
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        layeredPane = new JLayeredPane();
-        layeredPane.setSize(TestPlayInterface.Frame.getWidth(), TestPlayInterface.Frame.getHeight());
-        KeyBoardListener keyBoardListener = new KeyBoardListener();
-        JTextArea textArea = new JTextArea(9, 30);
-        JPanel panel = new JPanel(new GridLayout(1, 1));
-        panel.setBounds(30, 30, 100, 100);
-        Button button = new Button();
-        panel.add(textArea);
-        textArea.addKeyListener(keyBoardListener);
-        layeredPane.add(panel);
-        textArea.append("阿巴阿巴阿巴阿巴阿巴阿巴");
-        layeredPane.setVisible(true);
-        textArea.setVisible(true);
-        add(layeredPane);
+        setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
     }
     /**
      * Initialize PlayInterface and run the game
@@ -242,12 +229,11 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
         while(currentTime<this.finalEndTime){
             currentTime=System.currentTimeMillis();
             if(allTracks.get(frontTrack).startTiming<currentTime){
-                allTracks.get(frontTrack).start();
+                new Thread(allTracks.get(frontTrack)).start();
                 if(frontTrack+1<allTracks.size()) frontTrack++;
             }
             if(backgroundOperations.get(frontOperation).startTime<currentTime){
-                this.background=backgroundOperations.get(frontOperation).background;
-                if(frontOperation+1<allTracks.size()) frontOperation++;
+
             }
         }
     }

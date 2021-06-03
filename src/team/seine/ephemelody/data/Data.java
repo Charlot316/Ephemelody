@@ -38,7 +38,7 @@ public class Data {
         };
         backgroundImg = Load.image("home/背景.png");
         startButton = Load.image("home/开始游戏.png");*/
-        songList = Arrays.asList("最炫民族风", "你是我的小呀小苹果", "怎么爱你都不嫌多", "我到底在干啥", "这就是最后一首歌");
+        //songList = Arrays.asList("最炫民族风", "你是我的小呀小苹果", "怎么爱你都不嫌多", "我到底在干啥", "这就是最后一首歌");
 
     }
 

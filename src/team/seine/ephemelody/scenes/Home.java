@@ -177,18 +177,18 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         g.drawImage(homeButton[buttonHomeStatus], 1150, -7, null);
         g.drawImage(selectedImg, 0, Data.HEIGHT / 2 - 30, null);
         Integer countX = 65, count = 1;
-        for (String song : Data.songList) { // 到时候改成待展示的歌曲名单列表
-            if (count == 3) {
-                countX += 20;
-                Data.canvas.paintString(song, g, countX, 200, 60);
-                countX -= 20;
-                g.translate(-20, 0);
-            } else {
-                Data.canvas.paintString(song, g, countX, 200, 40);
-            }
-            g.translate(-countX, -50);
-            count += 1;
-        }
+//        for (String song : Data.songList) { // 到时候改成待展示的歌曲名单列表
+//            if (count == 3) {
+//                countX += 20;
+//                Data.canvas.paintString(song, g, countX, 200, 60);
+//                countX -= 20;
+//                g.translate(-20, 0);
+//            } else {
+//                Data.canvas.paintString(song, g, countX, 200, 40);
+//            }
+//            g.translate(-countX, -50);
+//            count += 1;
+//        }
     }
 
     @Override
