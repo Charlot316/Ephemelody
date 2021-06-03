@@ -13,14 +13,14 @@ import java.awt.event.MouseMotionListener;
 import java.awt.font.GlyphVector;
 
 public class Home extends JPanel implements Scenes, MouseMotionListener, MouseListener{
-    int buttonRatingStatus = 0, buttonSetUpBackStatus = 0, buttonHomeStatus = 0, buttonEasyStatus = 0, buttonNormalStatus = 0, buttonDifficultStatus = 0,
+    int buttonRatingStatus = 0, buttonSetUpBackStatus = 0, buttonLoginStatus = 0, buttonEasyStatus = 0, buttonNormalStatus = 0, buttonDifficultStatus = 0,
             buttonPlayStatus = 0;
     public Double rate; //潜力值
     public Image[] ratingButton;
     public Image setupButton;
     public Image[] setupBackButton;
     public Image[] playButton;
-    public Image[] homeButton;
+    public Image[] loginButton;
     public Image[] easyButton;
     public Image[] normalButton;
     public Image[] difficultButton;
@@ -43,8 +43,8 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         playButton = new Image[]{
                 Load.image("home/开始游戏.png"), Load.image("home/开始游戏_鼠标悬停.png"), Load.image("home/开始游戏_按下.png")
         };
-        homeButton = new Image[] {
-                Load.image("home/主页.png"), Load.image("home/主页_鼠标悬停.png"), Load.image("home/主页_按下.png")
+        loginButton = new Image[] {
+                Load.image("home/登录.png"), Load.image("home/登录_鼠标悬停.png"), Load.image("home/登录_按下.png")
         };
         easyButton = new Image[] {
                 Load.image("home/简单.png"), Load.image("home/简单_鼠标悬停.png"), Load.image("home/简单_按下.png")
@@ -53,7 +53,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
                 Load.image("home/普通.png"), Load.image("home/普通_鼠标悬停.png"), Load.image("home/普通_按下.png")
         };
         difficultButton = new Image[] {
-                Load.image("home/困难.png"), Load.image("home//困难_鼠标悬停.png"), Load.image("home/困难_按下.png")
+                Load.image("home/困难.png"), Load.image("home/困难_鼠标悬停.png"), Load.image("home/困难_按下.png")
         };
         upButton = Load.image("home/up.png");
         downButton = Load.image("home/down.png");
@@ -91,7 +91,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         if (buttonSetUpBackStatus != MOUSE_DOWN) {
             buttonSetUpBackStatus = 0;
         }
-        buttonRatingStatus = buttonHomeStatus = buttonPlayStatus = 0;
+        buttonRatingStatus = buttonLoginStatus = buttonPlayStatus = 0;
 
         int buttonStruts = struts == Scenes.MOUSE_MOVED ? 1 : struts == Scenes.MOUSE_DOWN ? 2 : 0;
         // e.getY() 获取的坐标包含了 窗口标题栏的高度，判断点击位置时，需要减去，如果监听鼠标事件时，监听对象为JPanel，则不需要此步骤,, 本程序监听的是JFrame对象
@@ -148,8 +148,8 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             if(struts == Scenes.MOUSE_DOWN) {
 //                Data.canvas.switchScenes("End");
             }
-        }else if (Rect.isInternal(x, y, 1150, -7, 131, 69)) {
-            buttonHomeStatus = buttonStruts;
+        }else if (Rect.isInternal(x, y, 1080, -3, 188, 69)) {
+            buttonLoginStatus = buttonStruts;
             if(struts == Scenes.MOUSE_DOWN) {
                 Data.canvas.switchScenes("Login");
 //                System.exit(0);
@@ -176,7 +176,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         g.drawImage(ratingButton[buttonRatingStatus], Data.WIDTH / 2 - 60, -16, null);
         g.drawImage(setupBackButton[buttonSetUpBackStatus], 900, 0, null);
         g.drawImage(setupButton, 934, 8, null);
-        g.drawImage(homeButton[buttonHomeStatus], 1150, -7, null);
+        g.drawImage(loginButton[buttonLoginStatus], 1080, -3, null);
         g.drawImage(selectedImg, 0, Data.HEIGHT / 2 - 30, null);
         Integer countX = 65, count = 1;
 //        for (String song : Data.songList) { // 到时候改成待展示的歌曲名单列表
