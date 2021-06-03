@@ -2,13 +2,12 @@ package team.seine.ephemelody.scenes;
 
 import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.playinterface.*;
+import team.seine.ephemelody.utils.Load;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +25,8 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
     public static AtomicInteger farCount=new AtomicInteger();
     public static AtomicInteger lostCount=new AtomicInteger();
     public static AtomicInteger combo=new AtomicInteger();
-    public int maxCombo;
+    public static AtomicInteger currentNoteCount=new AtomicInteger();
+    public static AtomicInteger maxCombo=new AtomicInteger();
     public static AtomicInteger currentScore=new AtomicInteger();
     public static long startTime;
     public static long currentTime;//Used to tell the current time
@@ -36,31 +36,35 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
     public HashMap<Integer, Track> currentTracks = new HashMap<>();
     public ArrayList<Track> allTracks = new ArrayList<>();
     ArrayList<PlayOperations> backgroundOperations = new ArrayList<>();
-    public ArrayList<String> backgrounds =new ArrayList<>();
+    ArrayList<Image> backgroundImg=new ArrayList<>();
     int frontTrack=0;
     int frontOperation=0;
-    public JLayeredPane layeredPane;
-    public static JTextArea textArea;
+    int frontBackground=0;
+    int BackgroundCount=0;
     public String Path;
-
     /**
      * read in information of the display
      */
-    public void loadData(){
-        this.Path="/resources/display/"+this.songID+"/"+this.difficulty+"/";
-        String displayPath=this.Path+"display.txt";
-        System.out.println(displayPath);
-        InputStream is=this.getClass().getResourceAsStream(displayPath);
-        BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(is));
+    public void paint(Graphics g) {
+        g.drawImage(backgroundImg.get(frontBackground), 0, 0, null);
+    }
 
+    public void loadData(){
+        this.Path=this.songID+"/";
+        String displayPath=this.Path+this.difficulty+".txt";
+        System.out.println(displayPath);
+        BufferedReader bufferedReader=Load.File(displayPath);
         try {
             String command = bufferedReader.readLine();
             String []arguments=command.split("\\s+");
             this.trackCount=Integer.parseInt(arguments[0]);
             this.notesCount=Integer.parseInt(arguments[1]);
             this.operationsCount=Integer.parseInt(arguments[2]);
-            this.backgrounds.add(arguments[3]);
-
+            this.backgroundImg.add(Load.backgroundImage(this.Path+arguments[3]));
+            if(this.notesCount!=0){
+                this.scorePerNote=(int)(10000000/this.notesCount);
+                this.scoreForLastNote=10000000-this.notesCount*this.scorePerNote;
+            }
             for(int i=0;i<this.trackCount;i++){
                 command = bufferedReader .readLine();
                 arguments=command.split("\\s+");
@@ -131,7 +135,7 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
                 int R=160;
                 int G=160;
                 int B=160;
-                String tempBackground=this.backgrounds.get(0);
+                String tempBackground="";
                 PlayOperations operation;
                 Track track=getTrackByID(trackID);
                 switch(type){
@@ -159,6 +163,7 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
                         tempBackground=arguments[3];
                         operation=new PlayOperations(trackID,type,startTiming,endTiming,endX,width,R,G,B,tempBackground);
                         this.backgroundOperations.add(operation);
+                        this.backgroundImg.add(Load.backgroundImage(this.Path+tempBackground));
                         break;
                     default:
                         break;
@@ -182,6 +187,8 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
      */
     public void setInterface(){
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
+        setVisible(true);
+        setLayout(null);
     }
     /**
      * Initialize PlayInterface and run the game
@@ -227,13 +234,14 @@ public class PlayInterface extends JPanel implements Scenes{//Set up the play in
         startTime=System.currentTimeMillis();
         currentTime=startTime;
         while(currentTime<this.finalEndTime){
-            currentTime=System.currentTimeMillis();
+            currentTime=System.currentTimeMillis()-startTime;
             if(allTracks.get(frontTrack).startTiming<currentTime){
                 new Thread(allTracks.get(frontTrack)).start();
                 if(frontTrack+1<allTracks.size()) frontTrack++;
             }
             if(backgroundOperations.get(frontOperation).startTime<currentTime){
-
+                this.frontBackground++;
+                this.repaint();
             }
         }
     }

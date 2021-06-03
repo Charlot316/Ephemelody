@@ -2,7 +2,7 @@ package team.seine.ephemelody.playinterface;
 
 import java.awt.*;
 import java.util.ArrayList;
-import team.seine.ephemelody.scenes.PlayInterface;
+import team.seine.ephemelody.scenes.*;
 
 import javax.swing.*;
 

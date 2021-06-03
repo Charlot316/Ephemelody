@@ -38,10 +38,10 @@ public class Canvas extends JLayeredPane{
             this.removeAll();
             this.add((End) firstScenes, new Integer(1));
         } else if (name.equals("PlayInterface")) {
-//            this.nowScenes = new PlayInterface(1, 1);
-            this.firstScenes = new Background();
+        //    this.nowScenes =
+            this.firstScenes = new PlayInterface(1, 1);
             this.removeAll();
-            this.add((Background) firstScenes, new Integer(0));
+            this.add((PlayInterface)firstScenes, new Integer(0));
 //            this.add((PlayInterface) nowScenes, new Integer(1));
         } else if (name.equals("Login")) {
 //            System.out.println("1");

@@ -1,5 +1,6 @@
-package team.seine.ephemelody.playinterface;
+package team.seine.ephemelody.scenes;
 
+import team.seine.ephemelody.playinterface.*;
 public class PlayOperations {//Denotes the operations the game should implement
     public int trackId;
     public int type;
