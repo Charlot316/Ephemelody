@@ -9,13 +9,14 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Arrays;
 
 public class Login extends JPanel implements Scenes, MouseMotionListener, MouseListener {
+    String username;
+    String password;
     public Image loginBackground;
     public Image[] loginButton;
     public Integer loginButtonStatus;
-    public JTextField username;
-    public JPasswordField password;
     public Login() {
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setVisible(true);
@@ -46,6 +47,9 @@ public class Login extends JPanel implements Scenes, MouseMotionListener, MouseL
         if(Rect.isInternal(x, y, 100, 650, 393, 120)) {
             loginButtonStatus = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
+                username = LoginComponent.usernameField.getText();
+                password = String.valueOf(LoginComponent.passwordField.getPassword());
+                System.out.println(username + "---" + password);
                 Data.canvas.switchScenes("Home"); // 到时候改成如果登录成功，用户名显示出来
             }
         } else if (Rect.isInternal(x, y, 757, 0, Data.WIDTH - 757, Data.HEIGHT)) {
