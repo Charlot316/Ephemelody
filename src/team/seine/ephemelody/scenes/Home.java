@@ -177,7 +177,10 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         Integer countX = 65, count = 1;
         for (String song : Data.songList) { // 到时候改成待展示的歌曲名单列表
             if (count == 3) {
+                countX += 20;
                 Data.canvas.paintString(song, g, countX, 200, 60);
+                countX -= 20;
+                g.translate(-20, 0);
             } else {
                 Data.canvas.paintString(song, g, countX, 200, 40);
             }
