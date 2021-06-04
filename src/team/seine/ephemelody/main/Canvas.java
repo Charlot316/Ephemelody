@@ -6,6 +6,8 @@ import team.seine.ephemelody.scenes.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.font.GlyphVector;
@@ -19,13 +21,15 @@ public class Canvas extends JLayeredPane{
     Scenes menuOptionScenes = null;
     Background background = null;
     Home home = null;
-    public Canvas() {
+    public Canvas(JFrame frame) {
         /*nowScenes = new Home();
         bgScenes = new Background();*/
         /*background = new Background();
         home = new Home();*/
         switchScenes("Home");
         setVisible(true);
+        frame.addKeyListener(new OnKeyEvent());
+//        nowScenes = new PlayInterface(1, 1);
     }
 
     public void switchScenes(String name) {
@@ -95,6 +99,15 @@ public class Canvas extends JLayeredPane{
         gg.draw(shape);
     }
 
+    class OnKeyEvent extends KeyAdapter {
+
+        public void keyPressed(KeyEvent e) {
+            firstScenes.onKeyDown(e.getKeyCode());
+        }
+        public void keyReleased(KeyEvent e) {
+            firstScenes.onKeyUp(e.getKeyCode());
+        }
+    }
 
 }
 

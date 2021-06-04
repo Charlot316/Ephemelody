@@ -7,12 +7,11 @@ import team.seine.ephemelody.utils.Rect;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.awt.font.GlyphVector;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class Home extends JPanel implements Scenes, MouseMotionListener, MouseListener{
+public class Home extends JPanel implements Scenes, MouseMotionListener, MouseListener, KeyListener {
     int buttonRatingStatus = 0, buttonSetUpBackStatus = 0, buttonLoginStatus = 0, buttonEasyStatus = 0, buttonNormalStatus = 0, buttonDifficultStatus = 0,
             buttonPlayStatus = 0, buttonSongInfStatus = 0;
     public Double rate; //潜力值
@@ -77,12 +76,18 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
 
     @Override
     public void onKeyDown(int keyCode) {
-
+        AtomicInteger tmp = new AtomicInteger();
+        tmp.set(1);
+        Data.keyStatus[keyCode] = tmp;
+        System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
     }
 
     @Override
     public void onKeyUp(int keyCode) {
-
+        AtomicInteger tmp = new AtomicInteger();
+        tmp.set(0);
+        Data.keyStatus[keyCode] = tmp;
+        System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
     }
 
     public void onMouse(int x, int y, int struts) {
@@ -242,6 +247,21 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        onKeyDown(e.getKeyCode());
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        onKeyUp(e.getKeyCode());
     }
 
 

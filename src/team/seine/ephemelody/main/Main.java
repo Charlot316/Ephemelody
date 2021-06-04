@@ -11,7 +11,7 @@ public class Main {
         JFrame frame = new JFrame("Ephemelody");
         Data.init();
         frame.setVisible(true);
-        Data.canvas = new Canvas();
+        Data.canvas = new Canvas(frame);
 //        Background background = new Background();
         frame.setContentPane(Data.canvas);
         frame.setVisible(true);

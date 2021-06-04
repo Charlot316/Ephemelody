@@ -7,6 +7,9 @@ import team.seine.ephemelody.utils.Load;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static java.awt.BasicStroke.CAP_BUTT;
 import static java.awt.BasicStroke.JOIN_BEVEL;
 
-public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up the play interface
+public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListener {//Set up the play interface
     int songID;
     int difficulty;
     int trackCount;
@@ -220,6 +223,8 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
         this.loadData();
         this.setInterface();
         this.repaint();
+        this.requestFocus();
+
     }
 
     /**
@@ -281,16 +286,39 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
 
     @Override
     public void onKeyDown(int keyCode) {
-
+        AtomicInteger tmp = new AtomicInteger();
+        tmp.set(1);
+        Data.keyStatus[keyCode] = tmp;
+        System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
     }
 
     @Override
     public void onKeyUp(int keyCode) {
-
+        AtomicInteger tmp = new AtomicInteger();
+        tmp.set(0);
+        Data.keyStatus[keyCode] = tmp;
+        System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
     }
 
     @Override
     public void onMouse(int x, int y, int struts) {
 
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        onKeyDown(e.getKeyCode());
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        onKeyUp(e.getKeyCode());
+    }
+
+
 }
