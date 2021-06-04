@@ -300,7 +300,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         AtomicInteger tmp = new AtomicInteger();
         tmp.set(0);
         Data.keyStatus[keyCode] = tmp;
-        //System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
+       // System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
     }
 
     @Override
