@@ -24,10 +24,10 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     int songID;
     int difficulty;
     int trackCount;
-    int notesCount;
+    public static int notesCount;
     int operationsCount;
-    int scorePerNote;
-    int scoreForLastNote;
+    public static int scorePerNote;
+    public static int scoreForLastNote;
     public static AtomicInteger pureCount = new AtomicInteger();
     public static AtomicInteger farCount = new AtomicInteger();
     public static AtomicInteger lostCount = new AtomicInteger();
@@ -47,9 +47,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     int frontTrack = 0;
     int frontOperation = 0;
     int frontBackground = 0;
-    int BackgroundCount = 0;
     public String Path;
-    Scenes nowScenes = null;
 
     /**
      * read in information of the display
@@ -63,6 +61,10 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     }
 
     public void loadData() {
+        for(int i=0;i<200;i++){
+            Data.keyStatus[i]=new AtomicInteger();
+            Data.keyStatus[i].set(0);
+        }
         this.Path = this.songID + "/";
         String displayPath = this.Path + this.difficulty + ".txt";
         BufferedReader bufferedReader = Load.File(displayPath);
@@ -70,12 +72,12 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             String command = bufferedReader.readLine();
             String[] arguments = command.split("\\s+");
             this.trackCount = Integer.parseInt(arguments[0]);
-            this.notesCount = Integer.parseInt(arguments[1]);
+            PlayInterface.notesCount = Integer.parseInt(arguments[1]);
             this.operationsCount = Integer.parseInt(arguments[2]);
             this.backgroundImg.add(Load.backgroundImage(this.Path + arguments[3]));
-            if (this.notesCount != 0) {
-                this.scorePerNote = (10000000 / this.notesCount);
-                this.scoreForLastNote = 10000000 - this.notesCount * this.scorePerNote;
+            if (PlayInterface.notesCount != 0) {
+                PlayInterface.scorePerNote = (10000000 / PlayInterface.notesCount);
+                PlayInterface.scoreForLastNote =(PlayInterface.notesCount * PlayInterface.scorePerNote==10000000)? PlayInterface.scorePerNote:10000000 - PlayInterface.notesCount * PlayInterface.scorePerNote;
             }
             for (int i = 0; i < this.trackCount; i++) {
                 command = bufferedReader.readLine();
@@ -218,6 +220,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         lostCount.set(0);
         combo.set(0);
         currentScore.set(0);
+        currentNoteCount.set(0);
         this.songID = songID;
         this.difficulty = difficulty;
         this.loadData();
@@ -289,7 +292,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         AtomicInteger tmp = new AtomicInteger();
         tmp.set(1);
         Data.keyStatus[keyCode] = tmp;
-        System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
+       //System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
     }
 
     @Override
@@ -297,7 +300,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         AtomicInteger tmp = new AtomicInteger();
         tmp.set(0);
         Data.keyStatus[keyCode] = tmp;
-        System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
+       // System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
     }
 
     @Override
