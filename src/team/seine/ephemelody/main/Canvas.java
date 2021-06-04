@@ -15,6 +15,7 @@ public class Canvas extends JLayeredPane{
     Scenes secondScenes = null;
     Scenes thirdScenes = null;
     Scenes loginComScenes = null; // 登录界面的组件所在页面
+    Scenes menuOptionScenes = null;
     Background background = null;
     Home home = null;
     public Canvas() {
@@ -30,16 +31,19 @@ public class Canvas extends JLayeredPane{
         if (name.equals("Home")) {
             this.firstScenes = new Background();
             this.secondScenes = new Home();
+            this.menuOptionScenes = new MenuOption();
             this.removeAll();
             this.add((Background) firstScenes, new Integer(0));
             this.add((Home) secondScenes, new Integer(1));
+            this.add((MenuOption) menuOptionScenes, new Integer(2));
         } else if (name.equals("End")) {
             this.firstScenes = new Background();
             this.secondScenes = new Home();
             this.thirdScenes = new End();
             this.removeAll();
             this.add((Background) firstScenes, new Integer(0));
-            this.add((Home) secondScenes, new Integer(1));
+//            this.add((Home) secondScenes, new Integer(1));
+            this.add((MenuOption) menuOptionScenes, new Integer(1));
             this.add((End) thirdScenes, new Integer(2));
         } else if (name.equals("PlayInterface")) {
         //    this.nowScenes =

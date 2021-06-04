@@ -15,7 +15,9 @@ public class SetUp extends JPanel implements Scenes, MouseMotionListener, MouseL
     public Image[] upButton;
     public Image[] downButton;
     public Image[] finishButton;
-    int upButtonStatus[], downButtonStatus[], finishButtonStatus;
+    int[] upButtonStatus;
+    int[] downButtonStatus;
+    int finishButtonStatus;
     public SetUp() {
         upButtonStatus = new int[4];
         downButtonStatus = new int[4];
