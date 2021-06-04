@@ -13,7 +13,7 @@ import javax.swing.*;
 
 import static java.awt.BasicStroke.*;
 
-public class Track extends JPanel implements Runnable, Scenes {// The track of the note.
+public class Track extends JPanel implements Runnable {// The track of the note.
     public int id;
     public int type;
     public char key;
@@ -299,21 +299,6 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
                 ", G=" + G +
                 ", B=" + B +
                 '}';
-    }
-
-    @Override
-    public void onKeyDown(int keyCode) {
-
-    }
-
-    @Override
-    public void onKeyUp(int keyCode) {
-
-    }
-
-    public void onMouse(int x, int y, int struts) {
-//        System.out.println(x + " " + y);
-
     }
 }
 
