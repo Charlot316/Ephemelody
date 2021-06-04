@@ -233,7 +233,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
 
             if(!isHolding&&tempJudge!=-1){
                 PlayInterface.currentNoteCount.getAndIncrement();
-                int score=(PlayInterface.currentNoteCount.get()==PlayInterface.notesCount)?PlayInterface.scorePerNote:PlayInterface.scoreForLastNote;
+                int score=(PlayInterface.currentNoteCount.get()==PlayInterface.notesCount)?PlayInterface.scoreForLastNote:PlayInterface.scorePerNote;
                 switch (tempJudge){
                     case 1:
                         PlayInterface.currentScore.getAndAdd(score/2);
@@ -267,7 +267,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                         tempJudge=-1;
                         break;
                 }
-                System.out.println(PlayInterface.currentScore.get());
+                System.out.println(PlayInterface.scorePerNote+" "+PlayInterface.scoreForLastNote+" "+PlayInterface.currentScore.get());
                 tempJudge=-1;
                 this.frontNote++;
             }
