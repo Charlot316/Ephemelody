@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static java.awt.BasicStroke.CAP_BUTT;
+import static java.awt.BasicStroke.JOIN_BEVEL;
+
 public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up the play interface
     int songID;
     int difficulty;
@@ -31,7 +34,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
     public static AtomicInteger currentScore = new AtomicInteger();
     public static long startTime;
     public static long currentTime;//Used to tell the current time
-    public static double finalY=0.7;
+    public static double finalY=0.8;
     public static long remainingTime;
     public long finalEndTime;
     public HashMap<Integer, Track> currentTracks = new HashMap<>();
@@ -49,8 +52,11 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
      * read in information of the display
      */
     public void paint(Graphics g) {
+        Graphics2D g_2d = (Graphics2D) g;
         g.drawImage(backgroundImg.get(frontBackground), 0, 0, null);
-
+        g_2d.setStroke(new BasicStroke(3.0f,CAP_BUTT, JOIN_BEVEL));
+        g_2d.setColor(new Color(255,255,255));
+        g_2d.drawLine(0,(int)(PlayInterface.finalY*Data.HEIGHT),Data.WIDTH,(int)(PlayInterface.finalY*Data.HEIGHT));
     }
 
     public void loadData() {
@@ -65,7 +71,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
             this.operationsCount = Integer.parseInt(arguments[2]);
             this.backgroundImg.add(Load.backgroundImage(this.Path + arguments[3]));
             if (this.notesCount != 0) {
-                this.scorePerNote = (int) (10000000 / this.notesCount);
+                this.scorePerNote = (10000000 / this.notesCount);
                 this.scoreForLastNote = 10000000 - this.notesCount * this.scorePerNote;
             }
             for (int i = 0; i < this.trackCount; i++) {
@@ -103,9 +109,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
 
                 Track track = new Track(id, type, key, startTiming, endTiming, positionX, width, R, G, B);
                 this.allTracks.add(track);
-//                nowScenes = new Track(0, 1,'c', 1230, 2230, 0.5, 0.06, 255, 160, 160);
-  //              Data.canvas.add((Track) nowScenes,10);
-                System.out.println(track);
             }
 
             for (int i = 0; i < this.notesCount; i++) {
@@ -117,7 +120,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
                 long timing = Long.parseLong(arguments[3]);
                 this.finalEndTime = Math.max(this.finalEndTime, timing);
                 Track track = getTrackByID(trackID);
-                if (arguments.length == 5) {
+                if (noteType==1) {
                     long endTiming = Long.parseLong(arguments[4]);
                     Note note = new Note(track, noteType, key, timing, endTiming);
                     track.notes.add(note);
@@ -125,8 +128,10 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
                 } else {
                     Note note = new Note(track, noteType, key, timing);
                     track.notes.add(note);
+                    track.startTiming=Math.min(track.startTiming,note.timing-PlayInterface.remainingTime);
                     this.finalEndTime = Math.max(this.finalEndTime, timing);
                 }
+
             }
 
             for (int i = 0; i < this.operationsCount; i++) {
@@ -204,6 +209,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
      * @param difficulty difficulty of the song (both are used to find the source file)
      */
     public PlayInterface(int songID, int difficulty) {
+        PlayInterface.remainingTime=(long)(-600*Data.noteSpeed+4100);
         pureCount.set(0);
         farCount.set(0);
         lostCount.set(0);
@@ -247,8 +253,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
             while (frontTrack<allTracks.size()&&allTracks.get(frontTrack).startTiming < currentTime) {
                 currentTime = System.currentTimeMillis() - startTime;
                 new Thread(allTracks.get(frontTrack)).start();
-                //System.out.println(currentTime+" "+this.finalEndTime);
-                System.out.println(allTracks.get(frontTrack).startTiming);
                  frontTrack++;
             }
             if (!backgroundOperations.isEmpty() && frontOperation<backgroundOperations.size()&& backgroundOperations.get(frontOperation).startTime < currentTime) {

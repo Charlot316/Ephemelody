@@ -106,6 +106,7 @@ public class SetUp extends JPanel implements Scenes, MouseMotionListener, MouseL
             if (struts == Scenes.MOUSE_DOWN) {
                 if (Data.noteSpeed < 6.0) {
                     Data.noteSpeed += 0.1;
+                    PlayInterface.remainingTime=(long)(-600*Data.noteSpeed+4100);
                 }
             }
         } else if (Rect.isInternal(x, y, 723, 360, 78, 57)) {
@@ -134,6 +135,7 @@ public class SetUp extends JPanel implements Scenes, MouseMotionListener, MouseL
             if (struts == Scenes.MOUSE_DOWN) {
                 if (Data.noteSpeed > 1.0) {
                     Data.noteSpeed -= 0.1;
+                    PlayInterface.remainingTime=(long)(-600*Data.noteSpeed+4100);
                 }
             }
         } else if (Rect.isInternal(x, y, 723, 650, 78, 57)) {
