@@ -77,7 +77,7 @@ public class Canvas extends JLayeredPane{
 //        System.out.println("前面都执行完了");
     }
 
-    public void paintString(String str, Graphics g, Integer x, Integer y, Integer size) {
+    public void paintString(String str, Graphics g, Integer x, Integer y, Integer size, Color color) {
         Font f = new Font("黑体", Font.BOLD, size);
         GlyphVector v = f.createGlyphVector(getFontMetrics(f).getFontRenderContext(), str);
         Shape shape = v.getOutline();
@@ -92,7 +92,7 @@ public class Canvas extends JLayeredPane{
         );
 //        gg.setClip(x, y, x, y);
         gg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        gg.setColor(Color.WHITE);
+        gg.setColor(color);
         gg.fill(shape);
         gg.setColor(new Color(119, 97, 125));
         gg.setStroke(new BasicStroke(3));

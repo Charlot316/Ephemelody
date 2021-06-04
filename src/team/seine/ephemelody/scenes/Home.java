@@ -223,12 +223,17 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         g.drawImage(selectedImg, 0, Data.HEIGHT / 2 - 30, null);
         g.drawImage(songInfButton[buttonSongInfStatus], 1038, 850, null);
         g.setFont(new Font("黑体", Font.PLAIN, 65));
-        g.setColor(new Color(117, 188, 214));
-        g.drawString("3", 595, 675);
-        g.setColor(new Color(237, 114, 209));
+//        g.setColor(new Color(117, 188, 214));
+        Data.canvas.paintString("3", g, 595, 675, 65, new Color(117, 188, 214));
+        g.translate(-595, -675);
+        Data.canvas.paintString("6", g, 875, 675, 65, new Color(237, 114, 209));
+        g.translate(-875, -675);
+        Data.canvas.paintString("9", g, 1155, 675, 65, new Color(245, 165, 152));
+//        g.drawString("3", 595, 675);
+        /*g.setColor(new Color(237, 114, 209));
         g.drawString("6", 875, 675);
         g.setColor(new Color(245, 165, 152));
-        g.drawString("9", 1155, 675);
+        g.drawString("9", 1155, 675);*/
 //        Integer countX = 65, count = 1;
 //        for (String song : Data.songList) { // 到时候改成待展示的歌曲名单列表
 //            if (count == 3) {
