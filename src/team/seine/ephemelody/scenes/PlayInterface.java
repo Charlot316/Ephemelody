@@ -109,9 +109,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
 
                 Track track = new Track(id, type, key, startTiming, endTiming, positionX, width, R, G, B);
                 this.allTracks.add(track);
-//                nowScenes = new Track(0, 1,'c', 1230, 2230, 0.5, 0.06, 255, 160, 160);
-  //              Data.canvas.add((Track) nowScenes,10);
-                System.out.println(track);
             }
 
             for (int i = 0; i < this.notesCount; i++) {
@@ -128,13 +125,11 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
                     Note note = new Note(track, noteType, key, timing, endTiming);
                     track.notes.add(note);
                     this.finalEndTime = Math.max(this.finalEndTime, endTiming);
-                    System.out.println(note);
                 } else {
                     Note note = new Note(track, noteType, key, timing);
                     track.notes.add(note);
                     track.startTiming=Math.min(track.startTiming,note.timing-PlayInterface.remainingTime);
                     this.finalEndTime = Math.max(this.finalEndTime, timing);
-                    System.out.println(note);
                 }
 
             }
@@ -160,14 +155,12 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
                         endX = Double.parseDouble(arguments[4]);
                         operation = new PlayOperations(trackID, type, startTiming, endTiming, endX, width, R, G, B, tempBackground);
                         track.moveOperations.add(operation);
-                        System.out.println(operation);
                         break;
                     case 2:
                         endTiming = Long.parseLong(arguments[3]);
                         width = Double.parseDouble(arguments[4]);
                         operation = new PlayOperations(trackID, type, startTiming, endTiming, endX, width, R, G, B, tempBackground);
                         track.changeWidthOperations.add(operation);
-                        System.out.println(operation);
                         break;
                     case 3:
                         endTiming = Long.parseLong(arguments[3]);
@@ -176,7 +169,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
                         B = Integer.parseInt(arguments[6]);
                         operation = new PlayOperations(trackID, type, startTiming, endTiming, endX, width, R, G, B, tempBackground);
                         track.changeColorOperations.add(operation);
-                        System.out.println(operation);
                         break;
                     case 4:
                         tempBackground = arguments[3];
@@ -184,7 +176,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
                         this.backgroundOperations.add(operation);
                         System.out.println(this.Path);
                         this.backgroundImg.add(Load.backgroundImage(this.Path + tempBackground));
-                        System.out.println(operation);
                         break;
                     default:
                         break;

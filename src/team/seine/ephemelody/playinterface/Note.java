@@ -11,8 +11,7 @@ public class Note extends Thread {//Note, main article of the play interface
     public long timing;//The standard timing of a note
     public long endTiming;//
     public double length;//The length of a hold calculated from startTiming and endTiming
-    public long lastTime;
-    public long noteCurrentTime;
+    public long noteCurrentTime=0;
 
     public Note(Track basedTrack, int noteType, char key, long timing) {
         this.basedTrack = basedTrack;
@@ -37,20 +36,19 @@ public class Note extends Thread {//Note, main article of the play interface
      * Refer to the formula: current position = last time position - ((last time position - final position)/(retention time - (standard time of the note - current time))* (1/ screen refresh rate)
      */
 
-    public void moveNote(){
-        this.lastTime=this.noteCurrentTime;
+    public void moveNote(long deltaTime){
         this.noteCurrentTime=System.currentTimeMillis()-PlayInterface.startTime;
-
         this.positionX=this.basedTrack.positionX;
         if(this.timing>this.noteCurrentTime){
-            if((PlayInterface.remainingTime-(this.timing-this.noteCurrentTime))!=0) this.positionY=this.positionY-((this.positionY-PlayInterface.finalY)/(double)(this.timing-this.noteCurrentTime))*(double)(this.noteCurrentTime-this.lastTime);
+            this.positionY=this.positionY-((this.positionY-PlayInterface.finalY)/(double)(this.timing-this.noteCurrentTime))*(double)(deltaTime);
+
         }
         else if(this.noteType==1){
             this.positionY=PlayInterface.finalY;
             this.length=((double)(this.endTiming-this.noteCurrentTime)/(double)PlayInterface.remainingTime)*PlayInterface.finalY;
         }
         else{
-            this.positionY+=0.001;
+            this.positionY+=0.0001;
         }
     }
 
@@ -65,7 +63,6 @@ public class Note extends Thread {//Note, main article of the play interface
                 ", timing=" + timing +
                 ", endTiming=" + endTiming +
                 ", length=" + length +
-                ", lastTime=" + lastTime +
                 ", noteCurrentTime=" + noteCurrentTime +
                 '}';
     }

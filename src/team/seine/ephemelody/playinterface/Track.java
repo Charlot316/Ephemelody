@@ -87,23 +87,8 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
         Polygon polygon1 = new Polygon();
         Polygon polygon2 = new Polygon();
         Polygon polygon3 = new Polygon();
-        if(note.noteType==0){
-            polygon1.addPoint(x,y-35);
-            polygon1.addPoint(x+35,y);
-            polygon1.addPoint(x,y+35);
-            polygon1.addPoint(x-35,y);
 
-            polygon2.addPoint(x,y-30);
-            polygon2.addPoint(x+30,y);
-            polygon2.addPoint(x,y+30);
-            polygon2.addPoint(x-30,y);
-
-            polygon3.addPoint(x,y-25);
-            polygon3.addPoint(x+25,y);
-            polygon3.addPoint(x,y+25);
-            polygon3.addPoint(x-25,y);
-        }
-        else{
+        if(note.noteType==1&&note.length>0){
             int length=(int)(note.length*Data.HEIGHT);
             polygon1.addPoint(x,y-length-35);
             polygon1.addPoint(x+35,y-length);
@@ -126,6 +111,22 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
             polygon3.addPoint(x-25,y);
             polygon3.addPoint(x-25,y-length);
 
+        }
+        else{
+            polygon1.addPoint(x,y-35);
+            polygon1.addPoint(x+35,y);
+            polygon1.addPoint(x,y+35);
+            polygon1.addPoint(x-35,y);
+
+            polygon2.addPoint(x,y-30);
+            polygon2.addPoint(x+30,y);
+            polygon2.addPoint(x,y+30);
+            polygon2.addPoint(x-30,y);
+
+            polygon3.addPoint(x,y-25);
+            polygon3.addPoint(x+25,y);
+            polygon3.addPoint(x,y+25);
+            polygon3.addPoint(x-25,y);
         }
 
         g_2d.setColor(Color.WHITE);
@@ -254,24 +255,19 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
             this.changeWidth();
             this.moveTrack();
             if(!this.notes.isEmpty()){
-                //System.out.println(this.currentNotes);
                     while((rearNote+1<this.notes.size())&&(this.notes.get(rearNote+1).timing-PlayInterface.remainingTime)<this.trackCurrentTime){
-                        System.out.println(this.notes.get(rearNote+1).timing+PlayInterface.remainingTime+" "+this.trackCurrentTime);
                         rearNote++;
                         this.currentNotes.add(notes.get(rearNote));
                     }
                 for(Note i:currentNotes){
-                    i.moveNote();
+                    i.moveNote(this.trackCurrentTime-this.lastTime);
                 }
-                if (!this.currentNotes.isEmpty()&&this.currentNotes.get(0).noteType==0&&this.currentNotes.get(0).timing<this.trackCurrentTime-150){
-
-                    System.out.println(this.currentNotes.get(0).timing+"removed at "+(this.trackCurrentTime+150));
+                if (!this.currentNotes.isEmpty()&&this.currentNotes.get(0).noteType==0&&this.trackCurrentTime>this.currentNotes.get(0).timing+150){
                     PlayInterface.combo.set(0);
                     PlayInterface.lostCount.getAndIncrement();
                     this.currentNotes.remove(0);
                 }
-                else if(!this.currentNotes.isEmpty()&&this.currentNotes.get(0).noteType==1&&this.currentNotes.get(0).endTiming<this.trackCurrentTime+150){
-                    System.out.println(this.currentNotes.get(0).timing+"removed at "+(this.trackCurrentTime+150));
+                else if(!this.currentNotes.isEmpty()&&this.currentNotes.get(0).noteType==1&&this.trackCurrentTime>this.currentNotes.get(0).endTiming+150){
                     PlayInterface.combo.set(0);
                     PlayInterface.lostCount.getAndIncrement();
                     this.currentNotes.remove(0);
