@@ -1,6 +1,7 @@
 package team.seine.ephemelody.main;
 
 import team.seine.ephemelody.data.Data;
+import team.seine.ephemelody.playinterface.Track;
 import team.seine.ephemelody.scenes.*;
 
 import javax.swing.*;
@@ -44,8 +45,13 @@ public class Canvas extends JLayeredPane{
         } else if (name.equals("PlayInterface")) {
         //    this.nowScenes =
             this.firstScenes = new PlayInterface(1, 1);
+//            this.secondScenes =  new Track(0, 1,'c', 1230, 2230, 0.5, 0.06, 255, 160, 160);
             this.removeAll();
             this.add((PlayInterface)firstScenes, new Integer(0));
+            for(Track i:((PlayInterface) firstScenes).allTracks){
+                this.add(i,new Integer(1));
+            }
+
             new Thread((PlayInterface) firstScenes).start();
 
 //            this.add((PlayInterface) nowScenes, new Integer(1));

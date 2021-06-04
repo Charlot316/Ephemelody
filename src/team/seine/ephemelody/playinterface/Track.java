@@ -1,12 +1,17 @@
 package team.seine.ephemelody.playinterface;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Date;
+
+import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.scenes.*;
+import team.seine.ephemelody.utils.Rect;
 
 import javax.swing.*;
 
-public class Track extends JPanel implements Runnable {// The track of the note.
+public class Track extends JPanel implements Runnable, Scenes {// The track of the note.
     public int id;
     public int type;
     public char key;
@@ -26,6 +31,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     public ArrayList<PlayOperations> moveOperations = new ArrayList<>();
     public ArrayList<PlayOperations> changeWidthOperations = new ArrayList<>();
     public ArrayList<PlayOperations> changeColorOperations = new ArrayList<>();
+    public ArrayList<Note> currentNotes = new ArrayList<>();
     public PlayOperations currentMove=null;
     public PlayOperations currentWidth=null;
     public PlayOperations currentColor=null;
@@ -52,6 +58,10 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * @param b Control track's color
      */
     public Track(int id, int type, char key, long startTiming, long endTiming, double positionX, double width, int r, int g, int b) {
+        setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
+        this.setVisible(true);
+        setLayout(null);
+        setOpaque(false);
         this.id = id;
         this.type = type;
         this.key = key;
@@ -65,6 +75,63 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     }
 
     /**
+     * Paint the notes and track.
+     * @param g the brush
+     */
+    public void getImg(Graphics g,Note note) {
+        Graphics2D g_2d = (Graphics2D) g;
+        int x=(int)(note.positionX*Data.WIDTH);
+        int y=(int)(note.positionY*Data.HEIGHT);
+        Polygon polygon1 = new Polygon();
+        Polygon polygon2 = new Polygon();
+        Polygon polygon3 = new Polygon();
+        if(note.noteType==0){
+            polygon1.addPoint(x,y-15);
+            polygon1.addPoint(x+15,y);
+            polygon1.addPoint(x,y+15);
+            polygon1.addPoint(x-15,y);
+
+            polygon2.addPoint(x,y-10);
+            polygon2.addPoint(x+10,y);
+            polygon2.addPoint(x,y+10);
+            polygon2.addPoint(x-10,y);
+
+            polygon3.addPoint(x,y-5);
+            polygon3.addPoint(x+5,y);
+            polygon3.addPoint(x,y+5);
+            polygon3.addPoint(x-5,y);
+        }
+        else{
+
+        }
+
+        g_2d.setColor(Color.WHITE);
+        g_2d.fillPolygon(polygon1);
+        g_2d.draw(polygon1);
+
+        g_2d.setColor(Color.YELLOW);
+        g_2d.fillPolygon(polygon2);
+        g_2d.draw(polygon2);
+
+        g_2d.setColor(Color.RED);
+        g_2d.fillPolygon(polygon3);
+        g_2d.draw(polygon3);
+    }
+
+    public void paint(Graphics g) {
+        Graphics2D g_2d = (Graphics2D) g;
+        Rectangle2D rect = new Rectangle2D.Double((int)((this.positionX*Data.WIDTH)-(this.width*Data.WIDTH)), 0, (this.width*2*Data.WIDTH), (int)(Data.HEIGHT*PlayInterface.finalY));
+        g_2d.setColor(new Color(this.R, this.G, this.B, 100));
+        g_2d.fill(rect);
+
+
+        //记得画指示键！
+
+
+
+    }
+
+    /**
      * Judge the timing;
      */
     public void Judge(){
@@ -74,6 +141,9 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * Responsible for calculating the positionX at each moment, starting from positionX at currentTime, and endX at endTime
      */
     public void moveTrack() {
+        //this.trackCurrentTime=this.lastTime=System.currentTimeMillis()-PlayInterface.startTime;
+       // System.out.println(this.positionX);
+        //System.out.println(currentMove.endX);
         if(moveOperations.isEmpty()){
             return;
         }
@@ -81,6 +151,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
         if(currentMove.startTime<this.trackCurrentTime){
             if(currentMove.startTime==currentMove.endTime) this.positionX=currentMove.endX;
             else if(currentMove.endTime-this.trackCurrentTime!=0) this.positionX=this.positionX-((this.positionX-currentMove.endX)/(double)(currentMove.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime);
+            //System.out.println("end"+currentMove.endTime+"current"+this.trackCurrentTime+" "+this.positionX+" "+currentMove.endX);
         }
         if(currentMove.endTime<this.trackCurrentTime&&(frontMove+1)<this.moveOperations.size()) frontMove++;
     }
@@ -89,6 +160,8 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * Responsible for calculating the width at each moment, starting from width at currentTime, and endWidth at endTime
      */
     public void changeWidth(){
+        //this.trackCurrentTime=this.lastTime=System.currentTimeMillis()-PlayInterface.startTime;
+
         if(changeWidthOperations.isEmpty()){
             return;
         }
@@ -96,6 +169,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
         if(currentWidth.startTime<this.trackCurrentTime){
             if(currentWidth.startTime==currentWidth.endTime) this.width=currentWidth.endWidth;
             else if(currentWidth.endTime-this.trackCurrentTime!=0) this.width=this.width-((this.width-currentWidth.endWidth)/(double)(currentWidth.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime);
+            System.out.println("end"+currentWidth.endTime+"current"+this.trackCurrentTime+this.width+" "+currentWidth.endWidth);
         }
         if(currentWidth.endTime<this.trackCurrentTime&&(frontWidth+1)<this.changeWidthOperations.size()) frontWidth++;
     }
@@ -104,6 +178,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * Responsible for calculating the current color at each moment, starting from width at currentTime, and endWidth at endTime
      */
     public void changeColor(){
+        //this.trackCurrentTime=this.lastTime=System.currentTimeMillis()-PlayInterface.startTime;
         if(changeColorOperations.isEmpty()){
             return;
         }
@@ -127,6 +202,8 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * Note: display must be after the move and change operations are finished
      */
     public void run(){
+    System.out.println(this.changeWidthOperations);
+    System.out.println(this.changeColorOperations);
         this.trackCurrentTime=this.lastTime=System.currentTimeMillis()-PlayInterface.startTime;
         while(this.trackCurrentTime<this.endTiming&&this.startTiming<=this.trackCurrentTime){
             this.lastTime=this.trackCurrentTime;
@@ -138,25 +215,19 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 if(rearNote+1<this.notes.size())
                     while(this.notes.get(rearNote+1).timing+PlayInterface.remainingTime<this.trackCurrentTime){
                         rearNote++;
+                        this.currentNotes.add(notes.get(rearNote));
                     }
                 if (this.notes.get(frontNote).timing<this.trackCurrentTime+150){
                     frontNote++;
                     PlayInterface.combo.set(0);
                     PlayInterface.lostCount.getAndIncrement();
+                    this.currentNotes.remove(0);
                 }
-            /*for(int i=frontNote;i<=rearNote;i++){
-                notes.get(i).moveNote();
-                *//*
-
-                please paint the note here.
-
-                 *//*
-            }*/
-                // paintNotes
-
-                //...
+                for(Note i:currentNotes){
+                    i.moveNote();
+                }
             }
-            // paintTracks
+            this.repaint();
         }
     }
 
@@ -174,6 +245,20 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 ", G=" + G +
                 ", B=" + B +
                 '}';
+    }
+    @Override
+    public void onKeyDown(int keyCode) {
+
+    }
+
+    @Override
+    public void onKeyUp(int keyCode) {
+
+    }
+
+    public void onMouse(int x, int y, int struts) {
+//        System.out.println(x + " " + y);
+
     }
 }
 

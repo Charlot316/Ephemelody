@@ -43,12 +43,14 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
     int frontBackground = 0;
     int BackgroundCount = 0;
     public String Path;
+    Scenes nowScenes = null;
 
     /**
      * read in information of the display
      */
     public void paint(Graphics g) {
         g.drawImage(backgroundImg.get(frontBackground), 0, 0, null);
+
     }
 
     public void loadData() {
@@ -98,8 +100,11 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
                     default:
                         break;
                 }
+
                 Track track = new Track(id, type, key, startTiming, endTiming, positionX, width, R, G, B);
                 this.allTracks.add(track);
+//                nowScenes = new Track(0, 1,'c', 1230, 2230, 0.5, 0.06, 255, 160, 160);
+  //              Data.canvas.add((Track) nowScenes,10);
                 System.out.println(track);
             }
 
