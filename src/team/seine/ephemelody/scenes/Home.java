@@ -30,6 +30,8 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
     public Image selectedImg;
     public Image nowSongImg;
     public Image[] songInfButton;
+
+    public Boolean playFlag;
     public Home() {
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setLayout(null);
@@ -45,6 +47,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         loginButton = new Image[] {
                 Load.image("home/登录.png"), Load.image("home/登录_鼠标悬停.png"), Load.image("home/登录_按下.png")
         };*/
+        playFlag = false;
         playButton = new Image[]{
                 Load.image("home/开始游戏.png"), Load.image("home/开始游戏_鼠标悬停.png"), Load.image("home/开始游戏_按下.png")
         };
@@ -155,7 +158,8 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             }
         } else if (Rect.isInternal(x, y, 643, 750, 500, 114)) {
             buttonPlayStatus = buttonStruts;
-            if(struts == Scenes.MOUSE_DOWN) {
+            playFlag = buttonEasyStatus == MOUSE_DOWN || buttonNormalStatus == MOUSE_DOWN || buttonDifficultStatus == MOUSE_DOWN;
+            if(struts == Scenes.MOUSE_DOWN && playFlag) {
                 Data.canvas.switchScenes("PlayInterface");
 //                System.exit(0);
 //                Data.canvas.switchScenes("End");
@@ -174,11 +178,12 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         }*/
     }
     public void paint(Graphics g) {
+        playFlag = buttonEasyStatus == MOUSE_DOWN || buttonNormalStatus == MOUSE_DOWN || buttonDifficultStatus == MOUSE_DOWN;
         g.drawImage(nowSongImg, Data.WIDTH / 2, 100, null);
         g.drawImage(easyButton[buttonEasyStatus], Data.WIDTH / 2 - 140, 580, null);
         g.drawImage(normalButton[buttonNormalStatus], Data.WIDTH / 2 + 140, 580, null);
         g.drawImage(difficultButton[buttonDifficultStatus], Data.WIDTH / 2 + 420, 580, null);
-        if (buttonEasyStatus == MOUSE_DOWN || buttonNormalStatus == MOUSE_DOWN || buttonDifficultStatus == MOUSE_DOWN) {
+        if (playFlag) {
             g.drawImage(playButton[buttonPlayStatus], Data.WIDTH / 2, 750, null);
         }
         g.drawImage(upButton, 100, 60, null);
