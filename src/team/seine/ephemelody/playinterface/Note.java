@@ -43,7 +43,7 @@ public class Note extends Thread {//Note, main article of the play interface
 
         this.positionX=this.basedTrack.positionX;
         if(this.timing>this.noteCurrentTime){
-            if((PlayInterface.remainingTime-(this.timing-this.noteCurrentTime))!=0) this.positionY=this.positionY+((PlayInterface.finalY-this.positionY)/(double)(PlayInterface.remainingTime-(this.timing-this.noteCurrentTime)))*(double)(this.noteCurrentTime-this.lastTime);
+            if((PlayInterface.remainingTime-(this.timing-this.noteCurrentTime))!=0) this.positionY=this.positionY-((this.positionY-PlayInterface.finalY)/(double)(this.timing-this.noteCurrentTime))*(double)(this.noteCurrentTime-this.lastTime);
         }
         else if(this.noteType==1){
             this.positionY=PlayInterface.finalY;

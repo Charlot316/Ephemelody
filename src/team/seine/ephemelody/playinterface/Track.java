@@ -11,6 +11,8 @@ import team.seine.ephemelody.utils.Rect;
 
 import javax.swing.*;
 
+import static java.awt.BasicStroke.*;
+
 public class Track extends JPanel implements Runnable, Scenes {// The track of the note.
     public int id;
     public int type;
@@ -35,7 +37,7 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
     public PlayOperations currentMove=null;
     public PlayOperations currentWidth=null;
     public PlayOperations currentColor=null;
-    public int frontNote=0;
+    //public int frontNote=0;
     public int rearNote=-1;
     public int frontMove=0;
     public int frontWidth=0;
@@ -86,26 +88,43 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
         Polygon polygon2 = new Polygon();
         Polygon polygon3 = new Polygon();
         if(note.noteType==0){
-            polygon1.addPoint(x,y-15);
-            polygon1.addPoint(x+15,y);
-            polygon1.addPoint(x,y+15);
-            polygon1.addPoint(x-15,y);
+            polygon1.addPoint(x,y-35);
+            polygon1.addPoint(x+35,y);
+            polygon1.addPoint(x,y+35);
+            polygon1.addPoint(x-35,y);
 
-            polygon2.addPoint(x,y-10);
-            polygon2.addPoint(x+10,y);
-            polygon2.addPoint(x,y+10);
-            polygon2.addPoint(x-10,y);
+            polygon2.addPoint(x,y-30);
+            polygon2.addPoint(x+30,y);
+            polygon2.addPoint(x,y+30);
+            polygon2.addPoint(x-30,y);
 
-            polygon3.addPoint(x,y-5);
-            polygon3.addPoint(x+5,y);
-            polygon3.addPoint(x,y+5);
-            polygon3.addPoint(x-5,y);
+            polygon3.addPoint(x,y-25);
+            polygon3.addPoint(x+25,y);
+            polygon3.addPoint(x,y+25);
+            polygon3.addPoint(x-25,y);
         }
         else{
-            polygon1.addPoint(x,y-15);
-            polygon1.addPoint(x+15,y);
-            polygon1.addPoint(x,y+15);
-            polygon1.addPoint(x-15,y);
+            int length=(int)(note.length*Data.HEIGHT);
+            polygon1.addPoint(x,y-length-35);
+            polygon1.addPoint(x+35,y-length);
+            polygon1.addPoint(x+35,y);
+            polygon1.addPoint(x,y+35);
+            polygon1.addPoint(x-35,y);
+            polygon1.addPoint(x-35,y-length);
+
+            polygon2.addPoint(x,y-length-30);
+            polygon2.addPoint(x+30,y-length);
+            polygon2.addPoint(x+30,y);
+            polygon2.addPoint(x,y+30);
+            polygon2.addPoint(x-30,y);
+            polygon2.addPoint(x-30,y-length);
+
+            polygon3.addPoint(x,y-length-25);
+            polygon3.addPoint(x+25,y-length);
+            polygon3.addPoint(x+25,y);
+            polygon3.addPoint(x,y+25);
+            polygon3.addPoint(x-25,y);
+            polygon3.addPoint(x-25,y-length);
 
         }
 
@@ -124,9 +143,30 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
 
     public void paint(Graphics g) {
         Graphics2D g_2d = (Graphics2D) g;
-        Rectangle2D rect = new Rectangle2D.Double((int)((this.positionX*Data.WIDTH)-(this.width*Data.WIDTH)), 0, (this.width*2*Data.WIDTH), (int)(Data.HEIGHT*PlayInterface.finalY));
+        int x=(int)(this.positionX*Data.WIDTH);
+        int halfWidth=(int)(this.width*Data.WIDTH);
+        int y=(int)(Data.HEIGHT*PlayInterface.finalY);
+
+        g_2d.setStroke(new BasicStroke((float)(2*halfWidth),CAP_BUTT, JOIN_BEVEL));
         g_2d.setColor(new Color(this.R, this.G, this.B, 100));
-        g_2d.fill(rect);
+        g_2d.drawLine(x,0,x,y);
+        g_2d.setStroke(new BasicStroke(3.0f,CAP_BUTT, JOIN_BEVEL));
+        g_2d.setColor(new Color(this.R, this.G, this.B, 100));
+        g_2d.drawLine(x,0,x,y);
+        g_2d.setColor(new Color(255,255,255, 100));
+        g_2d.drawLine(x-halfWidth,0,x-halfWidth,y);
+        g_2d.drawLine(x+halfWidth,0,x+halfWidth,y);
+
+        Polygon polygon1 = new Polygon();
+        polygon1.addPoint(x,y-10);
+        polygon1.addPoint(x+10,y);
+        polygon1.addPoint(x,y+10);
+        polygon1.addPoint(x-10,y);
+        g_2d.setStroke(new BasicStroke(0f));
+        g_2d.setColor(new Color(0,0,0, 100));
+        g_2d.fillPolygon(polygon1);
+        g_2d.draw(polygon1);
+
         for(Note i:this.currentNotes){
             getImg(g,i);
         }
@@ -189,11 +229,12 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
                 this.B=currentColor.endB;
             }
             else if(currentColor.endTime-this.trackCurrentTime>0){
-                this.R=this.R-(int)(((double)(this.R-currentColor.endR)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime));
-                this.G=this.G-(int)(((double)(this.G-currentColor.endG)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime));
-                this.B=this.B-(int)(((double)(this.B-currentColor.endB)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime));
-                System.out.println((this.R-currentColor.endR)+" "+(currentColor.endTime-this.trackCurrentTime)+" "+(this.trackCurrentTime-this.lastTime));
-                System.out.println((int)(((double)(this.R-currentColor.endR)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime))+","+(int)(((double)(this.G-currentColor.endG)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime))+","+(int)(((double)(this.B-currentColor.endB)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime)));
+                this.R=(this.R>255||this.R<0)?this.R:this.R-(int)(((double)(this.R-currentColor.endR)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime));
+                this.G=(this.G>255||this.G<0)?this.G:this.G-(int)(((double)(this.G-currentColor.endG)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime));
+                this.B=(this.B>255||this.B<0)?this.B:this.B-(int)(((double)(this.B-currentColor.endB)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime));
+//                System.out.println((this.R-currentColor.endR)+" "+(currentColor.endTime-this.trackCurrentTime)+" "+(this.trackCurrentTime-this.lastTime));
+//                System.out.println((int)(((double)(this.R-currentColor.endR)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime))+","+(int)(((double)(this.G-currentColor.endG)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime))+","+(int)(((double)(this.B-currentColor.endB)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime)));
+
             }
             //System.out.println(this.R+","+this.G+","+this.B);
         }
@@ -204,8 +245,7 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
      * Note: display must be after the move and change operations are finished
      */
     public void run(){
-    System.out.println(this.changeWidthOperations);
-    System.out.println(this.changeColorOperations);
+
         this.trackCurrentTime=this.lastTime=System.currentTimeMillis()-PlayInterface.startTime;
         while(this.trackCurrentTime<this.endTiming&&this.startTiming<=this.trackCurrentTime){
             this.lastTime=this.trackCurrentTime;
@@ -214,22 +254,32 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
             this.changeWidth();
             this.moveTrack();
             if(!this.notes.isEmpty()){
-                if(rearNote+1<this.notes.size())
-                    while(this.notes.get(rearNote+1).timing+PlayInterface.remainingTime<this.trackCurrentTime){
+                //System.out.println(this.currentNotes);
+                    while((rearNote+1<this.notes.size())&&(this.notes.get(rearNote+1).timing-PlayInterface.remainingTime)<this.trackCurrentTime){
+                        System.out.println(this.notes.get(rearNote+1).timing+PlayInterface.remainingTime+" "+this.trackCurrentTime);
                         rearNote++;
                         this.currentNotes.add(notes.get(rearNote));
                     }
-                if (this.notes.get(frontNote).timing<this.trackCurrentTime+150){
-                    frontNote++;
+                for(Note i:currentNotes){
+                    i.moveNote();
+                }
+                if (!this.currentNotes.isEmpty()&&this.currentNotes.get(0).noteType==0&&this.currentNotes.get(0).timing<this.trackCurrentTime-150){
+
+                    System.out.println(this.currentNotes.get(0).timing+"removed at "+(this.trackCurrentTime+150));
                     PlayInterface.combo.set(0);
                     PlayInterface.lostCount.getAndIncrement();
                     this.currentNotes.remove(0);
                 }
-                for(Note i:currentNotes){
-                    i.moveNote();
+                else if(!this.currentNotes.isEmpty()&&this.currentNotes.get(0).noteType==1&&this.currentNotes.get(0).endTiming<this.trackCurrentTime+150){
+                    System.out.println(this.currentNotes.get(0).timing+"removed at "+(this.trackCurrentTime+150));
+                    PlayInterface.combo.set(0);
+                    PlayInterface.lostCount.getAndIncrement();
+                    this.currentNotes.remove(0);
                 }
+
             }
             this.repaint();
+
         }
     }
 
