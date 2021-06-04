@@ -65,7 +65,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
             this.operationsCount = Integer.parseInt(arguments[2]);
             this.backgroundImg.add(Load.backgroundImage(this.Path + arguments[3]));
             if (this.notesCount != 0) {
-                this.scorePerNote = (int) (10000000 / this.notesCount);
+                this.scorePerNote = (10000000 / this.notesCount);
                 this.scoreForLastNote = 10000000 - this.notesCount * this.scorePerNote;
             }
             for (int i = 0; i < this.trackCount; i++) {
@@ -117,7 +117,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
                 long timing = Long.parseLong(arguments[3]);
                 this.finalEndTime = Math.max(this.finalEndTime, timing);
                 Track track = getTrackByID(trackID);
-                if (arguments.length == 5) {
+                if (noteType==1) {
                     long endTiming = Long.parseLong(arguments[4]);
                     Note note = new Note(track, noteType, key, timing, endTiming);
                     track.notes.add(note);

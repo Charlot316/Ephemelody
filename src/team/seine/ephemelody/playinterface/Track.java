@@ -102,6 +102,10 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
             polygon3.addPoint(x-5,y);
         }
         else{
+            polygon1.addPoint(x,y-15);
+            polygon1.addPoint(x+15,y);
+            polygon1.addPoint(x,y+15);
+            polygon1.addPoint(x-15,y);
 
         }
 
@@ -141,17 +145,13 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
      * Responsible for calculating the positionX at each moment, starting from positionX at currentTime, and endX at endTime
      */
     public void moveTrack() {
-        //this.trackCurrentTime=this.lastTime=System.currentTimeMillis()-PlayInterface.startTime;
-       // System.out.println(this.positionX);
-        //System.out.println(currentMove.endX);
         if(moveOperations.isEmpty()){
             return;
         }
         currentMove=moveOperations.get(frontMove);
         if(currentMove.startTime<this.trackCurrentTime){
             if(currentMove.startTime==currentMove.endTime) this.positionX=currentMove.endX;
-            else if(currentMove.endTime-this.trackCurrentTime!=0) this.positionX=this.positionX-((this.positionX-currentMove.endX)/(double)(currentMove.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime);
-            //System.out.println("end"+currentMove.endTime+"current"+this.trackCurrentTime+" "+this.positionX+" "+currentMove.endX);
+            else if(currentMove.endTime-this.trackCurrentTime>0) this.positionX=this.positionX-((this.positionX-currentMove.endX)/(double)(currentMove.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime);
         }
         if(currentMove.endTime<this.trackCurrentTime&&(frontMove+1)<this.moveOperations.size()) frontMove++;
     }
@@ -160,16 +160,14 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
      * Responsible for calculating the width at each moment, starting from width at currentTime, and endWidth at endTime
      */
     public void changeWidth(){
-        //this.trackCurrentTime=this.lastTime=System.currentTimeMillis()-PlayInterface.startTime;
-
         if(changeWidthOperations.isEmpty()){
             return;
         }
         currentWidth=changeWidthOperations.get(frontWidth);
         if(currentWidth.startTime<this.trackCurrentTime){
             if(currentWidth.startTime==currentWidth.endTime) this.width=currentWidth.endWidth;
-            else if(currentWidth.endTime-this.trackCurrentTime!=0) this.width=this.width-((this.width-currentWidth.endWidth)/(double)(currentWidth.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime);
-            System.out.println("end"+currentWidth.endTime+"current"+this.trackCurrentTime+this.width+" "+currentWidth.endWidth);
+            else if(currentWidth.endTime-this.trackCurrentTime>0) this.width=this.width-((this.width-currentWidth.endWidth)/(double)(currentWidth.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime);
+
         }
         if(currentWidth.endTime<this.trackCurrentTime&&(frontWidth+1)<this.changeWidthOperations.size()) frontWidth++;
     }
@@ -178,7 +176,6 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
      * Responsible for calculating the current color at each moment, starting from width at currentTime, and endWidth at endTime
      */
     public void changeColor(){
-        //this.trackCurrentTime=this.lastTime=System.currentTimeMillis()-PlayInterface.startTime;
         if(changeColorOperations.isEmpty()){
             return;
         }
@@ -189,11 +186,14 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
                 this.G=currentColor.endG;
                 this.B=currentColor.endB;
             }
-            else if(currentColor.endTime-this.trackCurrentTime!=0){
-                this.R=this.R-(int)(((this.R-currentColor.endR)/(currentColor.endTime-this.trackCurrentTime))*(this.trackCurrentTime-this.lastTime));
-                this.G=this.G-(int)(((this.G-currentColor.endG)/(currentColor.endTime-this.trackCurrentTime))*(this.trackCurrentTime-this.lastTime));
-                this.B=this.B-(int)(((this.B-currentColor.endB)/(currentColor.endTime-this.trackCurrentTime))*(this.trackCurrentTime-this.lastTime));
+            else if(currentColor.endTime-this.trackCurrentTime>0){
+                this.R=this.R-(int)(((double)(this.R-currentColor.endR)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime));
+                this.G=this.G-(int)(((double)(this.G-currentColor.endG)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime));
+                this.B=this.B-(int)(((double)(this.B-currentColor.endB)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime));
+                System.out.println((this.R-currentColor.endR)+" "+(currentColor.endTime-this.trackCurrentTime)+" "+(this.trackCurrentTime-this.lastTime));
+                System.out.println((int)(((double)(this.R-currentColor.endR)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime))+","+(int)(((double)(this.G-currentColor.endG)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime))+","+(int)(((double)(this.B-currentColor.endB)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime)));
             }
+            //System.out.println(this.R+","+this.G+","+this.B);
         }
         if(currentColor.endTime<this.trackCurrentTime&&(frontColor+1)<this.changeColorOperations.size()) frontColor++;
     }
