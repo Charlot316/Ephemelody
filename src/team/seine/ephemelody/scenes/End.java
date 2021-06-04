@@ -17,6 +17,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
     public Image listImg;
     public Image myGradeImg;
     public Image gradeImg;
+    public Image fullRecallImg;
     public End() {
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setVisible(true);
@@ -26,18 +27,24 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         listImg = Load.image("end/排行榜.png");
         myGradeImg = Load.image("end/我的成绩.png");
         gradeImg = Load.image("end/成绩条.png");
-
+        fullRecallImg = Load.image("end/clear_full.png");
         addMouseListener(this);
         addMouseMotionListener(this);
     }
     public void paint(Graphics g) {
         g.drawImage(endBackgroundImg, 0, (Data.HEIGHT - 632) / 2, null);
+        g.drawImage(listImg, 980, 310, null);
         g.drawImage(nowSongImg, 90, 369, null);
         g.drawImage(myGradeImg, 993, 680, null);
-//        g.drawImage(gradeImg, 720, 350, null);
-        g.setFont(new Font("黑体", Font.PLAIN, 80));
+        int countY = 360;
+        for (int i = 0; i < 4; i++) {
+            g.drawImage(gradeImg, 993, countY, null);
+            countY += 60;
+        }
+//        g.drawImage(gradeImg, 993, 40, null);
+        g.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 20));
         g.setColor(new Color(119, 97, 125));
-
+        g.drawString("COMBO:", 90, 360);
     }
 
     @Override
