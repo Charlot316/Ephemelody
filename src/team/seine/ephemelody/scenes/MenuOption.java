@@ -18,7 +18,7 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
     public Image[] loginButton;
 
     public MenuOption() {
-        setBounds(0, 0, Data.WIDTH, 69);
+        setBounds(0, 0, Data.WIDTH, 93);
 //        setLayout(null);
         setOpaque(false);
         setVisible(true);

@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Home extends JPanel implements Scenes, MouseMotionListener, MouseListener, KeyListener {
     int buttonRatingStatus = 0, buttonSetUpBackStatus = 0, buttonLoginStatus = 0, buttonEasyStatus = 0, buttonNormalStatus = 0, buttonDifficultStatus = 0,
-            buttonPlayStatus = 0, buttonSongInfStatus = 0;
+            buttonPlayStatus = 0, buttonSongInfStatus = 0, buttonUpStatus = 0, buttonDownStatus = 0;
     public Double rate; //潜力值
     /*public Image[] ratingButton;
     public Image setupButton;
@@ -23,8 +23,8 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
     public Image[] easyButton;
     public Image[] normalButton;
     public Image[] difficultButton;
-    public Image upButton;
-    public Image downButton;
+    public Image[] upButton;
+    public Image[] downButton;
 //    public Image song1;
     public Image selectedImg;
     public Image nowSongImg;
@@ -62,8 +62,12 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         songInfButton = new Image[] {
                 Load.image("home/歌曲详情.png"), Load.image("home/歌曲详情_鼠标悬停.png"), Load.image("home/歌曲详情_按下.png")
         };
-        upButton = Load.image("home/up.png");
-        downButton = Load.image("home/down.png");
+        upButton = new Image[] {
+                Load.image("home/up.png"), Load.image("home/up_鼠标悬停.png"), Load.image("home/up_按下.png")
+        };
+        downButton = new Image[] {
+                Load.image("home/down.png"), Load.image("home/down_鼠标悬停.png"), Load.image("home/down_按下.png")
+        };
         nowSongImg = Load.image("home/song1.png");
         selectedImg = Load.image("home/被选中的.png");
 //        setBackground(null);
@@ -104,7 +108,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         if (buttonSetUpBackStatus != MOUSE_DOWN) {
             buttonSetUpBackStatus = 0;
         }
-        buttonRatingStatus = buttonLoginStatus = buttonPlayStatus = buttonSongInfStatus = 0;
+        buttonRatingStatus = buttonLoginStatus = buttonPlayStatus = buttonSongInfStatus = buttonUpStatus = buttonDownStatus = 0;
 
         int buttonStruts = struts == Scenes.MOUSE_MOVED ? 1 : struts == Scenes.MOUSE_DOWN ? 2 : 0;
         // e.getY() 获取的坐标包含了 窗口标题栏的高度，判断点击位置时，需要减去，如果监听鼠标事件时，监听对象为JPanel，则不需要此步骤,, 本程序监听的是JFrame对象
@@ -127,8 +131,15 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         if (Rect.isInternal(x, y, 503, 580, 202, 125)) {
             if (buttonEasyStatus != MOUSE_DOWN) {
                 buttonEasyStatus = buttonStruts;
-            } else {
+            } /*else {
 //                buttonSetUpBackStatus = MOUSE_UP;
+                buttonNormalStatus = MOUSE_UP;
+                buttonDifficultStatus = MOUSE_UP;
+            }*/
+            /*
+                为什么不用else，因为用else的话刚点下去的一瞬间，另外两个按钮不会立刻跳转
+             */
+            if (buttonEasyStatus == MOUSE_DOWN) {
                 buttonNormalStatus = MOUSE_UP;
                 buttonDifficultStatus = MOUSE_UP;
             }
@@ -141,8 +152,12 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
 
             if (buttonNormalStatus != MOUSE_DOWN) {
                 buttonNormalStatus = buttonStruts;
-            } else {
+            } /*else {
 //                buttonSetUpBackStatus = MOUSE_UP;
+                buttonEasyStatus = MOUSE_UP;
+                buttonDifficultStatus = MOUSE_UP;
+            }*/
+            if (buttonNormalStatus == MOUSE_DOWN) {
                 buttonEasyStatus = MOUSE_UP;
                 buttonDifficultStatus = MOUSE_UP;
             }
@@ -152,12 +167,15 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         }else if (Rect.isInternal(x, y, 1063, 580, 202, 125)) {
             if (buttonDifficultStatus != MOUSE_DOWN) {
                 buttonDifficultStatus = buttonStruts;
-            } else {
+            } /*else {
 //                buttonSetUpBackStatus = MOUSE_UP;
                 buttonEasyStatus = MOUSE_UP;
                 buttonNormalStatus = MOUSE_UP;
+            }*/
+            if (buttonDifficultStatus == MOUSE_DOWN) {
+                buttonEasyStatus = MOUSE_UP;
+                buttonNormalStatus = MOUSE_UP;
             }
-
             if(struts == Scenes.MOUSE_DOWN) {
 //                Data.canvas.switchScenes("End");
             }
@@ -174,7 +192,12 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             if (struts == Scenes.MOUSE_DOWN) {
                 Data.canvas.switchScenes("End");
             }
-        } /*else if (Rect.isInternal(x, y, 1080, -3, 188, 69)) {
+        } else if (Rect.isInternal(x, y, 100, 60, 126, 95)) {
+            buttonUpStatus = buttonStruts;
+        } else if (Rect.isInternal(x, y, 100, 800, 126, 95)) {
+            buttonDownStatus = buttonStruts;
+        }
+            /*else if (Rect.isInternal(x, y, 1080, -3, 188, 69)) {
             buttonLoginStatus = buttonStruts;
             if(struts == Scenes.MOUSE_DOWN) {
                 Data.canvas.switchScenes("Login");
@@ -191,14 +214,21 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         if (playFlag) {
             g.drawImage(playButton[buttonPlayStatus], Data.WIDTH / 2, 750, null);
         }
-        g.drawImage(upButton, 100, 60, null);
-        g.drawImage(downButton, 100, 800, null);
+        g.drawImage(upButton[buttonUpStatus], 100, 60, null);
+        g.drawImage(downButton[buttonDownStatus], 100, 800, null);
         /*g.drawImage(ratingButton[buttonRatingStatus], Data.WIDTH / 2 - 60, -16, null);
         g.drawImage(setupBackButton[buttonSetUpBackStatus], 900, 0, null);
         g.drawImage(setupButton, 934, 8, null);
         g.drawImage(loginButton[buttonLoginStatus], 1080, -3, null);*/
         g.drawImage(selectedImg, 0, Data.HEIGHT / 2 - 30, null);
         g.drawImage(songInfButton[buttonSongInfStatus], 1038, 850, null);
+        g.setFont(new Font("黑体", Font.PLAIN, 65));
+        g.setColor(new Color(117, 188, 214));
+        g.drawString("3", 595, 675);
+        g.setColor(new Color(237, 114, 209));
+        g.drawString("6", 875, 675);
+        g.setColor(new Color(245, 165, 152));
+        g.drawString("9", 1155, 675);
 //        Integer countX = 65, count = 1;
 //        for (String song : Data.songList) { // 到时候改成待展示的歌曲名单列表
 //            if (count == 3) {
