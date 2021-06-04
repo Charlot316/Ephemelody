@@ -151,9 +151,8 @@ public class Track extends JPanel implements Runnable {// The track of the note.
         g_2d.setColor(new Color(this.R, this.G, this.B, 100));
         g_2d.drawLine(x, 0, x, y);
         g_2d.setStroke(new BasicStroke(3.0f, CAP_BUTT, JOIN_BEVEL));
-        g_2d.setColor(new Color(this.R, this.G, this.B, 100));
+        g_2d.setColor(new Color(255,255,255, 100));
         g_2d.drawLine(x, 0, x, y);
-        g_2d.setColor(new Color(255, 255, 255, 100));
         g_2d.drawLine(x - halfWidth, 0, x - halfWidth, y);
         g_2d.drawLine(x + halfWidth, 0, x + halfWidth, y);
 
@@ -163,15 +162,20 @@ public class Track extends JPanel implements Runnable {// The track of the note.
         polygon1.addPoint(x, y + 10);
         polygon1.addPoint(x - 10, y);
         g_2d.setStroke(new BasicStroke(0f));
-        g_2d.setColor(new Color(0, 0, 0, 100));
+        g_2d.setColor(new Color(0, 0, 0, 150));
         g_2d.fillPolygon(polygon1);
         g_2d.draw(polygon1);
 
         if (this.type==1){
             g_2d.setStroke(new BasicStroke(3.0f, CAP_BUTT, JOIN_BEVEL));
-            g_2d.setColor(new Color(this.R, this.G, this.B, 100));
-            Rectangle2D rect = new Rectangle2D.Double(x-10, (int)((double)y/PlayInterface.finalY*0.9),20 , 20);
-
+            g_2d.setColor(new Color(36, 123, 160, 100));
+            Rectangle2D rect = new Rectangle2D.Double(x-25, (int)((double)y/PlayInterface.finalY*0.85),50 , 50);
+            g_2d.draw(rect);
+            g_2d.fill(rect);
+            Font f=new Font(null,Font.BOLD,40);
+            g_2d.setFont(f);
+            g_2d.setColor(new Color(255, 255, 255, 200));
+            g_2d.drawString(String.valueOf(this.key),x-10,(int)((double)y/PlayInterface.finalY*0.85+35));
         }
         for(int i=frontNote;i<=rearNote;i++){
             getImg(g,this.notes.get(i));
