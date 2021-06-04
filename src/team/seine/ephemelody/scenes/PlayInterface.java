@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class PlayInterface extends JPanel implements Scenes {//Set up the play interface
+public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up the play interface
     int songID;
     int difficulty;
     int trackCount;
@@ -31,7 +31,7 @@ public class PlayInterface extends JPanel implements Scenes {//Set up the play i
     public static AtomicInteger currentScore = new AtomicInteger();
     public static long startTime;
     public static long currentTime;//Used to tell the current time
-    public static double finalY;
+    public static double finalY=0.7;
     public static long remainingTime;
     public long finalEndTime;
     public HashMap<Integer, Track> currentTracks = new HashMap<>();
@@ -43,12 +43,14 @@ public class PlayInterface extends JPanel implements Scenes {//Set up the play i
     int frontBackground = 0;
     int BackgroundCount = 0;
     public String Path;
+    Scenes nowScenes = null;
 
     /**
      * read in information of the display
      */
     public void paint(Graphics g) {
         g.drawImage(backgroundImg.get(frontBackground), 0, 0, null);
+
     }
 
     public void loadData() {
@@ -98,8 +100,11 @@ public class PlayInterface extends JPanel implements Scenes {//Set up the play i
                     default:
                         break;
                 }
+
                 Track track = new Track(id, type, key, startTiming, endTiming, positionX, width, R, G, B);
                 this.allTracks.add(track);
+//                nowScenes = new Track(0, 1,'c', 1230, 2230, 0.5, 0.06, 255, 160, 160);
+  //              Data.canvas.add((Track) nowScenes,10);
                 System.out.println(track);
             }
 
@@ -110,6 +115,7 @@ public class PlayInterface extends JPanel implements Scenes {//Set up the play i
                 int noteType = Integer.parseInt(arguments[1]);
                 char key = arguments[2].charAt(0);
                 long timing = Long.parseLong(arguments[3]);
+                this.finalEndTime = Math.max(this.finalEndTime, timing);
                 Track track = getTrackByID(trackID);
                 if (arguments.length == 5) {
                     long endTiming = Long.parseLong(arguments[4]);
@@ -163,6 +169,7 @@ public class PlayInterface extends JPanel implements Scenes {//Set up the play i
                         tempBackground = arguments[3];
                         operation = new PlayOperations(trackID, type, startTiming, endTiming, endX, width, R, G, B, tempBackground);
                         this.backgroundOperations.add(operation);
+                        System.out.println(this.Path);
                         this.backgroundImg.add(Load.backgroundImage(this.Path + tempBackground));
                         break;
                     default:
@@ -228,20 +235,27 @@ public class PlayInterface extends JPanel implements Scenes {//Set up the play i
     }
 
     /**
-     * Constantly update currentTracks and run the game
+     * run the game
      */
-    public void display() {
+    public void run() {
         startTime = System.currentTimeMillis();
         currentTime = 0;
         this.repaint();
         while (currentTime < this.finalEndTime) {
             currentTime = System.currentTimeMillis() - startTime;
-            if (allTracks.get(frontTrack).startTiming < currentTime) {
+            //System.out.println(currentTime+" "+this.finalEndTime);
+            while (frontTrack<allTracks.size()&&allTracks.get(frontTrack).startTiming < currentTime) {
+                currentTime = System.currentTimeMillis() - startTime;
                 new Thread(allTracks.get(frontTrack)).start();
-                if (frontTrack + 1 < allTracks.size()) frontTrack++;
+                //System.out.println(currentTime+" "+this.finalEndTime);
+                System.out.println(allTracks.get(frontTrack).startTiming);
+                 frontTrack++;
             }
-            if (!backgroundOperations.isEmpty() && backgroundOperations.get(frontOperation).startTime < currentTime) {
+            if (!backgroundOperations.isEmpty() && frontOperation<backgroundOperations.size()&& backgroundOperations.get(frontOperation).startTime < currentTime) {
+                currentTime = System.currentTimeMillis() - startTime;
+                //System.out.println(currentTime+" "+this.finalEndTime);
                 this.frontBackground++;
+                this.frontOperation++;
                 this.repaint();
             }
         }
@@ -252,8 +266,7 @@ public class PlayInterface extends JPanel implements Scenes {//Set up the play i
      * Finish the play and go to the next interface
      */
     public void finish() {
-        //Data.canvas.switchScenes("Home");
-        System.out.println("嘿");
+        Data.canvas.switchScenes("Home");
     }
 
     public Track getTrackByID(int id) {

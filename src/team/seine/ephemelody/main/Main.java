@@ -14,6 +14,7 @@ public class Main {
         Data.canvas = new Canvas();
 //        Background background = new Background();
         frame.setContentPane(Data.canvas);
+        frame.setVisible(true);
 //        frame.add(background);
         frame.setSize(Data.WIDTH, Data.HEIGHT);
         // 窗口大小固定
@@ -22,6 +23,7 @@ public class Main {
         frame.setLocationRelativeTo(frame.getOwner());
         // 窗口关闭时结束程序
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
 
 

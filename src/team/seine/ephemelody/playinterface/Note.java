@@ -19,6 +19,7 @@ public class Note extends Thread {//Note, main article of the play interface
         this.noteType = noteType;
         this.key = key;
         this.timing = timing;
+        this.positionY=0;
     }
 
     public Note(Track basedTrack, int noteType, char key, long startTiming, long endTiming) {
@@ -28,6 +29,7 @@ public class Note extends Thread {//Note, main article of the play interface
         this.timing = startTiming;
         this.endTiming = endTiming;
         this.length=((double)(this.endTiming-this.timing)/(double) PlayInterface.remainingTime)*PlayInterface.finalY;
+        this.positionY=0;
     }
 
     /**
