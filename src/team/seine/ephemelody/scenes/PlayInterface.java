@@ -77,7 +77,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             this.backgroundImg.add(Load.backgroundImage(this.Path + arguments[3]));
             if (PlayInterface.notesCount != 0) {
                 PlayInterface.scorePerNote = (10000000 / PlayInterface.notesCount);
-                PlayInterface.scoreForLastNote =(PlayInterface.notesCount * PlayInterface.scorePerNote==10000000)? PlayInterface.scorePerNote:10000000 - PlayInterface.notesCount * PlayInterface.scorePerNote;
+                PlayInterface.scoreForLastNote =(PlayInterface.notesCount * PlayInterface.scorePerNote==10000000)? PlayInterface.scorePerNote:(10000000 - PlayInterface.notesCount * PlayInterface.scorePerNote+PlayInterface.scorePerNote);
             }
             for (int i = 0; i < this.trackCount; i++) {
                 command = bufferedReader.readLine();
