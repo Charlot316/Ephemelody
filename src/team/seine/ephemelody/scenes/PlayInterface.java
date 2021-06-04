@@ -125,6 +125,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable{//Set up t
                 } else {
                     Note note = new Note(track, noteType, key, timing);
                     track.notes.add(note);
+                    track.startTiming=Math.min(track.startTiming,note.timing-PlayInterface.remainingTime);
                     this.finalEndTime = Math.max(this.finalEndTime, timing);
                 }
             }

@@ -127,7 +127,9 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
         Rectangle2D rect = new Rectangle2D.Double((int)((this.positionX*Data.WIDTH)-(this.width*Data.WIDTH)), 0, (this.width*2*Data.WIDTH), (int)(Data.HEIGHT*PlayInterface.finalY));
         g_2d.setColor(new Color(this.R, this.G, this.B, 100));
         g_2d.fill(rect);
-
+        for(Note i:this.currentNotes){
+            getImg(g,i);
+        }
 
         //记得画指示键！
 
