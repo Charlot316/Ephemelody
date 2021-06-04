@@ -16,7 +16,7 @@ public class Data {
     public static Canvas canvas;
     public static List<String> songList; // 歌曲列表，存放歌曲名
     public static int offset = 0, noteVolume = 1, volume = 1; // 存放设置中的偏移、音效、音量
-    public static double noteSpeed = 6.0; // 存放设置中的流速
+    public static double noteSpeed = 1.1; // 存放设置中的流速
     /*private static Image[] setupButton;
     private static Image[] ratingButton;
     private static Image[] difficultyButton;

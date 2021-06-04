@@ -90,56 +90,57 @@ public class Track extends JPanel implements Runnable, Scenes {// The track of t
 
         if(note.noteType==1&&note.length>0){
             int length=(int)(note.length*Data.HEIGHT);
-            polygon1.addPoint(x,y-length-35);
-            polygon1.addPoint(x+35,y-length);
-            polygon1.addPoint(x+35,y);
-            polygon1.addPoint(x,y+35);
-            polygon1.addPoint(x-35,y);
-            polygon1.addPoint(x-35,y-length);
+            polygon1.addPoint(x,y-length-30);
+            polygon1.addPoint(x+30,y-length);
+            polygon1.addPoint(x+30,y);
+            polygon1.addPoint(x,y+30);
+            polygon1.addPoint(x-30,y);
+            polygon1.addPoint(x-30,y-length);
 
-            polygon2.addPoint(x,y-length-30);
-            polygon2.addPoint(x+30,y-length);
-            polygon2.addPoint(x+30,y);
-            polygon2.addPoint(x,y+30);
-            polygon2.addPoint(x-30,y);
-            polygon2.addPoint(x-30,y-length);
+            polygon2.addPoint(x,y-length-18);
+            polygon2.addPoint(x+18,y-length);
+            polygon2.addPoint(x,y-length+18);
+            polygon2.addPoint(x-18,y-length);
 
-            polygon3.addPoint(x,y-length-25);
-            polygon3.addPoint(x+25,y-length);
-            polygon3.addPoint(x+25,y);
-            polygon3.addPoint(x,y+25);
-            polygon3.addPoint(x-25,y);
-            polygon3.addPoint(x-25,y-length);
+            polygon3.addPoint(x,y-18);
+            polygon3.addPoint(x+18,y);
+            polygon3.addPoint(x,y+18);
+            polygon3.addPoint(x-18,y);
+
+            g_2d.setColor(new Color(22,22,14));
+            g_2d.fillPolygon(polygon1);
+            g_2d.draw(polygon1);
+
+            g_2d.setColor(new Color(203,105,121));
+            g_2d.fillPolygon(polygon2);
+            g_2d.draw(polygon2);
+
+            g_2d.setColor(new Color(203,105,121));
+            g_2d.fillPolygon(polygon3);
+            g_2d.draw(polygon3);
 
         }
         else{
-            polygon1.addPoint(x,y-35);
-            polygon1.addPoint(x+35,y);
-            polygon1.addPoint(x,y+35);
-            polygon1.addPoint(x-35,y);
+            polygon1.addPoint(x,y-30);
+            polygon1.addPoint(x+30,y);
+            polygon1.addPoint(x,y+30);
+            polygon1.addPoint(x-30,y);
 
-            polygon2.addPoint(x,y-30);
-            polygon2.addPoint(x+30,y);
-            polygon2.addPoint(x,y+30);
-            polygon2.addPoint(x-30,y);
+            polygon3.addPoint(x,y-18);
+            polygon3.addPoint(x+18,y);
+            polygon3.addPoint(x,y+18);
+            polygon3.addPoint(x-18,y);
 
-            polygon3.addPoint(x,y-25);
-            polygon3.addPoint(x+25,y);
-            polygon3.addPoint(x,y+25);
-            polygon3.addPoint(x-25,y);
+            g_2d.setColor(new Color(22,22,14));
+            g_2d.fillPolygon(polygon1);
+            g_2d.draw(polygon1);
+
+            g_2d.setColor(new Color(203,105,121));
+            g_2d.fillPolygon(polygon3);
+            g_2d.draw(polygon3);
         }
 
-        g_2d.setColor(Color.WHITE);
-        g_2d.fillPolygon(polygon1);
-        g_2d.draw(polygon1);
 
-        g_2d.setColor(Color.YELLOW);
-        g_2d.fillPolygon(polygon2);
-        g_2d.draw(polygon2);
-
-        g_2d.setColor(Color.RED);
-        g_2d.fillPolygon(polygon3);
-        g_2d.draw(polygon3);
     }
 
     public void paint(Graphics g) {
