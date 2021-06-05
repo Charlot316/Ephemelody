@@ -10,16 +10,15 @@ public class ScorePresenter extends Thread {
         count.set(0);
         while((System.currentTimeMillis()- PlayInterface.startTime)<PlayInterface.finalEndTime){
             while(count.get()<PlayInterface.currentScore.get()){
-                count.getAndIncrement();
-                if(count.get()%4000==0){
-                    try {
-                        sleep(1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
+                if(count.get()+8769<=PlayInterface.currentScore.get())count.getAndAdd(8769);
+                else count.set(PlayInterface.currentScore.get());
+                try {
+                    sleep(4);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
+
         }
     }
 }

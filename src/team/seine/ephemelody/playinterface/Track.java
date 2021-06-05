@@ -2,13 +2,10 @@ package team.seine.ephemelody.playinterface;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 
 import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.scenes.*;
-import team.seine.ephemelody.utils.Rect;
 
 import javax.swing.*;
 
@@ -393,7 +390,11 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                     }
                 }
                 this.repaint();
-                //Thread.sleep(1);
+                try{
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
             this.isEnded=true;
             while(!finalEnd){
