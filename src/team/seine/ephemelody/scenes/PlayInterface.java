@@ -87,7 +87,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                 char key = arguments[2].charAt(0);
                 long startTiming = Long.parseLong(arguments[3]);
                 long endTiming = Long.parseLong(arguments[4]);
-                this.finalEndTime = Math.max(this.finalEndTime, endTiming);
+                this.finalEndTime = Math.max(this.finalEndTime, endTiming+1000);
                 double positionX = Double.parseDouble(arguments[5]);
                 double width = 0.06;
                 int R = 160;
@@ -123,18 +123,18 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                 int noteType = Integer.parseInt(arguments[1]);
                 char key = arguments[2].charAt(0);
                 long timing = Long.parseLong(arguments[3]);
-                this.finalEndTime = Math.max(this.finalEndTime, timing);
+                this.finalEndTime = Math.max(this.finalEndTime, timing+1000);
                 Track track = getTrackByID(trackID);
                 if (noteType==1) {
                     long endTiming = Long.parseLong(arguments[4]);
                     Note note = new Note(track, noteType, key, timing, endTiming);
                     track.notes.add(note);
-                    this.finalEndTime = Math.max(this.finalEndTime, endTiming);
+                    this.finalEndTime = Math.max(this.finalEndTime, endTiming+1000);
                 } else {
                     Note note = new Note(track, noteType, key, timing);
                     track.notes.add(note);
                     track.startTiming=Math.min(track.startTiming,note.timing-PlayInterface.remainingTime);
-                    this.finalEndTime = Math.max(this.finalEndTime, timing);
+                    this.finalEndTime = Math.max(this.finalEndTime, timing+1000);
                 }
 
             }

@@ -27,6 +27,9 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     public int B;
     public int currentKey;//Equals to the key of the first note
     public boolean isHolding=false;//Check if is holding a note
+    public boolean isStarted=false;
+    public boolean isEnded=false;
+    public boolean finalEnd=false;
     public int lastStatus;//last status of currentKey
     public int currentStatus;//current status of currentKey
     public int tempJudge=-1;
@@ -37,6 +40,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     public PlayOperations currentMove = null;
     public PlayOperations currentWidth = null;
     public PlayOperations currentColor = null;
+    public double tempRatio=0;
     public int frontNote=0;
     public int rearNote = -1;
     public int frontMove = 0;
@@ -145,21 +149,36 @@ public class Track extends JPanel implements Runnable {// The track of the note.
 
 
     }
+    public void endPaint(Graphics g){
 
+    }
     public void paint(Graphics g) {
         Graphics2D g_2d = (Graphics2D) g;
         int x = (int) (this.positionX * Data.WIDTH);
         int halfWidth = (int) (this.width * Data.WIDTH);
         int y = (int) (Data.HEIGHT * PlayInterface.finalY);
 
+        if(!isStarted&&!isEnded){
+
+            if(tempRatio+0.05<=1)tempRatio+=0.05;
+            if(tempRatio>=0.94) isStarted=true;
+        }
+        else if(!isEnded&&!finalEnd)
+        {
+            tempRatio=1;
+        }
+        else if(isStarted&&isEnded&&!finalEnd){
+            if(tempRatio-0.05>=0) tempRatio-=0.05;
+            if(tempRatio<=0.06) finalEnd=true;
+        }
         g_2d.setStroke(new BasicStroke((float) (2 * halfWidth), CAP_BUTT, JOIN_BEVEL));
-        g_2d.setColor(new Color(this.R, this.G, this.B, 100));
-        g_2d.drawLine(x, 0, x, y);
+        g_2d.setColor(new Color(this.R, this.G, this.B, (int)(100*tempRatio)));
+        g_2d.drawLine(x, y,x,(int)((double)y*(1-tempRatio)));
         g_2d.setStroke(new BasicStroke(3.0f, CAP_BUTT, JOIN_BEVEL));
-        g_2d.setColor(new Color(255,255,255, 100));
-        g_2d.drawLine(x, 0, x, y);
-        g_2d.drawLine(x - halfWidth, 0, x - halfWidth, y);
-        g_2d.drawLine(x + halfWidth, 0, x + halfWidth, y);
+        g_2d.setColor(new Color(255,255,255, (int)(100*tempRatio)));
+        g_2d.drawLine( x,y,x,(int)((double)y*(1-tempRatio)));
+        g_2d.drawLine(x - halfWidth, y,x - halfWidth, (int)((double)y*(1-tempRatio)));
+        g_2d.drawLine(x + halfWidth, y,x + halfWidth,(int)((double)y*(1-tempRatio)));
 
         Polygon polygon1 = new Polygon();
         polygon1.addPoint(x, y - 10);
@@ -167,10 +186,10 @@ public class Track extends JPanel implements Runnable {// The track of the note.
         polygon1.addPoint(x, y + 10);
         polygon1.addPoint(x - 10, y);
         g_2d.setStroke(new BasicStroke(0f));
-        g_2d.setColor(new Color(0, 0, 0, 150));
+
+        g_2d.setColor(new Color(0, 0, 0, (int)(150*tempRatio)));
         g_2d.fillPolygon(polygon1);
         g_2d.draw(polygon1);
-
         if (this.type==1){
             g_2d.setStroke(new BasicStroke(3.0f, CAP_BUTT, JOIN_BEVEL));
             g_2d.setColor(new Color(36, 123, 160, 100));
@@ -268,7 +287,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                         tempJudge=-1;
                         break;
                 }
-                System.out.println(PlayInterface.scorePerNote+" "+PlayInterface.scoreForLastNote+" "+PlayInterface.currentScore.get());
+                System.out.println("current score: "+PlayInterface.currentScore.get());
                 tempJudge=-1;
                 this.frontNote++;
             }
@@ -345,7 +364,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * Note: display must be after the move and change operations are finished
      */
     public void run() {
-
             this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
             while (this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
                 this.lastTime = this.trackCurrentTime;
@@ -382,6 +400,10 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 }
                 this.repaint();
                 //Thread.sleep(1);
+            }
+            this.isEnded=true;
+            while(!finalEnd){
+                    this.repaint();
             }
             Data.canvas.remove(this);
     }
