@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.scenes.*;
+import team.seine.ephemelody.utils.Load;
 
 import javax.swing.*;
 
@@ -45,7 +46,10 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     public int frontColor = 0;
     public long lastTime;
     public long trackCurrentTime;
-
+    public int[]positionY=new int[200];
+    public int displayState=199;
+    public Image []judgement=new Image[3];
+    public Image currentJudgement;
     /**
      * @param id          Uniquely defines a track
      * @param type        Denotes the type of the track. type=0 virtual track type=1 real track
@@ -73,10 +77,21 @@ public class Track extends JPanel implements Runnable {// The track of the note.
         this.R = r;
         this.G = g;
         this.B = b;
+        positionY[0]=(int)(0.85*PlayInterface.finalY*(double)Data.HEIGHT);
+        for(int i=1;i<=50;i++){
+            positionY[i]=positionY[i-1]-1;
+        }
+        for(int i=51;i<200;i++){
+            positionY[i]=positionY[i-1];
+        }
+        judgement[0]= Load.image("judgement\\lost.png");
+        judgement[1]= Load.image("judgement\\far.png");
+        judgement[2]= Load.image("judgement\\pure.png");
+        currentJudgement=judgement[2];
     }
 
     /**
-     * Paint the notes and track.
+     * Paint the notes
      *
      * @param g the brush
      */
@@ -146,6 +161,11 @@ public class Track extends JPanel implements Runnable {// The track of the note.
 
 
     }
+
+    /**
+     * Paint the track
+     * @param g the brush
+     */
     public void paint(Graphics g) {
         Graphics2D g_2d = (Graphics2D) g;
         int x = (int) (this.positionX * Data.WIDTH);
@@ -200,6 +220,9 @@ public class Track extends JPanel implements Runnable {// The track of the note.
         for(int i=frontNote;i<=rearNote;i++){
             getImg(g,this.notes.get(i));
         }
+        if(displayState!=199){
+            g_2d.drawImage(currentJudgement,(int)(this.positionX*Data.WIDTH)-55,positionY[displayState],null);
+        }
     }
 
     /**
@@ -214,12 +237,18 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             if(isHolding){
                 if (this.lastStatus == 1 && this.currentStatus == 0){
                     if(Math.abs(this.trackCurrentTime -this.notes.get(frontNote).endTiming)>100){
+                        this.displayState=0;
+                        this.currentJudgement=judgement[0];
                         this.tempJudge=0;
                     }
                     else if(Math.abs(this.trackCurrentTime -this.notes.get(frontNote).endTiming)>50){
+                        this.displayState=0;
+                        this.currentJudgement=judgement[1];
                         this.tempJudge=1;
                     }
                     else {
+                        this.displayState=0;
+                        this.currentJudgement=judgement[2];
                         this.tempJudge=Math.min(this.tempJudge,2);
                     }
                     isHolding=false;
@@ -235,15 +264,15 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 }
                 else if(Math.abs(this.trackCurrentTime -this.notes.get(frontNote).timing)>50){
                     this.tempJudge=1;
-                    if(this.notes.get(frontNote).noteType==1)System.out.println("tempFar");
                 }
                 else {
                     this.tempJudge=2;
-                    if(this.notes.get(frontNote).noteType==1)System.out.println("tempPure");
                 }
                 if(this.notes.get(frontNote).noteType==1&&this.tempJudge>0){
                     this.isHolding=true;
                 }
+                this.displayState=0;
+                this.currentJudgement=judgement[this.tempJudge];
             }
 
             if(!isHolding&&tempJudge!=-1){
@@ -255,34 +284,21 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                         PlayInterface.combo.getAndIncrement();
                         PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
                         PlayInterface.farCount.getAndIncrement();
-                        if(this.notes.get(frontNote).noteType==1) {
-                            System.out.println("far"+this.notes.get(frontNote).endTiming+" "+this.trackCurrentTime);
-                        }
-                        else System.out.println("far"+this.notes.get(frontNote).timing+" "+this.trackCurrentTime);
                         break;
                     case 2:
                         PlayInterface.currentScore.getAndAdd(score);
                         PlayInterface.combo.getAndIncrement();
                         PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
                         PlayInterface.pureCount.getAndIncrement();
-                        if(this.notes.get(frontNote).noteType==1) {
-                            System.out.println("pure"+this.notes.get(frontNote).endTiming+" "+this.trackCurrentTime);
-                        }
-                        else System.out.println("pure"+this.notes.get(frontNote).timing+" "+this.trackCurrentTime);
                         break;
                     case 0:
                         PlayInterface.combo.set(0);
                         PlayInterface.lostCount.getAndIncrement();
-                        if(this.notes.get(frontNote).noteType==1) {
-                            System.out.println("lost"+this.notes.get(frontNote).endTiming+" "+this.trackCurrentTime);
-                        }
-                        else System.out.println("lost"+this.notes.get(frontNote).timing+" "+this.trackCurrentTime);
                         break;
                     default:
                         tempJudge=-1;
                         break;
                 }
-                System.out.println("current score: "+PlayInterface.currentScore.get());
                 tempJudge=-1;
                 this.frontNote++;
             }
@@ -357,6 +373,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     public void run() {
             this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
             while (this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
+                if (displayState<199) displayState++;
                 this.lastTime = this.trackCurrentTime;
                 this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
                 this.Judge();
@@ -373,7 +390,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                         PlayInterface.lostCount.getAndIncrement();
                         PlayInterface.currentNoteCount.getAndIncrement();
                         this.tempJudge=-1;
-                        System.out.println("type2 lost"+this.notes.get(frontNote).timing+" "+this.trackCurrentTime);
                         frontNote++;
                     } else if ( frontNote<this.notes.size()&&this.notes.get(frontNote).noteType == 1 && this.trackCurrentTime > this.notes.get(frontNote).endTiming + 150) {
                         PlayInterface.combo.set(0);
@@ -382,7 +398,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                         PlayInterface.currentNoteCount.getAndIncrement();
                         this.tempJudge=-1;
                         this.isHolding=false;
-                        System.out.println("type2 lost"+this.notes.get(frontNote).timing+" "+this.trackCurrentTime);
                         frontNote++;
                     }
                     for(int i=frontNote;i<=rearNote;i++){
