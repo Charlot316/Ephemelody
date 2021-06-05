@@ -106,7 +106,12 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             polygon3.addPoint(x, y + 18);
             polygon3.addPoint(x - 18, y);
 
-            g_2d.setColor(new Color(22, 22, 14));
+            if(!isHolding){
+                g_2d.setColor(new Color(22, 22, 14));
+            }
+            else{
+                g_2d.setColor(new Color(55, 55, 34));
+            }
             g_2d.fillPolygon(polygon1);
             g_2d.draw(polygon1);
 
@@ -180,14 +185,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
         for(int i=frontNote;i<=rearNote;i++){
             getImg(g,this.notes.get(i));
         }
-
-
-
-
-
-        //记得画指示键！
-
-
     }
 
     /**
@@ -386,8 +383,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 this.repaint();
                 //Thread.sleep(1);
             }
-
-
+            Data.canvas.remove(this);
     }
 
     @Override
