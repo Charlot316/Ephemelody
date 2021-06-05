@@ -111,10 +111,10 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             polygon3.addPoint(x - 18, y);
 
             if(!isHolding){
-                g_2d.setColor(new Color(22, 22, 14));
+                g_2d.setColor(new Color(55, 55, 34));
             }
             else{
-                g_2d.setColor(new Color(55, 55, 34));
+                g_2d.setColor(new Color(22, 22, 14));
             }
             g_2d.fillPolygon(polygon1);
             g_2d.draw(polygon1);
@@ -149,9 +149,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
 
 
     }
-    public void endPaint(Graphics g){
-
-    }
     public void paint(Graphics g) {
         Graphics2D g_2d = (Graphics2D) g;
         int x = (int) (this.positionX * Data.WIDTH);
@@ -172,6 +169,8 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             if(tempRatio<=0.06) finalEnd=true;
         }
         g_2d.setStroke(new BasicStroke((float) (2 * halfWidth), CAP_BUTT, JOIN_BEVEL));
+
+
         g_2d.setColor(new Color(this.R, this.G, this.B, (int)(100*tempRatio)));
         g_2d.drawLine(x, y,x,(int)((double)y*(1-tempRatio)));
         g_2d.setStroke(new BasicStroke(3.0f, CAP_BUTT, JOIN_BEVEL));
@@ -215,7 +214,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             if(this.currentKey>='a'&&this.currentKey<='z') this.currentKey-=32;
             this.lastStatus = this.currentStatus;
             this.currentStatus = Data.keyStatus[this.currentKey].get();
-           // System.out.println((char)this.currentKey+" "+this.currentKey+" "+Data.keyStatus[this.currentKey].get());
             if(isHolding){
                 if (this.lastStatus == 1 && this.currentStatus == 0){
                     if(Math.abs(this.trackCurrentTime -this.notes.get(frontNote).endTiming)>100){
@@ -349,9 +347,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 this.R = (r > 255 || r < 0) ? 160 : r;
                 this.G = (g > 255 || g < 0) ? 160 : g;
                 this.B = (b > 255 || b < 0) ? 160 : b;
-//                System.out.println((this.R-currentColor.endR)+" "+(currentColor.endTime-this.trackCurrentTime)+" "+(this.trackCurrentTime-this.lastTime));
-//                System.out.println((int)(((double)(this.R-currentColor.endR)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime))+","+(int)(((double)(this.G-currentColor.endG)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime))+","+(int)(((double)(this.B-currentColor.endB)/(double)(currentColor.endTime-this.trackCurrentTime))*(double)(this.trackCurrentTime-this.lastTime)));
-
             }
         }
         if (currentColor.endTime < this.trackCurrentTime && (frontColor + 1) < this.changeColorOperations.size())

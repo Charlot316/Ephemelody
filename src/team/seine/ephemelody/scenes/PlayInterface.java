@@ -1,13 +1,11 @@
 package team.seine.ephemelody.scenes;
 
 import team.seine.ephemelody.data.Data;
-import team.seine.ephemelody.main.Canvas;
 import team.seine.ephemelody.playinterface.*;
 import team.seine.ephemelody.utils.Load;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
@@ -39,7 +37,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     public static long currentTime;//Used to tell the current time
     public static double finalY=0.8;
     public static long remainingTime;
-    public long finalEndTime;
+    public static long finalEndTime;
     public HashMap<Integer, Track> currentTracks = new HashMap<>();
     public ArrayList<Track> allTracks = new ArrayList<>();
     ArrayList<PlayOperations> backgroundOperations = new ArrayList<>();
@@ -58,6 +56,10 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         g_2d.setStroke(new BasicStroke(3.0f,CAP_BUTT, JOIN_BEVEL));
         g_2d.setColor(new Color(255,255,255));
         g_2d.drawLine(0,(int)(PlayInterface.finalY*Data.HEIGHT),Data.WIDTH,(int)(PlayInterface.finalY*Data.HEIGHT));
+        Font f=new Font(null,Font.BOLD,40);
+        g_2d.setFont(f);
+        g_2d.setColor(new Color(255, 255, 255, 200));
+        g_2d.drawString(String.valueOf(ScorePresenter.count.get()),Data.WIDTH*4/5,50);
     }
 
     public void loadData() {
@@ -87,7 +89,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                 char key = arguments[2].charAt(0);
                 long startTiming = Long.parseLong(arguments[3]);
                 long endTiming = Long.parseLong(arguments[4]);
-                this.finalEndTime = Math.max(this.finalEndTime, endTiming+1000);
+                PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, endTiming+1000);
                 double positionX = Double.parseDouble(arguments[5]);
                 double width = 0.06;
                 int R = 160;
@@ -116,25 +118,25 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                 this.allTracks.add(track);
             }
 
-            for (int i = 0; i < this.notesCount; i++) {
+            for (int i = 0; i < PlayInterface.notesCount; i++) {
                 command = bufferedReader.readLine();
                 arguments = command.split("\\s+");
                 int trackID = Integer.parseInt(arguments[0]);
                 int noteType = Integer.parseInt(arguments[1]);
                 char key = arguments[2].charAt(0);
                 long timing = Long.parseLong(arguments[3]);
-                this.finalEndTime = Math.max(this.finalEndTime, timing+1000);
+                PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, timing+1000);
                 Track track = getTrackByID(trackID);
                 if (noteType==1) {
                     long endTiming = Long.parseLong(arguments[4]);
                     Note note = new Note(track, noteType, key, timing, endTiming);
                     track.notes.add(note);
-                    this.finalEndTime = Math.max(this.finalEndTime, endTiming+1000);
+                    PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, endTiming+1000);
                 } else {
                     Note note = new Note(track, noteType, key, timing);
                     track.notes.add(note);
                     track.startTiming=Math.min(track.startTiming,note.timing-PlayInterface.remainingTime);
-                    this.finalEndTime = Math.max(this.finalEndTime, timing+1000);
+                    PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, timing+1000);
                 }
 
             }
@@ -253,9 +255,11 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      */
     public void run() {
         startTime = System.currentTimeMillis();
+        ScorePresenter scorePresenter=new ScorePresenter();
+        scorePresenter.start();
         currentTime = 0;
         this.repaint();
-        while (currentTime < this.finalEndTime) {
+        while (currentTime < PlayInterface.finalEndTime) {
             currentTime = System.currentTimeMillis() - startTime;
             //System.out.println(currentTime+" "+this.finalEndTime);
             while (frontTrack<allTracks.size()&&allTracks.get(frontTrack).startTiming < currentTime) {
