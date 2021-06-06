@@ -77,8 +77,7 @@ public class Canvas extends JLayeredPane{
 //        System.out.println("前面都执行完了");
     }
 
-    public void paintString(String str, Graphics g, Integer x, Integer y, Integer size, Color color1, Color color2) {
-        Font f = new Font("黑体", Font.BOLD, size);
+    public void paintString(String str, Font f, Graphics g, Integer x, Integer y, Integer width, Color color1, Color color2) {
         GlyphVector v = f.createGlyphVector(getFontMetrics(f).getFontRenderContext(), str);
         Shape shape = v.getOutline();
 
@@ -95,7 +94,7 @@ public class Canvas extends JLayeredPane{
         gg.setColor(color1);
         gg.fill(shape);
         gg.setColor(color2);
-        gg.setStroke(new BasicStroke(3));
+        gg.setStroke(new BasicStroke(width));
         gg.draw(shape);
     }
 

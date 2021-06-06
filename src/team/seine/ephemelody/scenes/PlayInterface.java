@@ -4,6 +4,7 @@ import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.playinterface.*;
 import team.seine.ephemelody.utils.Load;
 
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -233,7 +234,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         this.setInterface();
         this.repaint();
         this.requestFocus();
-
+        Load.sound("1").loop(Clip.LOOP_CONTINUOUSLY); // 播放音乐
     }
 
     /**

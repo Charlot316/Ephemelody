@@ -30,7 +30,8 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
     public Image selectedImg;
     public Image nowSongImg;
     public Image[] songInfButton;
-
+    public Image songNameImg;
+    public Image hitSongImg;
     public Boolean playFlag;
     public Home() {
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
@@ -71,6 +72,8 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         };
         nowSongImg = Load.image("home/song1.png");
         selectedImg = Load.image("home/被选中的.png");
+        songNameImg = Load.image("home/歌曲条.png");
+        hitSongImg = Load.image("home/当前歌曲指示条.png");
 //        setBackground(null);
 //        Load.sound("1").loop(Clip.LOOP_CONTINUOUSLY); // 播放音乐
         setOpaque(false);
@@ -224,13 +227,33 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         g.drawImage(loginButton[buttonLoginStatus], 1080, -3, null);*/
         g.drawImage(selectedImg, 0, Data.HEIGHT / 2 - 30, null);
         g.drawImage(songInfButton[buttonSongInfStatus], 1038, 850, null);
-        g.setFont(new Font("黑体", Font.PLAIN, 65));
+        g.drawImage(songNameImg, -100, 170, null);
+        g.drawImage(songNameImg, -100, 300, null);
+        g.drawImage(songNameImg, -100, 430, null);
+        g.drawImage(songNameImg, -100, 560, null);
+        g.drawImage(songNameImg, -100, 690, null);
+        /*g.setFont(new Font("黑体", Font.BOLD, 30));
+        g.setColor(Color.WHITE);
+        g.drawString("第一首歌", 200, 190);*/
+//        g.setFont(new Font("黑体", Font.PLAIN, 65));
 //        g.setColor(new Color(117, 188, 214));
-        Data.canvas.paintString("3", g, 595, 675, 65, Color.WHITE, new Color(117, 188, 214));
+        Data.canvas.paintString("3", new Font("黑体", Font.BOLD, 65), g, 595, 675, 3, Color.WHITE, new Color(117, 188, 214));
         g.translate(-595, -675);
-        Data.canvas.paintString("6", g, 875, 675, 65, Color.WHITE, new Color(237, 114, 209));
+        Data.canvas.paintString("6", new Font("黑体", Font.BOLD, 65), g, 875, 675, 3, Color.WHITE, new Color(237, 114, 209));
         g.translate(-875, -675);
-        Data.canvas.paintString("9", g, 1155, 675, 65, Color.WHITE, new Color(245, 165, 152));
+        Data.canvas.paintString("9", new Font("黑体", Font.BOLD, 65), g, 1155, 675, 3, Color.WHITE, new Color(245, 165, 152));
+        g.translate(-1155, -675);
+//        g.setFont(new Font("宋体", Font.PLAIN, 65));
+        Data.canvas.paintString("第一首歌", new Font("黑体", Font.BOLD, 50), g, 0, 235, 1, Color.WHITE, Color.BLACK);
+        g.translate(0, -235);
+        Data.canvas.paintString("第二首歌", new Font("黑体", Font.BOLD, 50), g, 0, 365, 1, Color.WHITE, Color.BLACK);
+        g.translate(0, -365);
+        Data.canvas.paintString("第三首歌", new Font("黑体", Font.BOLD, 50), g, 0, 495, 1, Color.WHITE, Color.BLACK);
+        g.translate(0, -495);
+        Data.canvas.paintString("第四首歌", new Font("黑体", Font.BOLD, 50), g, 0, 625, 1, Color.WHITE, Color.BLACK);
+        g.translate(0, -625);
+        Data.canvas.paintString("第五首歌", new Font("黑体", Font.BOLD, 50), g, 0, 755, 1, Color.WHITE, Color.BLACK);
+        g.translate(0, -755);
 //        g.drawString("3", 595, 675);
         /*g.setColor(new Color(237, 114, 209));
         g.drawString("6", 875, 675);
