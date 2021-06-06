@@ -434,6 +434,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                     this.repaint();
             }
             Data.canvas.remove(this);
+            PlayInterface.currentTracks.remove(this.id);
     }
 
     @Override

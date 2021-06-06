@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -39,7 +40,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     public static long remainingTime;
     public static long finalEndTime;
     public int score=0;
-    public HashMap<Integer, Track> currentTracks = new HashMap<>();
+    public static Hashtable<Integer, Track> currentTracks = new Hashtable<>();
     public ArrayList<Track> allTracks = new ArrayList<>();
     ArrayList<PlayOperations> backgroundOperations = new ArrayList<>();
     ArrayList<Image> backgroundImg = new ArrayList<>();
@@ -132,11 +133,13 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                     Note note = new Note(track, noteType, key, timing, endTiming);
                     track.notes.add(note);
                     PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, endTiming+1000);
-                    track.startTiming=Math.min(track.startTiming,note.timing-PlayInterface.remainingTime);
+                    track.startTiming=Math.min(track.startTiming,note.timing-PlayInterface.remainingTime-500);
+                    track.endTiming=Math.max(track.endTiming,note.endTiming+500);
                 } else {
                     Note note = new Note(track, noteType, key, timing);
                     track.notes.add(note);
                     track.startTiming=Math.min(track.startTiming,note.timing-PlayInterface.remainingTime);
+                    track.endTiming=Math.max(track.endTiming,note.timing+500);
                     PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, timing+1000);
                 }
 
@@ -264,6 +267,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             while (frontTrack<allTracks.size()&&allTracks.get(frontTrack).startTiming < currentTime) {
                 currentTime = System.currentTimeMillis() - startTime;
                 new Thread(allTracks.get(frontTrack)).start();
+                currentTracks.put(allTracks.get(frontTrack).id,allTracks.get(frontTrack));
                  frontTrack++;
             }
             if (!backgroundOperations.isEmpty() && frontOperation<backgroundOperations.size()&& backgroundOperations.get(frontOperation).startTime < currentTime) {
