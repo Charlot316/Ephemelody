@@ -72,7 +72,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         nowSongImg = Load.image("home/song1.png");
         selectedImg = Load.image("home/被选中的.png");
 //        setBackground(null);
-        Load.sound("1").loop(Clip.LOOP_CONTINUOUSLY); // 播放音乐
+//        Load.sound("1").loop(Clip.LOOP_CONTINUOUSLY); // 播放音乐
         setOpaque(false);
         new UpdateUI().start();
         addMouseMotionListener(this);
