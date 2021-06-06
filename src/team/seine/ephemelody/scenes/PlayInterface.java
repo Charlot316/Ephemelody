@@ -46,6 +46,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     int frontOperation = 0;
     int frontBackground = 0;
     public String Path;
+    public ScoreAndComboDisplay displayer = new ScoreAndComboDisplay();
 
     /**
      * read in information of the display
@@ -56,10 +57,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         g_2d.setStroke(new BasicStroke(3.0f,CAP_BUTT, JOIN_BEVEL));
         g_2d.setColor(new Color(255,255,255));
         g_2d.drawLine(0,(int)(PlayInterface.finalY*Data.HEIGHT),Data.WIDTH,(int)(PlayInterface.finalY*Data.HEIGHT));
-        Font f=new Font(null,Font.BOLD,40);
-        g_2d.setFont(f);
-        g_2d.setColor(new Color(255, 255, 255, 200));
-        g_2d.drawString(String.valueOf(ScorePresenter.count.get()),Data.WIDTH*4/5,50);
     }
 
     public void loadData() {
@@ -255,8 +252,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      */
     public void run() {
         startTime = System.currentTimeMillis();
-        ScorePresenter scorePresenter=new ScorePresenter();
-        scorePresenter.start();
         currentTime = 0;
         this.repaint();
         while (currentTime < PlayInterface.finalEndTime) {

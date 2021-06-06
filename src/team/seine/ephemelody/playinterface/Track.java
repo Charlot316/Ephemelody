@@ -391,6 +391,8 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                         PlayInterface.currentNoteCount.getAndIncrement();
                         this.tempJudge=-1;
                         frontNote++;
+                        this.displayState=0;
+                        this.currentJudgement=judgement[0];
                     } else if ( frontNote<this.notes.size()&&this.notes.get(frontNote).noteType == 1 && this.trackCurrentTime > this.notes.get(frontNote).endTiming + 150) {
                         PlayInterface.combo.set(0);
                         PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
@@ -399,6 +401,8 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                         this.tempJudge=-1;
                         this.isHolding=false;
                         frontNote++;
+                        this.displayState=0;
+                        this.currentJudgement=judgement[0];
                     }
                     for(int i=frontNote;i<=rearNote;i++){
                         this.notes.get(i).moveNote(this.trackCurrentTime-this.lastTime);
