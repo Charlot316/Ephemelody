@@ -1,6 +1,7 @@
 package team.seine.ephemelody.utils;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -34,5 +35,21 @@ public class Load {
         InputStream is=Load.class.getResourceAsStream("/resources/display/"+path);
         BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(is));
         return bufferedReader;
+    }
+    public static Clip sound(String path) {
+        try {
+            AudioInputStream ais = AudioSystem.getAudioInputStream(Load.class.getResourceAsStream("/resources/sound/" + path + ".wav"));
+            Clip sound = AudioSystem.getClip();
+            sound.open(ais);
+            return sound;
+        } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static void playSound(String path) {
+        new Thread(() -> Load.sound(path).start()).start();
     }
 }
