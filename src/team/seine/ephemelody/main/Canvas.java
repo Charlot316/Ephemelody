@@ -1,6 +1,7 @@
 package team.seine.ephemelody.main;
 
 import team.seine.ephemelody.data.Data;
+import team.seine.ephemelody.playinterface.ScoreAndComboDisplay;
 import team.seine.ephemelody.playinterface.Track;
 import team.seine.ephemelody.scenes.*;
 
@@ -59,9 +60,9 @@ public class Canvas extends JLayeredPane{
             for(Track i:((PlayInterface) firstScenes).allTracks){
                 this.add(i,new Integer(1));
             }
-
+            this.add(((PlayInterface) firstScenes).displayer,new Integer(2));
             new Thread((PlayInterface) firstScenes).start();
-
+            new Thread(((PlayInterface) firstScenes).displayer).start();
 //            this.add((PlayInterface) nowScenes, new Integer(1));
     } else if (name.equals("Login")) {
 //            System.out.println("1");
