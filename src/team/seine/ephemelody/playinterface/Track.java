@@ -45,7 +45,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     public long lastTime;
     public long trackCurrentTime;
     public int[]positionY=new int[200];
-    public int displayState=199;
+    public int displayState=99;
     public Image []judgement=new Image[3];
     public Image currentJudgement;
     public int delay=100;
@@ -62,10 +62,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * @param b           Control track's color
      */
     public Track(int id, int type, char key, long startTiming, long endTiming, double positionX, double width, int r, int g, int b) {
-        setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
-        this.setVisible(true);
-        setLayout(null);
-        setOpaque(false);
         this.id = id;
         this.type = type;
         this.key = key;
@@ -77,10 +73,10 @@ public class Track extends JPanel implements Runnable {// The track of the note.
         this.G = g;
         this.B = b;
         positionY[0]=(int)(0.85*PlayInterface.finalY*(double)Data.HEIGHT);
-        for(int i=1;i<=50;i++){
+        for(int i=1;i<=25;i++){
             positionY[i]=positionY[i-1]-1;
         }
-        for(int i=51;i<200;i++){
+        for(int i=26;i<100;i++){
             positionY[i]=positionY[i-1];
         }
         judgement[0]= Load.image("judgement/lost.png");
@@ -216,7 +212,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             this.notes.get(i).moveNote();
             getImg(g,this.notes.get(i));
         }
-        if(displayState!=199){
+        if(displayState!=99){
             g_2d.drawImage(currentJudgement,(int)(this.positionX*Data.WIDTH)-55,positionY[displayState],null);
         }
     }
@@ -381,6 +377,10 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * Note: display must be after the move and change operations are finished
      */
     public void run() {
+        setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
+        setLayout(null);
+        setOpaque(false);
+        this.setVisible(true);
             this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
             if(this.notes.isEmpty()){//虽然有很多重复的句子，但这个判断不放在while里，这样可以省下判断这条if的次数
                 while (this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
@@ -399,7 +399,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             }
             else{
                 while (this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
-                    if (displayState<199) displayState++;
+                    if (displayState<99) displayState++;
                     this.lastTime = this.trackCurrentTime;
                     this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
                     if(frontNote<this.notes.size()&&this.trackCurrentTime+350>this.notes.get(frontNote).timing){
