@@ -45,8 +45,25 @@ public class Data {
         };
         backgroundImg = Load.image("home/背景.png");
         startButton = Load.image("home/开始游戏.png");*/
-        //songList = Arrays.asList("最炫民族风", "你是我的小呀小苹果", "怎么爱你都不嫌多", "我到底在干啥", "这就是最后一首歌");
+        songList = Arrays.asList("第一首歌", "第二首歌", "第三首歌", "第四首歌", "第五首歌");
+    }
 
+    public static void changeSongList(int way, int chooseSong) {
+        if (way == 1) {
+            String song = songList.get(0);
+            for (int i = 0; i < 4; i++) {
+                songList.set(i, songList.get(i + 1));
+            }
+            songList.set(4, song);
+        } else if (way == 2) {
+            String song = songList.get(4);
+            for (int i = 4; i > 0; i--) {
+                songList.set(i, songList.get(i - 1));
+            }
+            songList.set(0, song);
+        } /*else if (way == 3) {
+
+        }*/
     }
 
 }

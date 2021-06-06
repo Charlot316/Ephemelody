@@ -197,10 +197,16 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             if (struts == Scenes.MOUSE_DOWN) {
                 Data.canvas.switchScenes("End");
             }
-        } else if (Rect.isInternal(x, y, 100, 60, 126, 95)) {
+        } else if (Rect.isInternal(x, y, 120, 60, 126, 95)) {
             buttonUpStatus = buttonStruts;
-        } else if (Rect.isInternal(x, y, 100, 800, 126, 95)) {
+            if (struts == Scenes.MOUSE_DOWN) {
+                Data.changeSongList(2, 0);
+            }
+        } else if (Rect.isInternal(x, y, 120, 800, 126, 95)) {
             buttonDownStatus = buttonStruts;
+            if (struts == Scenes.MOUSE_DOWN) {
+                Data.changeSongList(1, 0);
+            }
         }
             /*else if (Rect.isInternal(x, y, 1080, -3, 188, 69)) {
             buttonLoginStatus = buttonStruts;
@@ -219,8 +225,8 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         if (playFlag) {
             g.drawImage(playButton[buttonPlayStatus], Data.WIDTH / 2, 750, null);
         }
-        g.drawImage(upButton[buttonUpStatus], 100, 60, null);
-        g.drawImage(downButton[buttonDownStatus], 100, 800, null);
+        g.drawImage(upButton[buttonUpStatus], 120, 60, null);
+        g.drawImage(downButton[buttonDownStatus], 120, 800, null);
         /*g.drawImage(ratingButton[buttonRatingStatus], Data.WIDTH / 2 - 60, -16, null);
         g.drawImage(setupBackButton[buttonSetUpBackStatus], 900, 0, null);
         g.drawImage(setupButton, 934, 8, null);
@@ -232,6 +238,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         g.drawImage(songNameImg, -100, 430, null);
         g.drawImage(songNameImg, -100, 560, null);
         g.drawImage(songNameImg, -100, 690, null);
+        g.drawImage(hitSongImg, 380, 411, null);
         /*g.setFont(new Font("黑体", Font.BOLD, 30));
         g.setColor(Color.WHITE);
         g.drawString("第一首歌", 200, 190);*/
@@ -243,17 +250,29 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         g.translate(-875, -675);
         Data.canvas.paintString("9", new Font("黑体", Font.BOLD, 65), g, 1155, 675, 3, Color.WHITE, new Color(245, 165, 152));
         g.translate(-1155, -675);
-//        g.setFont(new Font("宋体", Font.PLAIN, 65));
-        Data.canvas.paintString("第一首歌", new Font("黑体", Font.BOLD, 50), g, 0, 235, 1, Color.WHITE, Color.BLACK);
+        Font font = new Font("黑体", Font.BOLD, 45);
+        FontMetrics metrics = g.getFontMetrics(font);
+        int y = 235;
+        for (String song : Data.songList) { // 到时候改成待展示的歌曲名单列表
+            int x = (390 - metrics.stringWidth(song)) / 2 + 0;
+            if (song.equals(Data.songList.get(2))) {
+                Data.canvas.paintString(song, font, g, x, y, 1, new Color(117, 188, 214), Color.BLACK);
+            } else {
+                Data.canvas.paintString(song, font, g, x, y, 1, Color.WHITE, Color.BLACK);
+            }
+            g.translate(-x, -y);
+            y += 130;
+        }
+        /*Data.canvas.paintString("第一首歌", new Font("黑体", Font.BOLD, 50), g, 0, 235, 1, Color.WHITE, Color.BLACK);
         g.translate(0, -235);
-        Data.canvas.paintString("第二首歌", new Font("黑体", Font.BOLD, 50), g, 0, 365, 1, Color.WHITE, Color.BLACK);
+//        Data.canvas.paintString("第二首歌", new Font("黑体", Font.BOLD, 50), g, 0, 365, 1, Color.WHITE, Color.BLACK);
         g.translate(0, -365);
         Data.canvas.paintString("第三首歌", new Font("黑体", Font.BOLD, 50), g, 0, 495, 1, Color.WHITE, Color.BLACK);
         g.translate(0, -495);
         Data.canvas.paintString("第四首歌", new Font("黑体", Font.BOLD, 50), g, 0, 625, 1, Color.WHITE, Color.BLACK);
         g.translate(0, -625);
         Data.canvas.paintString("第五首歌", new Font("黑体", Font.BOLD, 50), g, 0, 755, 1, Color.WHITE, Color.BLACK);
-        g.translate(0, -755);
+        g.translate(0, -755);*/
 //        g.drawString("3", 595, 675);
         /*g.setColor(new Color(237, 114, 209));
         g.drawString("6", 875, 675);
