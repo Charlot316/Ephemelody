@@ -48,17 +48,22 @@ public class Data {
         songList = Arrays.asList("第一首歌", "第二首歌", "第三首歌", "第四首歌", "第五首歌");
     }
 
-    public void changeSongList(int way, int chooseSong) {
+    public static void changeSongList(int way, int chooseSong) {
         if (way == 1) {
             String song = songList.get(0);
             for (int i = 0; i < 4; i++) {
-                
+                songList.set(i, songList.get(i + 1));
             }
+            songList.set(4, song);
         } else if (way == 2) {
+            String song = songList.get(4);
+            for (int i = 4; i > 0; i--) {
+                songList.set(i, songList.get(i - 1));
+            }
+            songList.set(0, song);
+        } /*else if (way == 3) {
 
-        } else if (way == 3) {
-
-        }
+        }*/
     }
 
 }
