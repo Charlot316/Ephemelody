@@ -1,8 +1,11 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="ephemelody:jar">
+  <artifact name="ephemelody:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/ephemelody_jar</output-path>
-    <root id="archive" name="ephemelody.jar">
-      <element id="module-output" name="ephemelody" />
+    <root id="root">
+      <element id="archive" name="ephemelody.jar">
+        <element id="module-output" name="ephemelody" />
+      </element>
+      <element id="file-copy" path="$PROJECT_DIR$/../../../../../Program Files/Java/jdk1.8.0_281/jre/lib/ext/mariadb-java-client-2.7.3.jar" />
     </root>
   </artifact>
 </component>
