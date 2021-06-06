@@ -232,21 +232,15 @@ public class Track extends JPanel implements Runnable {// The track of the note.
 
             if(isHolding){
                 if (Data.isReleased[this.currentKey].get()==1){
-                    if(Math.abs(this.trackCurrentTime-100 -this.notes.get(frontNote).endTiming)>300){
+                    if(Math.abs(this.trackCurrentTime -this.notes.get(frontNote).endTiming)>500){
                         this.displayState=0;
                         this.currentJudgement=judgement[0];
                         this.tempJudge=0;
                         Data.isReleased[this.currentKey].set(0);
                     }
-                    else if(Math.abs(this.trackCurrentTime-100 -this.notes.get(frontNote).endTiming)>200){
-                        this.displayState=0;
-                        this.currentJudgement=judgement[1];
-                        this.tempJudge=1;
-                    }
                     else {
                         this.displayState=0;
                         this.currentJudgement=judgement[2];
-                        this.tempJudge=Math.min(this.tempJudge,2);
                     }
                     isHolding=false;
                     Data.isReleased[this.currentKey].set(0);
@@ -271,8 +265,8 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 }
                 if(this.notes.get(frontNote).noteType==1&&this.tempJudge>0){
                     this.isHolding=true;
-                    Data.isReleased[this.currentKey].set(0);
                 }
+                Data.isReleased[this.currentKey].set(0);
                 Data.isPressed[this.currentKey].set(0);
                 this.displayState=0;
                 this.currentJudgement=judgement[this.tempJudge];
@@ -405,17 +399,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                         PlayInterface.lostCount.getAndIncrement();
                         PlayInterface.currentNoteCount.getAndIncrement();
                         this.tempJudge=-1;
-                        System.out.println("type2 lost"+this.notes.get(frontNote).timing+" "+this.trackCurrentTime);
-                        frontNote++;
-                        this.displayState=0;
-                        this.currentJudgement=judgement[0];
-                    } else if ( frontNote<this.notes.size()&&this.notes.get(frontNote).noteType == 1 && this.trackCurrentTime > this.notes.get(frontNote).endTiming + 500) {
-                        PlayInterface.combo.set(0);
-                        PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
-                        PlayInterface.lostCount.getAndIncrement();
-                        PlayInterface.currentNoteCount.getAndIncrement();
-                        this.tempJudge=-1;
-                        this.isHolding=false;
                         System.out.println("type2 lost"+this.notes.get(frontNote).timing+" "+this.trackCurrentTime);
                         frontNote++;
                         this.displayState=0;
