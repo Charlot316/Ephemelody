@@ -38,6 +38,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     public static double finalY=0.8;
     public static long remainingTime;
     public static long finalEndTime;
+    public int score=0;
     public HashMap<Integer, Track> currentTracks = new HashMap<>();
     public ArrayList<Track> allTracks = new ArrayList<>();
     ArrayList<PlayOperations> backgroundOperations = new ArrayList<>();
@@ -131,6 +132,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                     Note note = new Note(track, noteType, key, timing, endTiming);
                     track.notes.add(note);
                     PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, endTiming+1000);
+                    track.startTiming=Math.min(track.startTiming,note.timing-PlayInterface.remainingTime);
                 } else {
                     Note note = new Note(track, noteType, key, timing);
                     track.notes.add(note);
@@ -271,6 +273,11 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                 this.frontOperation++;
                 this.repaint();
             }
+            if (score+8769<PlayInterface.currentScore.get()) score+=8769;
+            else score=PlayInterface.currentScore.get();
+            displayer.combo=PlayInterface.combo.get();
+            displayer.score=score;
+            displayer.repaint();
         }
         this.finish();
     }
