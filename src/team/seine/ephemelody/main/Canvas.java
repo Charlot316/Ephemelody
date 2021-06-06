@@ -58,9 +58,9 @@ public class Canvas extends JLayeredPane{
             this.removeAll();
             this.add((PlayInterface)firstScenes, new Integer(0));
             for(Track i:((PlayInterface) firstScenes).allTracks){
-                this.add(i,new Integer(1));
+                this.add(i,new Integer(i.id+1));
             }
-            this.add(((PlayInterface) firstScenes).displayer,new Integer(2));
+            this.add(((PlayInterface) firstScenes).displayer,new Integer(((PlayInterface) firstScenes).allTracks.size()+1));
             new Thread((PlayInterface) firstScenes).start();
             new Thread(((PlayInterface) firstScenes).displayer).start();
 //            this.add((PlayInterface) nowScenes, new Integer(1));
