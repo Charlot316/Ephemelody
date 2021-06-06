@@ -62,7 +62,6 @@ public class Canvas extends JLayeredPane{
             }
             this.add(((PlayInterface) firstScenes).displayer,new Integer(((PlayInterface) firstScenes).allTracks.size()+1));
             new Thread((PlayInterface) firstScenes).start();
-            new Thread(((PlayInterface) firstScenes).displayer).start();
 //            this.add((PlayInterface) nowScenes, new Integer(1));
     } else if (name.equals("Login")) {
 //            System.out.println("1");
