@@ -61,8 +61,10 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
 
     public void loadData() {
         for(int i=0;i<200;i++){
-            Data.keyStatus[i]=new AtomicInteger();
-            Data.keyStatus[i].set(0);
+            Data.isPressed[i]=new AtomicInteger();
+            Data.isReleased[i]=new AtomicInteger();
+            Data.isPressed[i].set(0);
+            Data.isReleased[i].set(0);
         }
         this.Path = this.songID + "/";
         String displayPath = this.Path + this.difficulty + ".txt";
@@ -288,18 +290,16 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
 
     @Override
     public void onKeyDown(int keyCode) {
-        AtomicInteger tmp = new AtomicInteger();
-        tmp.set(1);
-        Data.keyStatus[keyCode] = tmp;
-       //System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
+        Data.isPressed[keyCode].set(1);
+        //System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
     }
 
     @Override
     public void onKeyUp(int keyCode) {
         AtomicInteger tmp = new AtomicInteger();
         tmp.set(0);
-        Data.keyStatus[keyCode] = tmp;
-       // System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
+        Data.isReleased[keyCode].set(1);
+        //System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
     }
 
     @Override

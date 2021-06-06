@@ -28,8 +28,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     public boolean isStarted=false;
     public boolean isEnded=false;
     public boolean finalEnd=false;
-    public int lastStatus;//last status of currentKey
-    public int currentStatus;//current status of currentKey
     public int tempJudge=-1;
     public ArrayList<Note> notes = new ArrayList<>();//Notes that this track contains
     public ArrayList<PlayOperations> moveOperations = new ArrayList<>();
@@ -135,10 +133,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             g_2d.fillPolygon(polygon2);
             g_2d.draw(polygon2);
 
-            g_2d.setColor(new Color(203, 105, 121));
-            g_2d.fillPolygon(polygon3);
-            g_2d.draw(polygon3);
-
         } else {
             polygon1.addPoint(x, y - 30);
             polygon1.addPoint(x + 30, y);
@@ -154,10 +148,10 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             g_2d.fillPolygon(polygon1);
             g_2d.draw(polygon1);
 
-            g_2d.setColor(new Color(203, 105, 121));
-            g_2d.fillPolygon(polygon3);
-            g_2d.draw(polygon3);
         }
+        g_2d.setColor(new Color(203, 105, 121));
+        g_2d.fillPolygon(polygon3);
+        g_2d.draw(polygon3);
 
 
     }
@@ -230,18 +224,20 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      */
     public void Judge() {
         if(this.frontNote<this.notes.size()) {
+
             this.currentKey = this.notes.get(frontNote).key;
+
             if(this.currentKey>='a'&&this.currentKey<='z') this.currentKey-=32;
-            this.lastStatus = this.currentStatus;
-            this.currentStatus = Data.keyStatus[this.currentKey].get();
+
             if(isHolding){
-                if (this.lastStatus == 1 && this.currentStatus == 0){
-                    if(Math.abs(this.trackCurrentTime -this.notes.get(frontNote).endTiming)>100){
+                if (Data.isReleased[this.currentKey].get()==1){
+                    if(Math.abs(this.trackCurrentTime -this.notes.get(frontNote).endTiming)>300){
                         this.displayState=0;
                         this.currentJudgement=judgement[0];
                         this.tempJudge=0;
+                        Data.isReleased[this.currentKey].set(0);
                     }
-                    else if(Math.abs(this.trackCurrentTime -this.notes.get(frontNote).endTiming)>50){
+                    else if(Math.abs(this.trackCurrentTime -this.notes.get(frontNote).endTiming)>200){
                         this.displayState=0;
                         this.currentJudgement=judgement[1];
                         this.tempJudge=1;
@@ -252,25 +248,31 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                         this.tempJudge=Math.min(this.tempJudge,2);
                     }
                     isHolding=false;
+                    Data.isReleased[this.currentKey].set(0);
                 }
             }
-            else if (this.lastStatus == 0 && this.currentStatus == 1) {
-                if (Math.abs(this.trackCurrentTime -this.notes.get(frontNote).timing)>150){
+            else if (Data.isPressed[this.currentKey].get()==1) {
+                if (Math.abs(this.trackCurrentTime -this.notes.get(frontNote).timing)>300){
                     this.tempJudge=-1;
+                    Data.isPressed[this.currentKey].set(0);
                     return;
                 }
-                else if(Math.abs(this.trackCurrentTime -this.notes.get(frontNote).timing)>100){
+                else if(Math.abs(this.trackCurrentTime -this.notes.get(frontNote).timing)>200){
                     this.tempJudge=0;
                 }
-                else if(Math.abs(this.trackCurrentTime -this.notes.get(frontNote).timing)>50){
+                else if(Math.abs(this.trackCurrentTime -this.notes.get(frontNote).timing)>100){
                     this.tempJudge=1;
+                    if(this.notes.get(frontNote).noteType==1)System.out.println("tempFar");
                 }
                 else {
                     this.tempJudge=2;
+                    if(this.notes.get(frontNote).noteType==1)System.out.println("tempPure");
                 }
                 if(this.notes.get(frontNote).noteType==1&&this.tempJudge>0){
                     this.isHolding=true;
+                    Data.isReleased[this.currentKey].set(0);
                 }
+                Data.isPressed[this.currentKey].set(0);
                 this.displayState=0;
                 this.currentJudgement=judgement[this.tempJudge];
             }
@@ -284,16 +286,28 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                         PlayInterface.combo.getAndIncrement();
                         PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
                         PlayInterface.farCount.getAndIncrement();
+                        if(this.notes.get(frontNote).noteType==1) {
+                            System.out.println("far"+this.notes.get(frontNote).endTiming+" "+this.trackCurrentTime);
+                        }
+                        else System.out.println("far"+this.notes.get(frontNote).timing+" "+this.trackCurrentTime);
                         break;
                     case 2:
                         PlayInterface.currentScore.getAndAdd(score);
                         PlayInterface.combo.getAndIncrement();
                         PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
                         PlayInterface.pureCount.getAndIncrement();
+                        if(this.notes.get(frontNote).noteType==1) {
+                            System.out.println("pure"+this.notes.get(frontNote).endTiming+" "+this.trackCurrentTime);
+                        }
+                        else System.out.println("pure"+this.notes.get(frontNote).timing+" "+this.trackCurrentTime);
                         break;
                     case 0:
                         PlayInterface.combo.set(0);
                         PlayInterface.lostCount.getAndIncrement();
+                        if(this.notes.get(frontNote).noteType==1) {
+                            System.out.println("lost"+this.notes.get(frontNote).endTiming+" "+this.trackCurrentTime);
+                        }
+                        else System.out.println("lost"+this.notes.get(frontNote).timing+" "+this.trackCurrentTime);
                         break;
                     default:
                         tempJudge=-1;
@@ -384,34 +398,36 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                     while ((rearNote + 1 < this.notes.size()) && (this.notes.get(rearNote + 1).timing - PlayInterface.remainingTime) < this.trackCurrentTime) {
                         rearNote++;
                     }
-                    if ( frontNote<this.notes.size()&&this.trackCurrentTime > this.notes.get(frontNote).timing + 150&&(this.notes.get(frontNote).noteType==0||this.notes.get(frontNote).noteType==1&&!this.isHolding)) {
+                    if ( frontNote<this.notes.size()&&this.trackCurrentTime > this.notes.get(frontNote).timing + 300&&(this.notes.get(frontNote).noteType==0||this.notes.get(frontNote).noteType==1&&!this.isHolding)) {
                         PlayInterface.combo.set(0);
                         PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
                         PlayInterface.lostCount.getAndIncrement();
                         PlayInterface.currentNoteCount.getAndIncrement();
                         this.tempJudge=-1;
+                        System.out.println("type2 lost"+this.notes.get(frontNote).timing+" "+this.trackCurrentTime);
                         frontNote++;
                         this.displayState=0;
                         this.currentJudgement=judgement[0];
-                    } else if ( frontNote<this.notes.size()&&this.notes.get(frontNote).noteType == 1 && this.trackCurrentTime > this.notes.get(frontNote).endTiming + 150) {
+                    } else if ( frontNote<this.notes.size()&&this.notes.get(frontNote).noteType == 1 && this.trackCurrentTime > this.notes.get(frontNote).endTiming + 300) {
                         PlayInterface.combo.set(0);
                         PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
                         PlayInterface.lostCount.getAndIncrement();
                         PlayInterface.currentNoteCount.getAndIncrement();
                         this.tempJudge=-1;
                         this.isHolding=false;
+                        System.out.println("type2 lost"+this.notes.get(frontNote).timing+" "+this.trackCurrentTime);
                         frontNote++;
                         this.displayState=0;
                         this.currentJudgement=judgement[0];
                     }
                     for(int i=frontNote;i<=rearNote;i++){
-                        this.notes.get(i).moveNote(this.trackCurrentTime-this.lastTime);
+                        this.notes.get(i).moveNote(this.trackCurrentTime-this.lastTime,this.trackCurrentTime);
                     }
                 }
                 this.repaint();
                 try{
                     Thread.sleep(1);
-                } catch (InterruptedException e) {
+                }catch (InterruptedException e){
                     e.printStackTrace();
                 }
             }
