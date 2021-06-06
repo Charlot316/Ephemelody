@@ -120,11 +120,11 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             polygon3.addPoint(x, y + 18);
             polygon3.addPoint(x - 18, y);
 
-            if(!isHolding){
-                g_2d.setColor(new Color(55, 55, 34));
+            if(isHolding&&notes.get(frontNote)==note){
+                g_2d.setColor(new Color(22, 22, 14));
             }
             else{
-                g_2d.setColor(new Color(22, 22, 14));
+                g_2d.setColor(new Color(55, 55, 34));
             }
             g_2d.fillPolygon(polygon1);
             g_2d.draw(polygon1);
@@ -247,15 +247,15 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 }
             }
             else if (Data.isPressed[this.currentKey].get()==1) {
-                if (Math.abs(this.trackCurrentTime-100 -this.notes.get(frontNote).timing)>350){
+                if (Math.abs(this.trackCurrentTime-200 -this.notes.get(frontNote).timing)>350){
                     this.tempJudge=-1;
                     Data.isPressed[this.currentKey].set(0);
                     return;
                 }
-                else if(Math.abs(this.trackCurrentTime -100-this.notes.get(frontNote).timing)>300){
+                else if(Math.abs(this.trackCurrentTime -200-this.notes.get(frontNote).timing)>300){
                     this.tempJudge=0;
                 }
-                else if(Math.abs(this.trackCurrentTime -100-this.notes.get(frontNote).timing)>200){
+                else if(Math.abs(this.trackCurrentTime -200-this.notes.get(frontNote).timing)>250){
                     this.tempJudge=1;
                     if(this.notes.get(frontNote).noteType==1)System.out.println("tempFar");
                 }
@@ -381,15 +381,32 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      */
     public void run() {
             this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
-            while (this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
-                if (displayState<199) displayState++;
-                this.lastTime = this.trackCurrentTime;
-                this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
-                this.Judge();
-                this.changeColor();
-                this.changeWidth();
-                this.moveTrack();
-                if (!this.notes.isEmpty()) {
+            if(this.notes.isEmpty()){//虽然有很多重复的句子，但这个判断不放在while里，这样可以省下判断这条if的次数
+                while (this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
+                    this.lastTime = this.trackCurrentTime;
+                    this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
+                    this.changeColor();
+                    this.changeWidth();
+                    this.moveTrack();
+                    this.repaint();
+                    try{
+                        Thread.sleep(8);
+                    }catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+            else{
+                while (this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
+                    if (displayState<199) displayState++;
+                    this.lastTime = this.trackCurrentTime;
+                    this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
+                    if(frontNote<this.notes.size()&&this.trackCurrentTime+500>this.notes.get(frontNote).timing){
+                        this.Judge();
+                    }
+                    this.changeColor();
+                    this.changeWidth();
+                    this.moveTrack();
                     while ((rearNote + 1 < this.notes.size()) && (this.notes.get(rearNote + 1).timing - PlayInterface.remainingTime) < this.trackCurrentTime) {
                         rearNote++;
                     }
@@ -404,12 +421,12 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                         this.displayState=0;
                         this.currentJudgement=judgement[0];
                     }
-                }
-                this.repaint();
-                try{
-                    Thread.sleep(8);
-                }catch (InterruptedException e){
-                    e.printStackTrace();
+                    this.repaint();
+                    try{
+                        Thread.sleep(8);
+                    }catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
                 }
             }
             this.isEnded=true;
