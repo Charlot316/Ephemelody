@@ -83,9 +83,9 @@ public class Track extends JPanel implements Runnable {// The track of the note.
         for(int i=51;i<200;i++){
             positionY[i]=positionY[i-1];
         }
-        judgement[0]= Load.image("judgement\\lost.png");
-        judgement[1]= Load.image("judgement\\far.png");
-        judgement[2]= Load.image("judgement\\pure.png");
+        judgement[0]= Load.image("judgement/lost.png");
+        judgement[1]= Load.image("judgement/far.png");
+        judgement[2]= Load.image("judgement/pure.png");
         currentJudgement=judgement[2];
     }
 

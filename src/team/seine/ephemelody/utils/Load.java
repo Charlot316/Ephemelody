@@ -4,10 +4,7 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 
 public class Load {
@@ -38,7 +35,9 @@ public class Load {
     }
     public static Clip sound(String path) {
         try {
-            AudioInputStream ais = AudioSystem.getAudioInputStream(Load.class.getResourceAsStream("/resources/sound/" + path + ".wav"));
+
+            BufferedInputStream loadPath = new BufferedInputStream(Load.class.getResourceAsStream("/resources/sound/" + path));
+            AudioInputStream ais = AudioSystem.getAudioInputStream(loadPath);
             Clip sound = AudioSystem.getClip();
             sound.open(ais);
             return sound;
