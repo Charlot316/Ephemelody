@@ -50,7 +50,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     int frontBackground = 0;
     public String Path;
     public ScoreAndComboDisplay displayer = new ScoreAndComboDisplay();
-
+    public Clip song;
     /**
      * read in information of the display
      */
@@ -234,7 +234,9 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         this.setInterface();
         this.repaint();
         this.requestFocus();
-        Load.sound("1").loop(Clip.LOOP_CONTINUOUSLY); // 播放音乐
+        this.song = Load.sound("1.wav");
+        assert song != null;
+        song.start(); // 播放音乐
     }
 
     /**
@@ -292,6 +294,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      */
     public void finish() {
         Data.canvas.switchScenes("Home");
+        song.stop();
     }
 
     public Track getTrackByID(int id) {
