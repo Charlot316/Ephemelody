@@ -66,8 +66,10 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         for(int i=0;i<200;i++){
             Data.isPressed[i]=new AtomicInteger();
             Data.isReleased[i]=new AtomicInteger();
+            Data.isUsing[i]=new AtomicInteger();
             Data.isPressed[i].set(0);
             Data.isReleased[i].set(0);
+            Data.isUsing[i].set(0);
         }
         this.Path = this.songID + "/";
         String displayPath = this.Path + this.difficulty + ".txt";
