@@ -27,10 +27,13 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
         this.count = 130;
         hitSongImg = Load.image("home/当前歌曲指示条.png");
         songNameImg = Load.image("home/歌曲条.png");
+
     }
 
     public void paint(Graphics g) {
-
+        song = new String[] {
+                Data.songList.get(0), Data.songList.get(1), Data.songList.get(2), Data.songList.get(3),  Data.songList.get(4)
+        };
         g.drawImage(songNameImg, x, y - count, null);
         g.setFont(new Font("黑体", Font.BOLD, 45));
         g.drawImage(songNameImg, x, y, null);
@@ -40,9 +43,6 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
         g.drawImage(songNameImg, x, y + count * 4, null);
         g.drawImage(songNameImg, x, y + count * 5, null);
         g.drawImage(hitSongImg, 380, 233, null);
-        song = new String[] {
-                Data.songList.get(0), Data.songList.get(1), Data.songList.get(2), Data.songList.get(3),  Data.songList.get(4)
-        };
         Font font = new Font("黑体", Font.BOLD, 45);
         FontMetrics metrics = g.getFontMetrics(font);
         x1 = (390 - metrics.stringWidth(song[0])) / 2 + 0;

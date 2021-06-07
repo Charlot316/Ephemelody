@@ -75,7 +75,7 @@ public class Canvas extends JLayeredPane{
         this.add((LoginComponent) loginComScenes, new Integer(5));
     } else if (name.equals("SetUp")) {
         this.thirdScenes = new SetUp();
-        this.add((SetUp) thirdScenes, new Integer(3));
+        this.add((SetUp) thirdScenes, new Integer(5));
     }
 //        System.out.println("前面都执行完了");
     }

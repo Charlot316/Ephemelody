@@ -57,16 +57,9 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
         int buttonStruts = struts == Scenes.MOUSE_MOVED ? 1 : struts == Scenes.MOUSE_DOWN ? 2 : 0;
 
         if(Rect.isInternal(x, y, 900, 0, 98, 50)) {
-            if (buttonSetUpBackStatus != MOUSE_DOWN) {
-                buttonSetUpBackStatus = buttonStruts;
-            } else {
-                Data.canvas.switchScenes("SetUp");
-                /*buttonEasyStatus = MOUSE_UP;
-                buttonNormalStatus = MOUSE_UP;
-                buttonDifficultStatus = MOUSE_UP;*/
-            }
+            buttonSetUpBackStatus = buttonStruts;
             if(struts == Scenes.MOUSE_DOWN) {
-//                Data.canvas.switchScenes("Game");
+                Data.canvas.switchScenes("SetUp");
             }
         } else if (Rect.isInternal(x, y, 1080, -3, 188, 69)) {
             buttonLoginStatus = buttonStruts;
