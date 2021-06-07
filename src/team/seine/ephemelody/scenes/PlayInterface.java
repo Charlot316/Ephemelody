@@ -86,6 +86,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             for (int i = 0; i < this.trackCount; i++) {
                 command = bufferedReader.readLine();
                 arguments = command.split("\\s+");
+                if(arguments.length<6) {i--;continue;}
                 int id = Integer.parseInt(arguments[0]);
                 int type = Integer.parseInt(arguments[1]);
                 char key = arguments[2].charAt(0);
@@ -123,6 +124,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             for (int i = 0; i < PlayInterface.notesCount; i++) {
                 command = bufferedReader.readLine();
                 arguments = command.split("\\s+");
+                if(arguments.length<4) {i--;continue;}
                 int trackID = Integer.parseInt(arguments[0]);
                 int noteType = Integer.parseInt(arguments[1]);
                 char key = arguments[2].charAt(0);
@@ -149,6 +151,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             for (int i = 0; i < this.operationsCount; i++) {
                 command = bufferedReader.readLine();
                 arguments = command.split("\\s+");
+                if(arguments.length<5) {i--;continue;}
                 int trackID = Integer.parseInt(arguments[0]);
                 int type = Integer.parseInt(arguments[1]);
                 long startTiming = Long.parseLong(arguments[2]);
