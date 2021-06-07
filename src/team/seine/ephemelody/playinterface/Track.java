@@ -48,7 +48,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     public int displayState=99;
     public Image []judgement=new Image[3];
     public Image currentJudgement;
-    public int delay=100;
+    public int delay=80;
     /**
      * @param id          Uniquely defines a track
      * @param type        Denotes the type of the track. type=0 virtual track type=1 real track
@@ -254,11 +254,11 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 }
                 else if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-this.notes.get(frontNote).timing)>100){
                     this.tempJudge=1;
-                    if(this.notes.get(frontNote).noteType==1)System.out.println("tempFar");
+//                    if(this.notes.get(frontNote).noteType==1)System.out.println("tempFar");
                 }
                 else {
                     this.tempJudge=2;
-                    if(this.notes.get(frontNote).noteType==1)System.out.println("tempPure");
+//                    if(this.notes.get(frontNote).noteType==1)System.out.println("tempPure");
                 }
                 if(this.notes.get(frontNote).noteType==1&&this.tempJudge>0){
                     this.isHolding=true;
@@ -278,28 +278,28 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                         PlayInterface.combo.getAndIncrement();
                         PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
                         PlayInterface.farCount.getAndIncrement();
-                        if(this.notes.get(frontNote).noteType==1) {
-                            System.out.println("far"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
-                        }
-                        else System.out.println("far"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
+//                        if(this.notes.get(frontNote).noteType==1) {
+//                            System.out.println("far"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
+//                        }
+//                        else System.out.println("far"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
                         break;
                     case 2:
                         PlayInterface.currentScore.getAndAdd(score);
                         PlayInterface.combo.getAndIncrement();
                         PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
                         PlayInterface.pureCount.getAndIncrement();
-                        if(this.notes.get(frontNote).noteType==1) {
-                            System.out.println("pure"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
-                        }
-                        else System.out.println("pure"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
+//                        if(this.notes.get(frontNote).noteType==1) {
+//                            System.out.println("pure"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
+//                        }
+//                        else System.out.println("pure"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
                         break;
                     case 0:
                         PlayInterface.combo.set(0);
                         PlayInterface.lostCount.getAndIncrement();
-                        if(this.notes.get(frontNote).noteType==1) {
-                            System.out.println("lost"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
-                        }
-                        else System.out.println("lost"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
+//                        if(this.notes.get(frontNote).noteType==1) {
+//                            System.out.println("lost"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
+//                        }
+//                        else System.out.println("lost"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
                         break;
                     default:
                         tempJudge=-1;
@@ -417,7 +417,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                         PlayInterface.lostCount.getAndIncrement();
                         PlayInterface.currentNoteCount.getAndIncrement();
                         this.tempJudge=-1;
-                        System.out.println("type2 lost"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
+//                        System.out.println("type2 lost"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
                         frontNote++;
                         this.displayState=0;
                         this.currentJudgement=judgement[0];
