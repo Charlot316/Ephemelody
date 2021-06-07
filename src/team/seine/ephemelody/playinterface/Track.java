@@ -48,7 +48,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     public int displayState=99;
     public Image []judgement=new Image[3];
     public Image currentJudgement;
-    public int delay=80;
+    public int delay=60;
 
     /**
      * @param id          Uniquely defines a track
@@ -230,7 +230,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
 
             if(isHolding){
                 if (Data.isReleased[this.currentKey].get()==1){
-                    if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-this.notes.get(frontNote).endTiming)>200){
+                    if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-this.notes.get(frontNote).endTiming)>500){
                         this.displayState=0;
                         this.currentJudgement=judgement[0];
                         this.tempJudge=0;
@@ -245,15 +245,16 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 }
             }
             else if (Data.isPressed[this.currentKey].get()==1) {
-                if (Math.abs(this.trackCurrentTime-Data.offset-this.delay-this.notes.get(frontNote).timing)>200){
+                if (Math.abs(this.trackCurrentTime-Data.offset-this.delay-this.notes.get(frontNote).timing)>350){
                     this.tempJudge=-1;
                     Data.isPressed[this.currentKey].set(0);
+                    Data.isReleased[this.currentKey].set(0);
                     return;
                 }
-                else if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-this.notes.get(frontNote).timing)>150){
+                else if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-this.notes.get(frontNote).timing)>300){
                     this.tempJudge=0;
                 }
-                else if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-this.notes.get(frontNote).timing)>100){
+                else if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-this.notes.get(frontNote).timing)>200){
                     this.tempJudge=1;
 //                    if(this.notes.get(frontNote).noteType==1)System.out.println("tempFar");
                 }

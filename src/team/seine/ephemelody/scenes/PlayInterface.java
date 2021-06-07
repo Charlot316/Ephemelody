@@ -56,7 +56,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      */
     public void paint(Graphics g) {
         Graphics2D g_2d = (Graphics2D) g;
-        g.drawImage(backgroundImg.get(frontBackground), 0, 0, null);
+        g.drawImage(backgroundImg.get(frontBackground), 0, 0, Data.WIDTH,Data.HEIGHT,null);
         g_2d.setStroke(new BasicStroke(3.0f,CAP_BUTT, JOIN_BEVEL));
         g_2d.setColor(new Color(255,255,255));
         g_2d.drawLine(0,(int)(PlayInterface.finalY*Data.HEIGHT),Data.WIDTH,(int)(PlayInterface.finalY*Data.HEIGHT));
@@ -151,7 +151,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             for (int i = 0; i < this.operationsCount; i++) {
                 command = bufferedReader.readLine();
                 arguments = command.split("\\s+");
-                if(arguments.length<5) {i--;continue;}
+                if(arguments.length<4) {i--;continue;}
                 int trackID = Integer.parseInt(arguments[0]);
                 int type = Integer.parseInt(arguments[1]);
                 long startTiming = Long.parseLong(arguments[2]);
