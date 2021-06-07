@@ -11,10 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.awt.BasicStroke.CAP_BUTT;
@@ -61,7 +58,9 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         g_2d.setColor(new Color(255,255,255));
         g_2d.drawLine(0,(int)(PlayInterface.finalY*Data.HEIGHT),Data.WIDTH,(int)(PlayInterface.finalY*Data.HEIGHT));
     }
-
+    static Comparator<Note> comparatorNote = Comparator.comparingLong(o -> o.timing);
+    static Comparator<Track> comparatorTrack= Comparator.comparingLong(o -> o.startTiming);
+    static Comparator<PlayOperations> comparatorOperation= (o1, o2) -> Long.compare(o1.startTime,o2.endTime);
     public void loadData() {
         for(int i=0;i<200;i++){
             Data.isPressed[i]=new AtomicInteger();
@@ -191,14 +190,13 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                         tempBackground = arguments[3];
                         operation = new PlayOperations(trackID, type, startTiming, endTiming, endX, width, R, G, B, tempBackground);
                         this.backgroundOperations.add(operation);
-                        System.out.println(this.Path);
                         this.backgroundImg.add(Load.backgroundImage(this.Path + tempBackground));
                         break;
                     default:
                         break;
                 }
             }
-
+            this.allTracks.sort(comparatorTrack);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -268,12 +266,17 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     public void run() {
         startTime = System.currentTimeMillis();
         currentTime = 0;
+        this.backgroundOperations.sort(comparatorOperation);
         this.repaint();
         while (currentTime < PlayInterface.finalEndTime) {
             currentTime = System.currentTimeMillis() - startTime;
             //System.out.println(currentTime+" "+this.finalEndTime);
             while (frontTrack<allTracks.size()&&allTracks.get(frontTrack).startTiming < currentTime) {
                 currentTime = System.currentTimeMillis() - startTime;
+                allTracks.get(frontTrack).notes.sort(comparatorNote);
+                allTracks.get(frontTrack).moveOperations.sort(comparatorOperation);
+                allTracks.get(frontTrack).changeWidthOperations.sort(comparatorOperation);
+                allTracks.get(frontTrack).changeColorOperations.sort(comparatorOperation);
                 new Thread(allTracks.get(frontTrack)).start();
                 currentTracks.put(allTracks.get(frontTrack).id,allTracks.get(frontTrack));
                  frontTrack++;
