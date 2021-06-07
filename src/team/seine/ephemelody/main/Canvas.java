@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.font.GlyphVector;
+import java.util.List;
 
 // 画布类
 public class Canvas extends JLayeredPane{
@@ -20,8 +21,7 @@ public class Canvas extends JLayeredPane{
     Scenes thirdScenes = null;
     Scenes loginComScenes = null; // 登录界面的组件所在页面
     Scenes menuOptionScenes = null;
-    Background background = null;
-    Home home = null;
+    Scenes chooseSongScenes = null;
     public Canvas(JFrame frame) {
         /*nowScenes = new Home();
         bgScenes = new Background();*/
@@ -38,10 +38,12 @@ public class Canvas extends JLayeredPane{
             this.firstScenes = new Background();
             this.secondScenes = new Home();
             this.menuOptionScenes = new MenuOption();
+            this.chooseSongScenes = new ChooseSong();
             this.removeAll();
             this.add((Background) firstScenes, new Integer(0));
             this.add((Home) secondScenes, new Integer(1));
             this.add((MenuOption) menuOptionScenes, new Integer(2));
+            this.add(((Home) secondScenes).chooseSong, new Integer(3));
         } else if (name.equals("End")) {
             this.firstScenes = new Background();
             this.secondScenes = new Home();
@@ -68,8 +70,9 @@ public class Canvas extends JLayeredPane{
         this.thirdScenes = new Login();
         this.loginComScenes = new LoginComponent();
 //            this.removeAll();
-        this.add((Login) thirdScenes, new Integer(3));
-        this.add((LoginComponent) loginComScenes, new Integer(4));
+//        this.remove((ChooseSong) thirdScenes);
+        this.add((Login) thirdScenes, new Integer(4));
+        this.add((LoginComponent) loginComScenes, new Integer(5));
     } else if (name.equals("SetUp")) {
         this.thirdScenes = new SetUp();
         this.add((SetUp) thirdScenes, new Integer(3));
