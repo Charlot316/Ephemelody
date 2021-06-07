@@ -49,6 +49,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     public Image []judgement=new Image[3];
     public Image currentJudgement;
     public int delay=80;
+
     /**
      * @param id          Uniquely defines a track
      * @param type        Denotes the type of the track. type=0 virtual track type=1 real track
@@ -325,7 +326,10 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             else if (currentMove.endTime - this.trackCurrentTime > 0)
                 this.positionX = this.positionX - ((this.positionX - currentMove.endX) / (double) (currentMove.endTime - this.trackCurrentTime)) * (double) (this.trackCurrentTime - this.lastTime);
         }
-        if (currentMove.endTime < this.trackCurrentTime && (frontMove + 1) < this.moveOperations.size()) frontMove++;
+        if (currentMove.endTime < this.trackCurrentTime && (frontMove + 1) < this.moveOperations.size()) {
+            frontMove++;
+            this.positionX=currentMove.endX;
+        }
     }
 
     /**
@@ -342,8 +346,10 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 this.width = this.width - ((this.width - currentWidth.endWidth) / (double) (currentWidth.endTime - this.trackCurrentTime)) * (double) (this.trackCurrentTime - this.lastTime);
 
         }
-        if (currentWidth.endTime < this.trackCurrentTime && (frontWidth + 1) < this.changeWidthOperations.size())
+        if (currentWidth.endTime < this.trackCurrentTime && (frontWidth + 1) < this.changeWidthOperations.size()) {
             frontWidth++;
+            this.width=currentWidth.endWidth;
+        }
     }
 
     /**
