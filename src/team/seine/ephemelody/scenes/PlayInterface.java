@@ -237,7 +237,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         this.setInterface();
         this.repaint();
         this.requestFocus();
-        this.song = Load.sound("1.wav");
+        this.song = Load.sound(String.valueOf(songID));
         assert song != null;
         song.start(); // 播放音乐
     }

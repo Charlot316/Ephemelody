@@ -36,7 +36,7 @@ public class Load {
     public static Clip sound(String path) {
         try {
 
-            BufferedInputStream loadPath = new BufferedInputStream(Load.class.getResourceAsStream("/resources/sound/" + path));
+            BufferedInputStream loadPath = new BufferedInputStream(Load.class.getResourceAsStream("/resources/sound/" + path + ".wav"));
             AudioInputStream ais = AudioSystem.getAudioInputStream(loadPath);
             Clip sound = AudioSystem.getClip();
             sound.open(ais);

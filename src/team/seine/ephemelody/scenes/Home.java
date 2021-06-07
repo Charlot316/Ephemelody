@@ -33,6 +33,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
     public Image songNameImg;
     public Image hitSongImg;
     public Boolean playFlag;
+    public ChooseSong chooseSong;
     public Home() {
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setLayout(null);
@@ -48,6 +49,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         loginButton = new Image[] {
                 Load.image("home/登录.png"), Load.image("home/登录_鼠标悬停.png"), Load.image("home/登录_按下.png")
         };*/
+        chooseSong = new ChooseSong();
         playFlag = false;
         playButton = new Image[]{
                 Load.image("home/开始游戏.png"), Load.image("home/开始游戏_鼠标悬停.png"), Load.image("home/开始游戏_按下.png")
@@ -133,7 +135,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
 //                Data.canvas.switchScenes("Game");
             }
         } else */
-        if (Rect.isInternal(x, y, 503, 580, 202, 125)) {
+        if (Rect.isInternal(x, y, 523, 580, 202, 125)) {
             if (buttonEasyStatus != MOUSE_DOWN) {
                 buttonEasyStatus = buttonStruts;
             } /*else {
@@ -169,7 +171,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             if(struts == Scenes.MOUSE_DOWN) {
 //                Data.canvas.switchScenes("Site");
             }
-        }else if (Rect.isInternal(x, y, 1063, 580, 202, 125)) {
+        }else if (Rect.isInternal(x, y, 1043, 580, 202, 125)) {
             if (buttonDifficultStatus != MOUSE_DOWN) {
                 buttonDifficultStatus = buttonStruts;
             } /*else {
@@ -200,13 +202,16 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         } else if (Rect.isInternal(x, y, 120, 60, 126, 95)) {
             buttonUpStatus = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
-                Data.changeSongList(2, 0);
+                chooseSong.way = 1;
+                new Thread(chooseSong).start();
             }
         } else if (Rect.isInternal(x, y, 120, 800, 126, 95)) {
             buttonDownStatus = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
-                Data.changeSongList(1, 0);
+                chooseSong.way = 2;
+                new Thread(chooseSong).start();
             }
+
         }
             /*else if (Rect.isInternal(x, y, 1080, -3, 188, 69)) {
             buttonLoginStatus = buttonStruts;
@@ -219,9 +224,9 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
     public void paint(Graphics g) {
         playFlag = buttonEasyStatus == MOUSE_DOWN || buttonNormalStatus == MOUSE_DOWN || buttonDifficultStatus == MOUSE_DOWN;
         g.drawImage(nowSongImg, Data.WIDTH / 2, 100, null);
-        g.drawImage(easyButton[buttonEasyStatus], Data.WIDTH / 2 - 140, 580, null);
+        g.drawImage(easyButton[buttonEasyStatus], Data.WIDTH / 2 - 120, 580, null);
         g.drawImage(normalButton[buttonNormalStatus], Data.WIDTH / 2 + 140, 580, null);
-        g.drawImage(difficultButton[buttonDifficultStatus], Data.WIDTH / 2 + 420, 580, null);
+        g.drawImage(difficultButton[buttonDifficultStatus], Data.WIDTH / 2 + 400, 580, null);
         if (playFlag) {
             g.drawImage(playButton[buttonPlayStatus], Data.WIDTH / 2, 750, null);
         }
@@ -233,36 +238,32 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         g.drawImage(loginButton[buttonLoginStatus], 1080, -3, null);*/
         g.drawImage(selectedImg, 0, Data.HEIGHT / 2 - 30, null);
         g.drawImage(songInfButton[buttonSongInfStatus], 1038, 850, null);
-        g.drawImage(songNameImg, -100, 170, null);
+        /*g.drawImage(songNameImg, -100, 170, null);
         g.drawImage(songNameImg, -100, 300, null);
         g.drawImage(songNameImg, -100, 430, null);
         g.drawImage(songNameImg, -100, 560, null);
         g.drawImage(songNameImg, -100, 690, null);
-        g.drawImage(hitSongImg, 380, 411, null);
+        g.drawImage(hitSongImg, 380, 411, null);*/
         /*g.setFont(new Font("黑体", Font.BOLD, 30));
         g.setColor(Color.WHITE);
         g.drawString("第一首歌", 200, 190);*/
 //        g.setFont(new Font("黑体", Font.PLAIN, 65));
 //        g.setColor(new Color(117, 188, 214));
-        Data.canvas.paintString("3", new Font("黑体", Font.BOLD, 65), g, 595, 675, 3, Color.WHITE, new Color(117, 188, 214));
-        g.translate(-595, -675);
+        Data.canvas.paintString("3", new Font("黑体", Font.BOLD, 65), g, 615, 675, 3, Color.WHITE, new Color(117, 188, 214));
+        g.translate(-615, -675);
         Data.canvas.paintString("6", new Font("黑体", Font.BOLD, 65), g, 875, 675, 3, Color.WHITE, new Color(237, 114, 209));
         g.translate(-875, -675);
-        Data.canvas.paintString("9", new Font("黑体", Font.BOLD, 65), g, 1155, 675, 3, Color.WHITE, new Color(245, 165, 152));
-        g.translate(-1155, -675);
-        Font font = new Font("黑体", Font.BOLD, 45);
+        Data.canvas.paintString("9", new Font("黑体", Font.BOLD, 65), g, 1135, 675, 3, Color.WHITE, new Color(245, 165, 152));
+        g.translate(-1135, -675);
+        /*Font font = new Font("黑体", Font.BOLD, 45);
         FontMetrics metrics = g.getFontMetrics(font);
         int y = 235;
         for (String song : Data.songList) { // 到时候改成待展示的歌曲名单列表
             int x = (390 - metrics.stringWidth(song)) / 2 + 0;
-            if (song.equals(Data.songList.get(2))) {
-                Data.canvas.paintString(song, font, g, x, y, 1, new Color(117, 188, 214), Color.BLACK);
-            } else {
-                Data.canvas.paintString(song, font, g, x, y, 1, Color.WHITE, Color.BLACK);
-            }
+            Data.canvas.paintString(song, font, g, x, y, 1, Color.WHITE, Color.BLACK);
             g.translate(-x, -y);
             y += 130;
-        }
+        }*/
         /*Data.canvas.paintString("第一首歌", new Font("黑体", Font.BOLD, 50), g, 0, 235, 1, Color.WHITE, Color.BLACK);
         g.translate(0, -235);
 //        Data.canvas.paintString("第二首歌", new Font("黑体", Font.BOLD, 50), g, 0, 365, 1, Color.WHITE, Color.BLACK);
