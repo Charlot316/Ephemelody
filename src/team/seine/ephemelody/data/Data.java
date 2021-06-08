@@ -1,5 +1,6 @@
 package team.seine.ephemelody.data;
 
+import database.Entity.Player;
 import team.seine.ephemelody.utils.Load;
 import team.seine.ephemelody.main.Canvas;
 
@@ -27,7 +28,7 @@ public class Data {
     public static int chooseSongId;
     public static String playerId;
     public static int songId;
-
+    public static Player nowPlayer;
     /*private static Image[] setupButton;
     private static Image[] ratingButton;
     private static Image[] difficultyButton;

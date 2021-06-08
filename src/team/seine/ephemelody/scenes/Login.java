@@ -55,9 +55,8 @@ public class Login extends JPanel implements Scenes, MouseMotionListener, MouseL
                     if (player.getPassword().equals(password)) {
                         System.out.println("登录成功");
                         Data.playerId = username;
-
+                        Data.nowPlayer = PlayerController.selectPlayerById(Data.playerId);
                         Data.canvas.switchScenes("Home"); // 到时候改成如果登录成功，用户名显示出来
-
                     } else {
                         System.out.println("用户名已存在, 注册失败");
                     }
