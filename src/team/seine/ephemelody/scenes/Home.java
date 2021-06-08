@@ -1,5 +1,6 @@
 package team.seine.ephemelody.scenes;
 
+import javafx.scene.media.AudioClip;
 import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.main.Canvas;
 import team.seine.ephemelody.utils.Load;
@@ -34,6 +35,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
     public Image hitSongImg;
     public Boolean playFlag;
     public ChooseSong chooseSong;
+    public AudioClip audioClip;
     public Home() {
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setLayout(null);
@@ -236,14 +238,14 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         g.drawImage(setupBackButton[buttonSetUpBackStatus], 900, 0, null);
         g.drawImage(setupButton, 934, 8, null);
         g.drawImage(loginButton[buttonLoginStatus], 1080, -3, null);*/
-        g.drawImage(selectedImg, 0, Data.HEIGHT / 2 - 30, null);
+//        g.drawImage(selectedImg, 0, Data.HEIGHT / 2 - 30, null);
         g.drawImage(songInfButton[buttonSongInfStatus], 1038, 850, null);
         /*g.drawImage(songNameImg, -100, 170, null);
         g.drawImage(songNameImg, -100, 300, null);
         g.drawImage(songNameImg, -100, 430, null);
         g.drawImage(songNameImg, -100, 560, null);
-        g.drawImage(songNameImg, -100, 690, null);
-        g.drawImage(hitSongImg, 380, 411, null);*/
+        g.drawImage(songNameImg, -100, 690, null);*/
+        g.drawImage(hitSongImg, 380, 413, null);
         /*g.setFont(new Font("黑体", Font.BOLD, 30));
         g.setColor(Color.WHITE);
         g.drawString("第一首歌", 200, 190);*/
