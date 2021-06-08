@@ -14,7 +14,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Home extends JPanel implements Scenes, MouseMotionListener, MouseListener, KeyListener {
     int buttonRatingStatus = 0, buttonSetUpBackStatus = 0, buttonLoginStatus = 0, buttonEasyStatus = 0, buttonNormalStatus = 0, buttonDifficultStatus = 0,
             buttonPlayStatus = 0, buttonSongInfStatus = 0, buttonUpStatus = 0, buttonDownStatus = 0;
-    public Double rate; //潜力值
     /*public Image[] ratingButton;
     public Image setupButton;
     public Image[] setupBackButton;

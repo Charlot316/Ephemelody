@@ -1,5 +1,6 @@
 package team.seine.ephemelody.data;
 
+import database.Entity.Player;
 import team.seine.ephemelody.utils.Load;
 import team.seine.ephemelody.main.Canvas;
 
@@ -27,7 +28,8 @@ public class Data {
     public static int chooseSongId;
     public static String playerId;
     public static int songId;
-
+    public static Player nowPlayer;
+    public static int frontSong=0;
     /*private static Image[] setupButton;
     private static Image[] ratingButton;
     private static Image[] difficultyButton;
@@ -52,24 +54,38 @@ public class Data {
         };
         backgroundImg = Load.image("home/背景.png");
         startButton = Load.image("home/开始游戏.png");*/
+
         songList = Arrays.asList("第四首歌", "第五首歌", "第一首歌", "第二首歌", "第三首歌");
-        realSongList = Arrays.asList("第四首歌", "第五首歌", "第一首歌", "第二首歌", "第三首歌");
+        realSongList = Arrays.asList("第四首歌", "第五首歌","第1首歌", "第2首歌","第3首歌", "第4首歌","第5首歌", "第6首歌");
+        readSongList();
         songId = 2;
     }
-
+    public static void readSongList(){
+        for(int index=frontSong, i=0;i<5;i++,index++){
+            if(index>=realSongList.size()) index=0;
+            songList.set(i,realSongList.get(index));
+        }
+    }
     public static void changeSongList(int way, int chooseSong) {
         if (way == 1) {
-            String song = songList.get(0);
-            for (int i = 0; i < 4; i++) {
-                songList.set(i, songList.get(i + 1));
-            }
-            songList.set(4, song);
+            frontSong++;
+            if(frontSong>=realSongList.size()) frontSong=0;
+            readSongList();
+
+//            String song = songList.get(0);
+//            for (int i = 0; i < 4; i++) {
+//                songList.set(i, songList.get(i + 1));
+//            }
+//            songList.set(4, song);
         } else if (way == 2) {
-            String song = songList.get(4);
-            for (int i = 4; i > 0; i--) {
-                songList.set(i, songList.get(i - 1));
-            }
-            songList.set(0, song);
+            frontSong--;
+            if(frontSong<0) frontSong=realSongList.size()-1;
+            readSongList();
+//            String song = songList.get(4);
+//            for (int i = 4; i > 0; i--) {
+//                songList.set(i, songList.get(i - 1));
+//            }
+//            songList.set(0, song);
         } /*else if (way == 3) {
 
         }*/
