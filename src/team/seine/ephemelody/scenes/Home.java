@@ -195,7 +195,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
                 if (Data.songId > 4) {
                     Data.songId = 0;
                 }
-                System.out.println(Data.realSongList.get(Data.songId));
+                //System.out.println(Data.realSongList.get(Data.songId));
                 chooseSong.way = 1;
                 new Thread(chooseSong).start();
             }
@@ -206,7 +206,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
                 if (Data.songId < 0) {
                     Data.songId = 4;
                 }
-                System.out.println(Data.realSongList.get(Data.songId));
+                //System.out.println(Data.realSongList.get(Data.songId));
                 chooseSong.way = 2;
                 new Thread(chooseSong).start();
             }
