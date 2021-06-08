@@ -21,11 +21,11 @@ public class RecordController {
         if(score.get()>=10000000){
             potential=chartConstant+2;
         }
-        else if(score.get()>=9800000){
-            potential=1+chartConstant+((double)score.get() - 9800000.0)/200000.0;
+        else if(score.get()>=9000000){
+            potential=1+chartConstant+((double)score.get() - 9000000.0)/200000.0;
         }
         else {
-            potential=chartConstant+((double)score.get() - 9500000.0)/300000.0;
+            potential=chartConstant+((double)score.get() - 5000000.0)/300000.0;
         }
         if(potential<0) potential=0;
         return potential;
@@ -65,7 +65,8 @@ public class RecordController {
      */
     public static void insertRecentRecord(Record record) {
         PreparedStatement sql;
-        ResultSet rs;
+        ResultSet rs,countRs;
+        int count=0;
         double leastPotential = 0;
         int rowCount;
         try {
@@ -75,8 +76,13 @@ public class RecordController {
             sql.setString(1, record.getPlayerID());
             rs = sql.executeQuery();
             rs.last();
+//            String sqlStr4="SELECT COUNT(*) as count FROM seine.personal_recent_records WHERE playerID = ?";
+//            sql = con.prepareStatement(sqlStr4);
+//            sql.setString(1, record.getPlayerID());
+//            countRs=sql.executeQuery();
+//            count= countRs.getInt("count");
             //该分数大于数据库中30条最近数据中潜力值最高的10个值最小的值，且分数大于9800000，即可插入
-            if (record.getScore() < 9800000 || (record.getScore() >= 9800000 && rs.getDouble(9) > record.getPotential())) {
+            if (rs.getRow()<10||record.getScore() < 9000000 || (record.getScore() >= 9000000 && rs.getDouble(9) > record.getPotential())) {
                 //查找最近记录条数
                 String sqlStr1 = "SELECT * FROM seine.personal_recent_records WHERE playerID = ? ";
                 sql = con.prepareStatement(sqlStr1);
@@ -129,9 +135,12 @@ public class RecordController {
             sql.setInt(2, record.getSongID());
             sql.setInt(3, record.getSongDifficulty());
             rs = sql.executeQuery();
-//            System.out.println(rs.getRow());
+            rs.last();
+            int row = rs.getRow();
+            rs.beforeFirst();
+            //System.out.println(rs.getRow());
             //没有最佳记录就插入
-            if (rs.getRow() == 0) {
+            if (row == 0) {
                 String sqlStr1 = "INSERT INTO seine.personal_best_records(playerID, time, songID, songDifficulty, pureCount, farCount, lostCount, maxCombo, potential, score) " +
                         "VALUES (?,?,?,?,?,?,?,?,?,?)";
                 sql = con.prepareStatement(sqlStr1);
@@ -149,6 +158,7 @@ public class RecordController {
             }
             //有记录且刷新纪录就更新
             else if (rs.next()) {
+                //System.out.println(record.getScore()+" "+rs.getInt(10));
                 if (record.getScore() > rs.getInt(10)) {
                     String sqlStr2 = "UPDATE seine.personal_best_records SET score = ?,time = ? WHERE playerID = ? and songID = ? and songDifficulty = ?";
                     sql = con.prepareStatement(sqlStr2);
@@ -184,8 +194,11 @@ public class RecordController {
             sql.setInt(2, record.getSongID());
             sql.setInt(3, record.getSongDifficulty());
             rs = sql.executeQuery();
+            rs.last();
+            int row = rs.getRow();
+            rs.beforeFirst();
             //没有最佳记录就插入
-            if (rs.getRow() == 0) {
+            if (row == 0) {
                 String sqlStr1 = "INSERT INTO seine.all_best_records(playerID, time, songID, songDifficulty, pureCount, farCount, lostCount, maxCombo, potential, score) " +
                         "VALUES (?,?,?,?,?,?,?,?,?,?)";
                 sql = con.prepareStatement(sqlStr1);
