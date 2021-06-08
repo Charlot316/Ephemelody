@@ -31,6 +31,33 @@ public class RecordController {
         return potential;
     }
 
+
+    public static double setAndGetPersonPotential(String playerID){
+        PreparedStatement sql;
+        ResultSet B10, R10;
+        double BPotential=0,RPotential=0,potential=0;
+        try {
+            B10=RecordController.getPersonalBestRecords(playerID);
+            R10=RecordController.getPersonalRecentRecords(playerID);
+            while (B10.next()) {
+                BPotential+=B10.getDouble("potential");
+            }
+            while(R10.next()){
+                RPotential+=R10.getDouble("potential");
+            }
+            potential=(BPotential+RPotential)/20;
+            con = DriverManager.getConnection(uri, user, password);
+            String sqlStr2 = "UPDATE seine.players SET potential= ? WHERE playerID= ?";
+            sql = con.prepareStatement(sqlStr2);
+            sql.setDouble(1, potential);
+            sql.setString(2, playerID);
+            sql.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return potential;
+    }
+
     /**
      * 向数据库中插入游玩记录，personal_recent_records记录个人最近30条
      *
@@ -214,7 +241,7 @@ public class RecordController {
         return rs;
     }
     /**
-     * 从数据库中返回3条个人最好成绩
+     * 从数据库中返回某首曲子的个人最好成绩
      *
      * @param playerID 玩家ID
      * @param songID 音乐ID
