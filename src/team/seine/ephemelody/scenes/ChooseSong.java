@@ -42,7 +42,7 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
         g.drawImage(songNameImg, x, y + count * 3, null);
         g.drawImage(songNameImg, x, y + count * 4, null);
         g.drawImage(songNameImg, x, y + count * 5, null);
-        g.drawImage(hitSongImg, 380, 233, null);
+
         Font font = new Font("黑体", Font.BOLD, 45);
         FontMetrics metrics = g.getFontMetrics(font);
         x1 = (390 - metrics.stringWidth(song[0])) / 2 + 0;

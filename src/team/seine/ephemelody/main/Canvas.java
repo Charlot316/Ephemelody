@@ -1,6 +1,8 @@
 package team.seine.ephemelody.main;
 
+import com.sun.istack.internal.Nullable;
 import team.seine.ephemelody.data.Data;
+import team.seine.ephemelody.playinterface.Record;
 import team.seine.ephemelody.playinterface.ScoreAndComboDisplay;
 import team.seine.ephemelody.playinterface.Track;
 import team.seine.ephemelody.scenes.*;
@@ -33,7 +35,7 @@ public class Canvas extends JLayeredPane{
 //        nowScenes = new PlayInterface(1, 1);
     }
 
-    public void switchScenes(String name) {
+    public void switchScenes(String name, @Nullable Record...records) {
         if (name.equals("Home")) {
             this.firstScenes = new Background();
             this.secondScenes = new Home();
@@ -47,6 +49,11 @@ public class Canvas extends JLayeredPane{
         } else if (name.equals("End")) {
             this.firstScenes = new Background();
             this.secondScenes = new Home();
+            if (records[0].way == 1) {
+
+            } else if (records[0].way == 2){
+
+            }
             this.thirdScenes = new End();
             this.removeAll();
             this.add((Background) firstScenes, new Integer(0));
@@ -65,18 +72,18 @@ public class Canvas extends JLayeredPane{
             this.add(((PlayInterface) firstScenes).displayer,new Integer(((PlayInterface) firstScenes).allTracks.size()+1));
             new Thread((PlayInterface) firstScenes).start();
 //            this.add((PlayInterface) nowScenes, new Integer(1));
-    } else if (name.equals("Login")) {
+        } else if (name.equals("Login")) {
 //            System.out.println("1");
-        this.thirdScenes = new Login();
-        this.loginComScenes = new LoginComponent();
+            this.thirdScenes = new Login();
+            this.loginComScenes = new LoginComponent();
 //            this.removeAll();
-//        this.remove((ChooseSong) thirdScenes);
-        this.add((Login) thirdScenes, new Integer(4));
-        this.add((LoginComponent) loginComScenes, new Integer(5));
-    } else if (name.equals("SetUp")) {
-        this.thirdScenes = new SetUp();
-        this.add((SetUp) thirdScenes, new Integer(5));
-    }
+//            this.remove((ChooseSong) thirdScenes);
+            this.add((Login) thirdScenes, new Integer(4));
+            this.add((LoginComponent) loginComScenes, new Integer(5));
+        } else if (name.equals("SetUp")) {
+            this.thirdScenes = new SetUp();
+            this.add((SetUp) thirdScenes, new Integer(5));
+        }
 //        System.out.println("前面都执行完了");
     }
 

@@ -22,6 +22,8 @@ public class Data {
     public static AtomicInteger[] isReleased =new AtomicInteger[200];
     public static AtomicInteger[] isUsing = new AtomicInteger[200];
     public static AtomicInteger[] keyStatus = new AtomicInteger[200];
+    public static int difficulty;
+    public static int chooseSongId;
     /*private static Image[] setupButton;
     private static Image[] ratingButton;
     private static Image[] difficultyButton;
