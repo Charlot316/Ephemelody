@@ -11,10 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.awt.BasicStroke.CAP_BUTT;
@@ -56,18 +53,22 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      */
     public void paint(Graphics g) {
         Graphics2D g_2d = (Graphics2D) g;
-        g.drawImage(backgroundImg.get(frontBackground), 0, 0, null);
+        g.drawImage(backgroundImg.get(frontBackground), 0, 0, Data.WIDTH,Data.HEIGHT,null);
         g_2d.setStroke(new BasicStroke(3.0f,CAP_BUTT, JOIN_BEVEL));
         g_2d.setColor(new Color(255,255,255));
         g_2d.drawLine(0,(int)(PlayInterface.finalY*Data.HEIGHT),Data.WIDTH,(int)(PlayInterface.finalY*Data.HEIGHT));
     }
-
+    static Comparator<Note> comparatorNote = Comparator.comparingLong(o -> o.timing);
+    static Comparator<Track> comparatorTrack= Comparator.comparingLong(o -> o.startTiming);
+    static Comparator<PlayOperations> comparatorOperation= (o1, o2) -> Long.compare(o1.startTime,o2.endTime);
     public void loadData() {
         for(int i=0;i<200;i++){
             Data.isPressed[i]=new AtomicInteger();
             Data.isReleased[i]=new AtomicInteger();
+            Data.isUsing[i]=new AtomicInteger();
             Data.isPressed[i].set(0);
             Data.isReleased[i].set(0);
+            Data.isUsing[i].set(0);
         }
         this.Path = this.songID + "/";
         String displayPath = this.Path + this.difficulty + ".txt";
@@ -151,7 +152,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             for (int i = 0; i < this.operationsCount; i++) {
                 command = bufferedReader.readLine();
                 arguments = command.split("\\s+");
-                if(arguments.length<5) {i--;continue;}
+                if(arguments.length<4) {i--;continue;}
                 int trackID = Integer.parseInt(arguments[0]);
                 int type = Integer.parseInt(arguments[1]);
                 long startTiming = Long.parseLong(arguments[2]);
@@ -189,14 +190,13 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                         tempBackground = arguments[3];
                         operation = new PlayOperations(trackID, type, startTiming, endTiming, endX, width, R, G, B, tempBackground);
                         this.backgroundOperations.add(operation);
-                        System.out.println(this.Path);
                         this.backgroundImg.add(Load.backgroundImage(this.Path + tempBackground));
                         break;
                     default:
                         break;
                 }
             }
-
+            this.allTracks.sort(comparatorTrack);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -266,12 +266,17 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     public void run() {
         startTime = System.currentTimeMillis();
         currentTime = 0;
+        this.backgroundOperations.sort(comparatorOperation);
         this.repaint();
         while (currentTime < PlayInterface.finalEndTime) {
             currentTime = System.currentTimeMillis() - startTime;
             //System.out.println(currentTime+" "+this.finalEndTime);
             while (frontTrack<allTracks.size()&&allTracks.get(frontTrack).startTiming < currentTime) {
                 currentTime = System.currentTimeMillis() - startTime;
+                allTracks.get(frontTrack).notes.sort(comparatorNote);
+                allTracks.get(frontTrack).moveOperations.sort(comparatorOperation);
+                allTracks.get(frontTrack).changeWidthOperations.sort(comparatorOperation);
+                allTracks.get(frontTrack).changeColorOperations.sort(comparatorOperation);
                 new Thread(allTracks.get(frontTrack)).start();
                 currentTracks.put(allTracks.get(frontTrack).id,allTracks.get(frontTrack));
                  frontTrack++;
