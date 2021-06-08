@@ -1,6 +1,7 @@
 package team.seine.ephemelody.main;
 
 import com.sun.istack.internal.Nullable;
+import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.playinterface.RecordTemp;
 import team.seine.ephemelody.playinterface.Track;
 import team.seine.ephemelody.scenes.*;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 
 // 画布类
 public class Canvas extends JLayeredPane{
+    JFrame frame;
     Scenes firstScenes = null;
     Scenes secondScenes = null;
     Scenes thirdScenes = null;
@@ -25,6 +27,7 @@ public class Canvas extends JLayeredPane{
         bgScenes = new Background();*/
         /*background = new Background();
         home = new Home();*/
+        this.frame = frame;
         switchScenes("Home");
         setVisible(true);
         frame.addKeyListener(new OnKeyEvent());
@@ -33,6 +36,7 @@ public class Canvas extends JLayeredPane{
 
     public void switchScenes(String name, @Nullable RecordTemp... recordTemps) {
         if (name.equals("Home")) {
+//            frame.addKeyListener(new OnKeyEvent());
             this.firstScenes = new Background();
             this.secondScenes = new Home();
             this.menuOptionScenes = new MenuOption();

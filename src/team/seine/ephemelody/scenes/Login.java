@@ -8,9 +8,7 @@ import team.seine.ephemelody.utils.Rect;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.Arrays;
 
 public class Login extends JPanel implements Scenes, MouseMotionListener, MouseListener {
@@ -57,7 +55,9 @@ public class Login extends JPanel implements Scenes, MouseMotionListener, MouseL
                     if (player.getPassword().equals(password)) {
                         System.out.println("登录成功");
                         Data.playerId = username;
+
                         Data.canvas.switchScenes("Home"); // 到时候改成如果登录成功，用户名显示出来
+
                     } else {
                         System.out.println("用户名已存在, 注册失败");
                     }
@@ -113,4 +113,5 @@ public class Login extends JPanel implements Scenes, MouseMotionListener, MouseL
     public void mouseMoved(MouseEvent e) {
         onMouse(e.getX(), e.getY(), Scenes.MOUSE_MOVED);
     }
+
 }
