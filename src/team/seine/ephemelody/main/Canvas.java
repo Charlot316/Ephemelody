@@ -10,12 +10,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.font.GlyphVector;
 import java.sql.SQLException;
 
 // 画布类
 public class Canvas extends JLayeredPane{
-    JFrame frame;
+    public JFrame frame;
+    public KeyListener keyListener;
     Scenes firstScenes = null;
     Scenes secondScenes = null;
     Scenes thirdScenes = null;

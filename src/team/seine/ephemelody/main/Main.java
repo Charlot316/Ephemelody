@@ -4,7 +4,10 @@ import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.scenes.Background;
 
 import javax.swing.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
     public static void main(String[] args) throws SQLException {

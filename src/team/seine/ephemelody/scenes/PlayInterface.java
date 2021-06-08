@@ -9,6 +9,7 @@ import team.seine.ephemelody.utils.Load;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
@@ -247,6 +248,16 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         this.song = Load.sound(String.valueOf(songID));
         assert song != null;
         song.start(); // 播放音乐
+        addKeyListener( new KeyAdapter(){
+            public void keyPressed(KeyEvent e){
+                onKeyDown(e.getKeyCode());
+                repaint();
+            }
+            public void KeyReleased(KeyEvent e) {
+                onKeyUp(e.getKeyCode());
+                repaint();
+            }
+        });
     }
 
     /**
