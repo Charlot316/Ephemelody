@@ -41,11 +41,15 @@ public class RecordController {
             R10=RecordController.getPersonalRecentRecords(playerID);
             while (B10.next()) {
                 BPotential+=B10.getDouble("potential");
+                System.out.println(BPotential);
             }
             while(R10.next()){
+                System.out.println(R10.getDouble("potential"));
                 RPotential+=R10.getDouble("potential");
+                System.out.println(BPotential);
             }
-            potential=(BPotential+RPotential)/20;
+            System.out.println(BPotential+" "+RPotential);
+            potential=(BPotential+RPotential)/20.0;
             con = DriverManager.getConnection(uri, user, password);
             String sqlStr2 = "UPDATE seine.players SET potential= ? WHERE playerID= ?";
             sql = con.prepareStatement(sqlStr2);
@@ -234,7 +238,7 @@ public class RecordController {
     }
 
     /**
-     * 从数据库中返回3条个人最好成绩
+     * 从数据库中返回10条个人最好成绩
      *
      * @param playerID 玩家ID
      * @return 成绩集
@@ -244,7 +248,7 @@ public class RecordController {
         ResultSet rs = null;
         try {
             con = DriverManager.getConnection(uri, user, password);
-            String sqlStr = "SELECT * FROM seine.personal_best_records WHERE playerID = ? ORDER BY score DESC LIMIT 3";
+            String sqlStr = "SELECT * FROM seine.personal_best_records WHERE playerID = ? ORDER BY score DESC LIMIT 10";
             sql = con.prepareStatement(sqlStr);
             sql.setString(1, playerID);
             rs = sql.executeQuery();
@@ -261,15 +265,16 @@ public class RecordController {
      * @param songID 音乐ID
      * @return 成绩集
      */
-    public static ResultSet getPersonalBestRecordsBySongId(String playerID, int songID) {
+    public static ResultSet getPersonalBestRecordsBySongId(String playerID, int songID,int songDifficulty) {
         PreparedStatement sql;
         ResultSet rs = null;
         try {
             con = DriverManager.getConnection(uri, user, password);
-            String sqlStr = "SELECT * FROM seine.personal_best_records WHERE playerID = ? and songID = ?";
+            String sqlStr = "SELECT * FROM seine.personal_best_records WHERE playerID = ? and songID = ? and songDifficulty = ? ";
             sql = con.prepareStatement(sqlStr);
             sql.setString(1, playerID);
             sql.setInt(2, songID);
+            sql.setInt(3, songDifficulty);
             rs = sql.executeQuery();
             con.close();
         } catch (Exception e) {
@@ -309,6 +314,25 @@ public class RecordController {
             con = DriverManager.getConnection(uri, user, password);
             String sqlStr = "SELECT * FROM seine.all_best_records ORDER BY score DESC LIMIT 10";
             sql = con.prepareStatement(sqlStr);
+            rs = sql.executeQuery();
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return rs;
+    }
+
+    /**
+     * 从远程数据库中返回某首歌的最佳成绩
+     */
+    public static ResultSet getBestRecords(int songId) {
+        PreparedStatement sql;
+        ResultSet rs = null;
+        try {
+            con = DriverManager.getConnection(uri, user, password);
+            String sqlStr = "SELECT * FROM seine.all_best_records WHERE songId = ? ORDER BY score DESC LIMIT 1";
+            sql = con.prepareStatement(sqlStr);
+            sql.setInt(1, songId);
             rs = sql.executeQuery();
             con.close();
         } catch (Exception e) {

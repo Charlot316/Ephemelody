@@ -26,7 +26,6 @@ public class Data {
     public static AtomicInteger[] keyStatus = new AtomicInteger[200];
     public static int difficulty;
     public static int chooseSongId;
-    public static String playerId;
     public static int songId;
     public static Player nowPlayer;
     public static int frontSong=0;

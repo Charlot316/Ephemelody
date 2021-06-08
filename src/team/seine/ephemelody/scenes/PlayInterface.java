@@ -53,6 +53,8 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     public String Path;
     public ScoreAndComboDisplay displayer = new ScoreAndComboDisplay();
     public Clip song;
+    public double prevPotential;
+    public double nowPotential;
     /**
      * read in information of the display
      */
@@ -245,6 +247,8 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         this.setInterface();
         this.repaint();
         this.requestFocus();
+        this.prevPotential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
+//        System.out.println(prevPotential);
         this.song = Load.sound(String.valueOf(songID));
         assert song != null;
         song.start(); // 播放音乐
@@ -325,14 +329,17 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      */
     public void finish() {
         long time = System.currentTimeMillis();
-        Record record = new Record(Data.playerId, new Timestamp(time), Data.songId, Data.difficulty,
+        Record record = new Record(Data.nowPlayer.getPlayerID(), new Timestamp(time), Data.songId, Data.difficulty,
                 pureCount.get(), farCount.get(), lostCount.get(), maxCombo.get(),
                 RecordController.calculatePotential(Data.songId, Data.difficulty, new AtomicInteger(score)), score);
+//        System.out.println(nowPotential + "------" + prevPotential);
         System.out.println(record.toString());
         RecordController.insertAllBestRecord(record);
         RecordController.insertRecentRecord(record);
         RecordController.insertBestRecord(record);
-        Data.canvas.switchScenes("End", new RecordTemp(score, pureCount, farCount, lostCount, maxCombo, 2));
+        this.nowPotential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
+        Data.canvas.switchScenes("End", new RecordTemp(score, pureCount, farCount, lostCount, maxCombo,
+                2, nowPotential - prevPotential, nowPotential));
 
         song.stop();
     }

@@ -1,5 +1,7 @@
 package team.seine.ephemelody.scenes;
 
+import database.Entity.Record;
+import database.RecordController;
 import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.utils.Load;
 import team.seine.ephemelody.utils.Rect;
@@ -11,17 +13,21 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 public class MenuOption extends JPanel implements Scenes, MouseMotionListener, MouseListener {
-    int buttonRatingStatus = 0, buttonSetUpBackStatus = 0, buttonLoginStatus = 0;
+    int buttonRatingStatus = 0, buttonSetUpBackStatus = 0, buttonLoginStatus = 0, buttonQuitLoginStatus = 0;
     public Image[] ratingButton;
     public Image setupButton;
     public Image[] setupBackButton;
     public Image[] loginButton;
+    public Image[] quitLoginButton;
     public double potential;
     public MenuOption() {
         setBounds(0, 0, Data.WIDTH, 93);
 //        setLayout(null);
         setOpaque(false);
         setVisible(true);
+        if (Data.nowPlayer != null) {
+            this.potential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
+        }
 
         ratingButton = new Image[]{
                 Load.image("home/潜力值_0.png"), Load.image("home/潜力值_1.png"),
@@ -34,6 +40,9 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
         };
         loginButton = new Image[] {
                 Load.image("home/登录.png"), Load.image("home/登录_鼠标悬停.png"), Load.image("home/登录_按下.png")
+        };
+        quitLoginButton = new Image[] {
+                Load.image("home/退出登录.png"), Load.image("home/退出登录_鼠标悬停.png"), Load.image("home/退出登录_按下.png")
         };
         if (Data.nowPlayer != null) {
             this.potential = Data.nowPlayer.getPotential();
@@ -72,7 +81,7 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
         if (buttonSetUpBackStatus != MOUSE_DOWN) {
             buttonSetUpBackStatus = 0;
         }
-        buttonLoginStatus = 0;
+        buttonLoginStatus = buttonQuitLoginStatus = 0;
         int buttonStruts = struts == Scenes.MOUSE_MOVED ? 1 : struts == Scenes.MOUSE_DOWN ? 2 : 0;
 
         if(Rect.isInternal(x, y, 900, 0, 98, 50)) {
@@ -82,8 +91,14 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
             }
         } else if (Rect.isInternal(x, y, 1080, -3, 188, 69)) {
             buttonLoginStatus = buttonStruts;
+            buttonQuitLoginStatus = buttonLoginStatus;
             if(struts == Scenes.MOUSE_DOWN) {
-                Data.canvas.switchScenes("Login");
+                if (Data.nowPlayer == null) {
+                    Data.canvas.switchScenes("Login");
+                } else {
+                    Data.nowPlayer = null;
+                }
+
 //                System.exit(0);
             }
         }
@@ -128,6 +143,19 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
         g.drawImage(ratingButton[buttonRatingStatus], Data.WIDTH / 2 - 60, -16, null);
         g.drawImage(setupBackButton[buttonSetUpBackStatus], 900, 0, null);
         g.drawImage(setupButton, 934, 8, null);
-        g.drawImage(loginButton[buttonLoginStatus], 1080, -3, null);
+
+
+        g.setFont(new Font("黑体", Font.BOLD, 20));
+        g.setColor(Color.WHITE);
+        if (Data.nowPlayer != null) {
+            g.drawString(String.format("%.2f", potential), Data.WIDTH / 2 - 22,  58);
+            g.drawImage(quitLoginButton[buttonQuitLoginStatus], 1080, -3, null);
+            g.setFont(new Font("宋体", Font.PLAIN, 40));
+            g.setColor(new Color(92, 64, 100));
+            g.drawString("ID:" + Data.nowPlayer.getPlayerID(), 250, 37);
+        } else {
+            g.drawImage(loginButton[buttonLoginStatus], 1080, -3, null);
+        }
+
     }
 }
