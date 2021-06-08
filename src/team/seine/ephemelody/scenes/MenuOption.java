@@ -1,5 +1,7 @@
 package team.seine.ephemelody.scenes;
 
+import database.Entity.Record;
+import database.RecordController;
 import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.utils.Load;
 import team.seine.ephemelody.utils.Rect;
@@ -16,13 +18,14 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
     public Image setupButton;
     public Image[] setupBackButton;
     public Image[] loginButton;
+    public Image[] quitLoginButton;
     public double potential;
     public MenuOption() {
         setBounds(0, 0, Data.WIDTH, 93);
 //        setLayout(null);
         setOpaque(false);
         setVisible(true);
-
+        this.potential = RecordController.setAndGetPersonPotential(Data.playerId);
         ratingButton = new Image[]{
                 Load.image("home/潜力值_0.png"), Load.image("home/潜力值_1.png"),
                 Load.image("home/潜力值_2.png"), Load.image("home/潜力值_3.png"),
@@ -128,6 +131,16 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
         g.drawImage(ratingButton[buttonRatingStatus], Data.WIDTH / 2 - 60, -16, null);
         g.drawImage(setupBackButton[buttonSetUpBackStatus], 900, 0, null);
         g.drawImage(setupButton, 934, 8, null);
-        g.drawImage(loginButton[buttonLoginStatus], 1080, -3, null);
+
+
+        g.setFont(new Font("黑体", Font.BOLD, 20));
+        g.setColor(Color.WHITE);
+        if (Data.nowPlayer != null) {
+            g.drawString(String.format("%.2f", potential), Data.WIDTH / 2 - 22,  58);
+
+        } else {
+            g.drawImage(loginButton[buttonLoginStatus], 1080, -3, null);
+        }
+
     }
 }

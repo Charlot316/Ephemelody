@@ -41,11 +41,15 @@ public class RecordController {
             R10=RecordController.getPersonalRecentRecords(playerID);
             while (B10.next()) {
                 BPotential+=B10.getDouble("potential");
+                System.out.println(BPotential);
             }
             while(R10.next()){
+                System.out.println(R10.getDouble("potential"));
                 RPotential+=R10.getDouble("potential");
+                System.out.println(BPotential);
             }
-            potential=(BPotential+RPotential)/20;
+            System.out.println(BPotential+" "+RPotential);
+            potential=(BPotential+RPotential)/20.0;
             con = DriverManager.getConnection(uri, user, password);
             String sqlStr2 = "UPDATE seine.players SET potential= ? WHERE playerID= ?";
             sql = con.prepareStatement(sqlStr2);
