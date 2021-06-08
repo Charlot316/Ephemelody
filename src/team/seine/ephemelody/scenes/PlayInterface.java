@@ -132,21 +132,22 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                 long timing = Long.parseLong(arguments[3]);
                 PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, timing+1000);
                 Track track = getTrackByID(trackID);
-                if (noteType==1) {
-                    long endTiming = Long.parseLong(arguments[4]);
-                    Note note = new Note(track, noteType, key, timing, endTiming);
-                    track.notes.add(note);
-                    PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, endTiming+1000);
-                    track.startTiming=Math.min(track.startTiming,note.timing-PlayInterface.remainingTime-500);
-                    track.endTiming=Math.max(track.endTiming,note.endTiming+500);
-                } else {
-                    Note note = new Note(track, noteType, key, timing);
-                    track.notes.add(note);
-                    track.startTiming=Math.min(track.startTiming,note.timing-PlayInterface.remainingTime);
-                    track.endTiming=Math.max(track.endTiming,note.timing+500);
-                    PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, timing+1000);
+                if(track!=null){
+                    if (noteType==1) {
+                        long endTiming = Long.parseLong(arguments[4]);
+                        Note note = new Note(track, noteType, key, timing, endTiming);
+                        track.notes.add(note);
+                        PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, endTiming+1000);
+                        track.startTiming=Math.min(track.startTiming,note.timing-PlayInterface.remainingTime-500);
+                        track.endTiming=Math.max(track.endTiming,note.endTiming+500);
+                    } else {
+                        Note note = new Note(track, noteType, key, timing);
+                        track.notes.add(note);
+                        track.startTiming=Math.min(track.startTiming,note.timing-PlayInterface.remainingTime);
+                        track.endTiming=Math.max(track.endTiming,note.timing+500);
+                        PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, timing+1000);
+                    }
                 }
-
             }
 
             for (int i = 0; i < this.operationsCount; i++) {
@@ -165,35 +166,37 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                 String tempBackground = "";
                 PlayOperations operation;
                 Track track = getTrackByID(trackID);
-                switch (type) {
-                    case 1:
-                        endTiming = Long.parseLong(arguments[3]);
-                        endX = Double.parseDouble(arguments[4]);
-                        operation = new PlayOperations(trackID, type, startTiming, endTiming, endX, width, R, G, B, tempBackground);
-                        track.moveOperations.add(operation);
-                        break;
-                    case 2:
-                        endTiming = Long.parseLong(arguments[3]);
-                        width = Double.parseDouble(arguments[4]);
-                        operation = new PlayOperations(trackID, type, startTiming, endTiming, endX, width, R, G, B, tempBackground);
-                        track.changeWidthOperations.add(operation);
-                        break;
-                    case 3:
-                        endTiming = Long.parseLong(arguments[3]);
-                        R = Integer.parseInt(arguments[4]);
-                        G = Integer.parseInt(arguments[5]);
-                        B = Integer.parseInt(arguments[6]);
-                        operation = new PlayOperations(trackID, type, startTiming, endTiming, endX, width, R, G, B, tempBackground);
-                        track.changeColorOperations.add(operation);
-                        break;
-                    case 4:
-                        tempBackground = arguments[3];
-                        operation = new PlayOperations(trackID, type, startTiming, endTiming, endX, width, R, G, B, tempBackground);
-                        this.backgroundOperations.add(operation);
-                        this.backgroundImg.add(Load.backgroundImage(this.Path + tempBackground));
-                        break;
-                    default:
-                        break;
+                if(track!=null){
+                    switch (type) {
+                        case 1:
+                            endTiming = Long.parseLong(arguments[3]);
+                            endX = Double.parseDouble(arguments[4]);
+                            operation = new PlayOperations(trackID, type, startTiming, endTiming, endX, width, R, G, B, tempBackground);
+                            track.moveOperations.add(operation);
+                            break;
+                        case 2:
+                            endTiming = Long.parseLong(arguments[3]);
+                            width = Double.parseDouble(arguments[4]);
+                            operation = new PlayOperations(trackID, type, startTiming, endTiming, endX, width, R, G, B, tempBackground);
+                            track.changeWidthOperations.add(operation);
+                            break;
+                        case 3:
+                            endTiming = Long.parseLong(arguments[3]);
+                            R = Integer.parseInt(arguments[4]);
+                            G = Integer.parseInt(arguments[5]);
+                            B = Integer.parseInt(arguments[6]);
+                            operation = new PlayOperations(trackID, type, startTiming, endTiming, endX, width, R, G, B, tempBackground);
+                            track.changeColorOperations.add(operation);
+                            break;
+                        case 4:
+                            tempBackground = arguments[3];
+                            operation = new PlayOperations(trackID, type, startTiming, endTiming, endX, width, R, G, B, tempBackground);
+                            this.backgroundOperations.add(operation);
+                            this.backgroundImg.add(Load.backgroundImage(this.Path + tempBackground));
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
             this.allTracks.sort(comparatorTrack);
@@ -307,7 +310,10 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
 
     public Track getTrackByID(int id) {
         if (id >= allTracks.size() || id < 0) return null;
-        else return allTracks.get(id);
+        for(Track i:allTracks){
+            if(i.id==id) return i;
+        }
+        return null;
     }
 
 
