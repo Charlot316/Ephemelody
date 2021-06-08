@@ -419,17 +419,38 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                     while ((rearNote + 1 < this.notes.size()) && (this.notes.get(rearNote + 1).timing - PlayInterface.remainingTime) < this.trackCurrentTime) {
                         rearNote++;
                     }
-                    if ( frontNote<this.notes.size()&&this.trackCurrentTime > (note=this.notes.get(frontNote)).timing + 300&&(note.noteType==0||note.noteType==1&&!this.isHolding)) {
-                        PlayInterface.combo.set(0);
-                        PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
-                        PlayInterface.lostCount.getAndIncrement();
-                        PlayInterface.currentNoteCount.getAndIncrement();
-                        this.tempJudge=-1;
+                    if ( frontNote<this.notes.size()&&this.trackCurrentTime > (note=this.notes.get(frontNote)).timing + 300) {
+                        if((note.noteType==0||note.noteType==1&&!this.isHolding)){
+                            PlayInterface.combo.set(0);
+                            PlayInterface.lostCount.getAndIncrement();
+                            PlayInterface.currentNoteCount.getAndIncrement();
+                            this.tempJudge=-1;
 //                        System.out.println("type2 lost"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
-                        frontNote++;
-                        this.displayState=0;
-                        this.currentJudgement=judgement[0];
+                            frontNote++;
+                            this.displayState=0;
+                            this.currentJudgement=judgement[0];
+                        }
+                       else if(note.noteType==1&&this.isHolding&&this.trackCurrentTime>note.endTiming+300){
+                            PlayInterface.combo.getAndIncrement();
+                            PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
+                            switch (this.tempJudge){
+                                case 2:
+                                    PlayInterface.pureCount.getAndIncrement();
+                                    break;
+                                case 1:
+                                    PlayInterface.farCount.getAndIncrement();
+                                    break;
+                                default: break;
+                            }
+                            PlayInterface.currentNoteCount.getAndIncrement();
+                            this.currentJudgement=judgement[tempJudge];
+                            this.tempJudge=-1;
+                            this.isHolding=false;
+                            frontNote++;
+                            this.displayState=0;
+                        }
                     }
+
                     this.repaint();
                     try{
                         Thread.sleep(8);

@@ -309,7 +309,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     }
 
     public Track getTrackByID(int id) {
-        if (id >= allTracks.size() || id < 0) return null;
         for(Track i:allTracks){
             if(i.id==id) return i;
         }
