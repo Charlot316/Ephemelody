@@ -3,6 +3,7 @@ package team.seine.ephemelody.scenes;
 import javafx.scene.media.AudioClip;
 import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.main.Canvas;
+import team.seine.ephemelody.playinterface.Record;
 import team.seine.ephemelody.utils.Load;
 import team.seine.ephemelody.utils.Rect;
 
@@ -140,11 +141,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         if (Rect.isInternal(x, y, 523, 580, 202, 125)) {
             if (buttonEasyStatus != MOUSE_DOWN) {
                 buttonEasyStatus = buttonStruts;
-            } /*else {
-//                buttonSetUpBackStatus = MOUSE_UP;
-                buttonNormalStatus = MOUSE_UP;
-                buttonDifficultStatus = MOUSE_UP;
-            }*/
+            }
             /*
                 为什么不用else，因为用else的话刚点下去的一瞬间，另外两个按钮不会立刻跳转
              */
@@ -153,25 +150,19 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
                 buttonDifficultStatus = MOUSE_UP;
             }
             if(struts == Scenes.MOUSE_DOWN) {
-//                System.out.println("666");
-//                Data.canvas.switchScenes("End");
-//                Data.canvas.switchScenes("About");
+                Data.difficulty = 1;
             }
         }else if (Rect.isInternal(x, y, 783, 580, 202, 125)) {
 
             if (buttonNormalStatus != MOUSE_DOWN) {
                 buttonNormalStatus = buttonStruts;
-            } /*else {
-//                buttonSetUpBackStatus = MOUSE_UP;
-                buttonEasyStatus = MOUSE_UP;
-                buttonDifficultStatus = MOUSE_UP;
-            }*/
+            }
             if (buttonNormalStatus == MOUSE_DOWN) {
                 buttonEasyStatus = MOUSE_UP;
                 buttonDifficultStatus = MOUSE_UP;
             }
             if(struts == Scenes.MOUSE_DOWN) {
-//                Data.canvas.switchScenes("Site");
+                Data.difficulty = 2;
             }
         }else if (Rect.isInternal(x, y, 1043, 580, 202, 125)) {
             if (buttonDifficultStatus != MOUSE_DOWN) {
@@ -186,7 +177,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
                 buttonNormalStatus = MOUSE_UP;
             }
             if(struts == Scenes.MOUSE_DOWN) {
-//                Data.canvas.switchScenes("End");
+                Data.difficulty = 3;
             }
         } else if (Rect.isInternal(x, y, 643, 750, 500, 114)) {
             buttonPlayStatus = buttonStruts;
@@ -199,7 +190,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         } else if (Rect.isInternal(x, y, 1038, 850, 230, 69)) {
             buttonSongInfStatus = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
-                Data.canvas.switchScenes("End");
+                Data.canvas.switchScenes("End", new Record(1));
             }
         } else if (Rect.isInternal(x, y, 120, 60, 126, 95)) {
             buttonUpStatus = buttonStruts;
