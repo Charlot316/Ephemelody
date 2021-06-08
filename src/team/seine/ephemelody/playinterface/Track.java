@@ -419,8 +419,8 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                     while ((rearNote + 1 < this.notes.size()) && (this.notes.get(rearNote + 1).timing - PlayInterface.remainingTime) < this.trackCurrentTime) {
                         rearNote++;
                     }
-                    if ( frontNote<this.notes.size()&&this.trackCurrentTime > (note=this.notes.get(frontNote)).timing + 300) {
-                        if((note.noteType==0||note.noteType==1&&!this.isHolding)){
+                    if(frontNote<this.notes.size()){
+                        if (this.trackCurrentTime > (note=this.notes.get(frontNote)).timing + 300&&(note.noteType==0||note.noteType==1&&!this.isHolding)) {
                             PlayInterface.combo.set(0);
                             PlayInterface.lostCount.getAndIncrement();
                             PlayInterface.currentNoteCount.getAndIncrement();
@@ -430,27 +430,35 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                             this.displayState=0;
                             this.currentJudgement=judgement[0];
                         }
-                       else if(note.noteType==1&&this.isHolding&&this.trackCurrentTime>note.endTiming+300){
+                        else if((note=this.notes.get(frontNote)).noteType==1&&this.isHolding&&this.trackCurrentTime>note.endTiming){
                             PlayInterface.combo.getAndIncrement();
                             PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
+                            int score=(PlayInterface.currentNoteCount.get()==PlayInterface.notesCount)?PlayInterface.scoreForLastNote:PlayInterface.scorePerNote;
                             switch (this.tempJudge){
                                 case 2:
                                     PlayInterface.pureCount.getAndIncrement();
+                                    PlayInterface.currentScore.getAndAdd(score);
                                     break;
                                 case 1:
                                     PlayInterface.farCount.getAndIncrement();
+                                    PlayInterface.currentScore.getAndAdd(score/2);
                                     break;
                                 default: break;
                             }
+                            if(note.key>='a'&&note.key<='z')Data.isReleased[note.key-32].set(0);
+                            else Data.isReleased[note.key].set(0);
+                            PlayInterface.combo.getAndIncrement();
+                            PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
                             PlayInterface.currentNoteCount.getAndIncrement();
                             this.currentJudgement=judgement[tempJudge];
                             this.tempJudge=-1;
                             this.isHolding=false;
                             frontNote++;
                             this.displayState=0;
-                        }
-                    }
 
+                        }
+                        //if(frontNote<this.notes.size()&&this.notes.get(frontNote).noteType==1) System.out.println(this.isHolding+" "+this.trackCurrentTime+" "+note.endTiming);
+                    }
                     this.repaint();
                     try{
                         Thread.sleep(8);
