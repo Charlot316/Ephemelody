@@ -33,7 +33,7 @@ public class Canvas extends JLayeredPane{
 //        nowScenes = new PlayInterface(1, 1);
     }
 
-    public void switchScenes(String name) {
+    public void switchScenes(String name, int... way) {
         if (name.equals("Home")) {
             this.firstScenes = new Background();
             this.secondScenes = new Home();

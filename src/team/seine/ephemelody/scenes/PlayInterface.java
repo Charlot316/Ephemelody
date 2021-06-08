@@ -296,7 +296,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      * Finish the play and go to the next interface
      */
     public void finish() {
-        Data.canvas.switchScenes("Home");
+        Data.canvas.switchScenes("End");
         song.stop();
     }
 
