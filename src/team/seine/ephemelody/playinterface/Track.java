@@ -227,10 +227,10 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             this.currentKey = this.notes.get(frontNote).key;
 
             if(this.currentKey>='a'&&this.currentKey<='z') this.currentKey-=32;
-
+            Note note=this.notes.get(frontNote);
             if(isHolding){
                 if (Data.isReleased[this.currentKey].get()==1){
-                    if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-this.notes.get(frontNote).endTiming)>500){
+                    if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-note.endTiming)>500){
                         this.displayState=0;
                         this.currentJudgement=judgement[0];
                         this.tempJudge=0;
@@ -245,16 +245,16 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 }
             }
             else if (Data.isPressed[this.currentKey].get()==1) {
-                if (Math.abs(this.trackCurrentTime-Data.offset-this.delay-this.notes.get(frontNote).timing)>350){
+                if (Math.abs(this.trackCurrentTime-Data.offset-this.delay-note.timing)>350){
                     this.tempJudge=-1;
                     Data.isPressed[this.currentKey].set(0);
                     Data.isReleased[this.currentKey].set(0);
                     return;
                 }
-                else if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-this.notes.get(frontNote).timing)>300){
+                else if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-note.timing)>300){
                     this.tempJudge=0;
                 }
-                else if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-this.notes.get(frontNote).timing)>200){
+                else if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-note.timing)>200){
                     this.tempJudge=1;
 //                    if(this.notes.get(frontNote).noteType==1)System.out.println("tempFar");
                 }
@@ -262,7 +262,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                     this.tempJudge=2;
 //                    if(this.notes.get(frontNote).noteType==1)System.out.println("tempPure");
                 }
-                if(this.notes.get(frontNote).noteType==1&&this.tempJudge>0){
+                if(note.noteType==1&&this.tempJudge>0){
                     this.isHolding=true;
                 }
                 Data.isReleased[this.currentKey].set(0);
@@ -409,7 +409,8 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                     if (displayState<99) displayState++;
                     this.lastTime = this.trackCurrentTime;
                     this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
-                    if(frontNote<this.notes.size()&&this.trackCurrentTime+350>this.notes.get(frontNote).timing){
+                    Note note;
+                    if(frontNote<this.notes.size()&&this.trackCurrentTime+350>(note=this.notes.get(frontNote)).timing){
                         this.Judge();
                     }
                     this.changeColor();
@@ -418,7 +419,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                     while ((rearNote + 1 < this.notes.size()) && (this.notes.get(rearNote + 1).timing - PlayInterface.remainingTime) < this.trackCurrentTime) {
                         rearNote++;
                     }
-                    if ( frontNote<this.notes.size()&&this.trackCurrentTime > this.notes.get(frontNote).timing + 300&&(this.notes.get(frontNote).noteType==0||this.notes.get(frontNote).noteType==1&&!this.isHolding)) {
+                    if ( frontNote<this.notes.size()&&this.trackCurrentTime > (note=this.notes.get(frontNote)).timing + 300&&(note.noteType==0||note.noteType==1&&!this.isHolding)) {
                         PlayInterface.combo.set(0);
                         PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
                         PlayInterface.lostCount.getAndIncrement();
