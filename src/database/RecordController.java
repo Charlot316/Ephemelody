@@ -1,8 +1,10 @@
 package database;
 
 import database.Entity.Record;
+import database.Entity.Song;
 
 import java.sql.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class RecordController {
 
@@ -10,6 +12,24 @@ public class RecordController {
     static String uri = "jdbc:mariadb://47.93.249.243:3306/seine? useSSL=true&characterEncoding=utf-8";
     static String user = "root";
     static String password = "123456";
+
+    public static double calculatePotential(int SongID,int SongDifficulty,AtomicInteger score){
+        double chartConstant;
+        Song song=SongController.selectSongById(SongID,SongDifficulty);
+        chartConstant=song.getChartConstant();
+        double potential;
+        if(score.get()>=10000000){
+            potential=chartConstant+2;
+        }
+        else if(score.get()>=9800000){
+            potential=1+chartConstant+((double)score.get() - 9800000.0)/200000.0;
+        }
+        else {
+            potential=chartConstant+((double)score.get() - 9500000.0)/300000.0;
+        }
+        if(potential<0) potential=0;
+        return potential;
+    }
 
     /**
      * 向数据库中插入游玩记录，personal_recent_records记录个人最近30条
