@@ -1,10 +1,12 @@
 package database.Entity;
 
-import java.sql.Date;
+
+import java.sql.Timestamp;
+import java.util.Date;
 
 public class Record {
     private String playerID;
-    private Date time;
+    private Timestamp time;
     private int songID;
     private int songDifficulty;
     private int pureCount;
@@ -17,7 +19,7 @@ public class Record {
     public Record() {
     }
 
-    public Record(String playerID, Date time, int songID, int songDifficulty,
+    public Record(String playerID, Timestamp time, int songID, int songDifficulty,
                   int pureCount, int farCount, int lostCount, int maxCombo,
                   double potential,int score) {
         this.playerID = playerID;
@@ -40,11 +42,11 @@ public class Record {
         this.playerID = playerID;
     }
 
-    public Date getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
 
@@ -110,5 +112,21 @@ public class Record {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    @Override
+    public String toString() {
+        return "Record{" +
+                "playerID='" + playerID + '\'' +
+                ", time=" + time +
+                ", songID=" + songID +
+                ", songDifficulty=" + songDifficulty +
+                ", pureCount=" + pureCount +
+                ", farCount=" + farCount +
+                ", lostCount=" + lostCount +
+                ", maxCombo=" + maxCombo +
+                ", potential=" + potential +
+                ", score=" + score +
+                '}';
     }
 }

@@ -1,5 +1,7 @@
 package team.seine.ephemelody.scenes;
 
+import database.Entity.Record;
+import database.RecordController;
 import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.playinterface.*;
 import team.seine.ephemelody.utils.Load;
@@ -11,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -304,8 +307,15 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      * Finish the play and go to the next interface
      */
     public void finish() {
+        long time = System.currentTimeMillis();
+        Record record = new Record(Data.playerId, new Timestamp(time), Data.songId, Data.difficulty,
+                pureCount.get(), farCount.get(), lostCount.get(), maxCombo.get(), 0.0, score);
+        System.out.println(record.toString());
+        RecordController.insertAllBestRecord(record);
+        RecordController.insertRecentRecord(record);
+        RecordController.insertBestRecord(record);
+        Data.canvas.switchScenes("End", new RecordTemp(score, pureCount, farCount, lostCount, maxCombo, 2));
 
-        Data.canvas.switchScenes("End", new RecordTemp(score, pureCount, farCount, lostCount, combo, 2));
         song.stop();
     }
 

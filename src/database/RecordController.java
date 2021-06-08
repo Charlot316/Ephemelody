@@ -48,7 +48,7 @@ public class RecordController {
                         "VALUES (?,?,?,?,?,?,?,?,?,?)";
                 sql = con.prepareStatement(sqlStr3);
                 sql.setString(1, record.getPlayerID());
-                sql.setDate(2, record.getTime());
+                sql.setTimestamp(2, record.getTime());
                 sql.setInt(3, record.getSongID());
                 sql.setInt(4, record.getSongDifficulty());
                 sql.setInt(5, record.getPureCount());
@@ -82,13 +82,14 @@ public class RecordController {
             sql.setInt(2, record.getSongID());
             sql.setInt(3, record.getSongDifficulty());
             rs = sql.executeQuery();
+//            System.out.println(rs.getRow());
             //没有最佳记录就插入
             if (rs.getRow() == 0) {
                 String sqlStr1 = "INSERT INTO seine.personal_best_records(playerID, time, songID, songDifficulty, pureCount, farCount, lostCount, maxCombo, potential, score) " +
                         "VALUES (?,?,?,?,?,?,?,?,?,?)";
                 sql = con.prepareStatement(sqlStr1);
                 sql.setString(1, record.getPlayerID());
-                sql.setDate(2, record.getTime());
+                sql.setTimestamp(2, record.getTime());
                 sql.setInt(3, record.getSongID());
                 sql.setInt(4, record.getSongDifficulty());
                 sql.setInt(5, record.getPureCount());
@@ -105,7 +106,7 @@ public class RecordController {
                     String sqlStr2 = "UPDATE seine.personal_best_records SET score = ?,time = ? WHERE playerID = ? and songID = ? and songDifficulty = ?";
                     sql = con.prepareStatement(sqlStr2);
                     sql.setInt(1, record.getScore());
-                    sql.setDate(2, record.getTime());
+                    sql.setTimestamp(2, record.getTime());
                     sql.setString(3, record.getPlayerID());
                     sql.setInt(4, record.getSongID());
                     sql.setInt(5, record.getSongDifficulty());
@@ -142,7 +143,7 @@ public class RecordController {
                         "VALUES (?,?,?,?,?,?,?,?,?,?)";
                 sql = con.prepareStatement(sqlStr1);
                 sql.setString(1, record.getPlayerID());
-                sql.setDate(2, record.getTime());
+                sql.setTimestamp(2, record.getTime());
                 sql.setInt(3, record.getSongID());
                 sql.setInt(4, record.getSongDifficulty());
                 sql.setInt(5, record.getPureCount());
@@ -159,7 +160,7 @@ public class RecordController {
                     String sqlStr2 = "UPDATE seine.all_best_records SET score = ?,time = ? WHERE playerID = ? and songID = ? and songDifficulty = ?";
                     sql = con.prepareStatement(sqlStr2);
                     sql.setInt(1, record.getScore());
-                    sql.setDate(2, record.getTime());
+                    sql.setTimestamp(2, record.getTime());
                     sql.setString(3, record.getPlayerID());
                     sql.setInt(4, record.getSongID());
                     sql.setInt(5, record.getSongDifficulty());
