@@ -230,7 +230,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             Note note=this.notes.get(frontNote);
             if(isHolding){
                 if (Data.isReleased[this.currentKey].get()==1){
-                    if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-note.endTiming)>500){
+                    if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-note.endTiming)>300){
                         this.displayState=0;
                         this.currentJudgement=judgement[0];
                         this.tempJudge=0;
@@ -245,13 +245,13 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 }
             }
             else if (Data.isPressed[this.currentKey].get()==1) {
-                if (Math.abs(this.trackCurrentTime-Data.offset-this.delay-note.timing)>350){
+                if (Math.abs(this.trackCurrentTime-Data.offset-this.delay-note.timing)>250){
                     this.tempJudge=-1;
                     Data.isPressed[this.currentKey].set(0);
                     Data.isReleased[this.currentKey].set(0);
                     return;
                 }
-                else if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-note.timing)>300){
+                else if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-note.timing)>225){
                     this.tempJudge=0;
                 }
                 else if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-note.timing)>200){
@@ -459,7 +459,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                     }
                     this.repaint();
                     try{
-                        Thread.sleep(8);
+                        Thread.sleep(15);
                     }catch (InterruptedException e){
                         e.printStackTrace();
                     }

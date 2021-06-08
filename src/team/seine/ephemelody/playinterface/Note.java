@@ -40,14 +40,10 @@ public class Note extends Thread {//Note, main article of the play interface
 
     public void moveNote(){
         this.positionX=this.basedTrack.positionX;
-
-        this.currentTime=System.currentTimeMillis()-PlayInterface.startTime;
-        if(Math.abs(this.lastTime-this.currentTime)>30) {
-            this.lastTime=this.basedTrack.lastTime;
-        }
+        this.lastTime=this.basedTrack.lastTime;
+        this.currentTime=this.basedTrack.trackCurrentTime;
         if(this.timing>this.currentTime){
             this.positionY=this.positionY-((this.positionY-PlayInterface.finalY)/(double)(this.timing-this.currentTime))*(double)(this.currentTime-this.lastTime);
-            //if(this.positionY>0.8) System.out.println(this.currentTime+" "+this.lastTime);
         }
         else if(this.noteType==1){
             this.positionY=PlayInterface.finalY;
