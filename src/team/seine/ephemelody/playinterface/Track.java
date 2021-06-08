@@ -431,8 +431,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                             this.currentJudgement=judgement[0];
                         }
                         else if((note=this.notes.get(frontNote)).noteType==1&&this.isHolding&&this.trackCurrentTime>note.endTiming){
-                            PlayInterface.combo.getAndIncrement();
-                            PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
                             int score=(PlayInterface.currentNoteCount.get()==PlayInterface.notesCount)?PlayInterface.scoreForLastNote:PlayInterface.scorePerNote;
                             switch (this.tempJudge){
                                 case 2:
