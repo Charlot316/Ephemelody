@@ -22,10 +22,10 @@ public class RecordController {
             potential=chartConstant+2;
         }
         else if(score.get()>=9000000){
-            potential=1+chartConstant+((double)score.get() - 9000000.0)/200000.0;
+            potential=1+chartConstant+((double)score.get() - 9000000.0)/1000000.0;
         }
         else {
-            potential=chartConstant+((double)score.get() - 5000000.0)/300000.0;
+            potential=chartConstant+((double)score.get() - 7000000.0)/7000000.0;
         }
         if(potential<0) potential=0;
         return potential;

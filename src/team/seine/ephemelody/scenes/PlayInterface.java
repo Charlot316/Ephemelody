@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.awt.BasicStroke.CAP_BUTT;
 import static java.awt.BasicStroke.JOIN_BEVEL;
+import static java.lang.Thread.sleep;
 
 public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListener {//Set up the play interface
     int songID;
@@ -310,6 +311,11 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             displayer.combo=PlayInterface.combo.get();
             displayer.score=score;
             displayer.repaint();
+            try{
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         this.finish();
     }
