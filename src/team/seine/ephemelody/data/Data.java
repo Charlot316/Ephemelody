@@ -20,7 +20,10 @@ public class Data {
     public static double noteSpeed = 5.0; // 存放设置中的流速
     public static AtomicInteger[] isPressed =new AtomicInteger[200];
     public static AtomicInteger[] isReleased =new AtomicInteger[200];
+    public static AtomicInteger[] isUsing = new AtomicInteger[200];
     public static AtomicInteger[] keyStatus = new AtomicInteger[200];
+    public static int difficulty;
+    public static int chooseSongId;
     /*private static Image[] setupButton;
     private static Image[] ratingButton;
     private static Image[] difficultyButton;
