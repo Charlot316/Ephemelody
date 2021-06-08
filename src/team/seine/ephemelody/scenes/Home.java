@@ -2,16 +2,13 @@ package team.seine.ephemelody.scenes;
 
 import javafx.scene.media.AudioClip;
 import team.seine.ephemelody.data.Data;
-import team.seine.ephemelody.main.Canvas;
-import team.seine.ephemelody.playinterface.Record;
+import team.seine.ephemelody.playinterface.RecordTemp;
 import team.seine.ephemelody.utils.Load;
 import team.seine.ephemelody.utils.Rect;
 
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.font.GlyphVector;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Home extends JPanel implements Scenes, MouseMotionListener, MouseListener, KeyListener {
@@ -190,17 +187,27 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         } else if (Rect.isInternal(x, y, 1038, 850, 230, 69)) {
             buttonSongInfStatus = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
-                Data.canvas.switchScenes("End", new Record(1));
+                Data.canvas.switchScenes("End", new RecordTemp(1));
             }
         } else if (Rect.isInternal(x, y, 120, 60, 126, 95)) {
             buttonUpStatus = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
+                Data.songId += 1;
+                if (Data.songId > 4) {
+                    Data.songId = 0;
+                }
+                System.out.println(Data.realSongList.get(Data.songId));
                 chooseSong.way = 1;
                 new Thread(chooseSong).start();
             }
         } else if (Rect.isInternal(x, y, 120, 800, 126, 95)) {
             buttonDownStatus = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
+                Data.songId -= 1;
+                if (Data.songId < 0) {
+                    Data.songId = 4;
+                }
+                System.out.println(Data.realSongList.get(Data.songId));
                 chooseSong.way = 2;
                 new Thread(chooseSong).start();
             }

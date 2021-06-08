@@ -1,6 +1,9 @@
 package team.seine.ephemelody.scenes;
 
+import database.PlayerController;
+import database.RecordController;
 import team.seine.ephemelody.data.Data;
+import team.seine.ephemelody.playinterface.RecordTemp;
 import team.seine.ephemelody.utils.Load;
 import team.seine.ephemelody.utils.Rect;
 
@@ -9,6 +12,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class End extends JPanel implements Scenes, MouseMotionListener, MouseListener {
     public Image backgroundImg;
@@ -27,8 +33,51 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
     public String songName;
     public int nowPoints;
     public int highestPoints;
+    public AtomicInteger pureCount;
+    public AtomicInteger farCount;
+    public AtomicInteger lostCount;
+    public End(RecordTemp recordTemp) {
+        AtomicInteger tmp = new AtomicInteger();
+        this.pureCount = new AtomicInteger();
+        this.farCount = new AtomicInteger();
+        this.lostCount = new AtomicInteger();
+        pureCount.set(12);
+        farCount.set(11);
+        lostCount.set(9);
+        if (recordTemp.way == 1) {
+            try {
+                ResultSet rs = RecordController.getPersonalBestRecordsBySongId(Data.playerId, Data.songId);
+                System.out.println(Data.playerId + " " + Data.songId);
+                while (rs.next()) {
+                    this.highestPoints = rs.getInt("score");
+                    this.nowPoints = highestPoints;
+                    tmp.set(rs.getInt("pureCount"));
+                    this.pureCount = tmp;
+                    tmp.set(rs.getInt("farCount"));
+                    this.farCount = tmp;
+                    tmp.set(rs.getInt("lostCount"));
+                    this.lostCount = tmp;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
-    public End() {
+        } else {
+            try {
+                ResultSet rs = RecordController.getPersonalBestRecordsBySongId(Data.playerId, Data.songId);
+                System.out.println(Data.playerId + " " + Data.songId);
+                this.nowPoints = recordTemp.score;
+                while (rs.next()) {
+                    this.highestPoints = rs.getInt("score");
+                }
+                this.pureCount = recordTemp.pureCount;
+                this.farCount = recordTemp.farCount;
+                this.lostCount = recordTemp.lostCount;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setVisible(true);
         setOpaque(false);
@@ -46,7 +95,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         returnButton = new Image[] {
                 Load.image("end/返回.png"), Load.image("end/返回_鼠标悬停.png"), Load.image("end/返回_按下.png")
         };
-        songName = "666";
+        songName = Data.realSongList.get(Data.songId);
         addMouseListener(this);
         addMouseMotionListener(this);
         new End.UpdateUI().start();
@@ -80,6 +129,14 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         g.setFont(new Font("黑体", Font.PLAIN, 35));
         g.setColor(new Color(255, 255, 255));
         g.drawString(String.format("%08d", highestPoints), 680, 485);
+
+        Font f = new Font("黑体", Font.BOLD, 35);
+        Data.canvas.paintString(String.format("%03d", pureCount.get()), f, g, 700, 570, 1, Color.WHITE, Color.BLACK);
+        g.translate(-700, -570);
+        Data.canvas.paintString(String.format("%03d", farCount.get()), f, g, 700, 632, 1, Color.WHITE, Color.BLACK);
+        g.translate(-700, -632);
+        Data.canvas.paintString(String.format("%03d", lostCount.get()), f, g, 700, 695, 1, Color.WHITE, Color.BLACK);
+        g.translate(-700, -695);
     }
 
     @Override

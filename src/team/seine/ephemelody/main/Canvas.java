@@ -1,9 +1,7 @@
 package team.seine.ephemelody.main;
 
 import com.sun.istack.internal.Nullable;
-import team.seine.ephemelody.data.Data;
-import team.seine.ephemelody.playinterface.Record;
-import team.seine.ephemelody.playinterface.ScoreAndComboDisplay;
+import team.seine.ephemelody.playinterface.RecordTemp;
 import team.seine.ephemelody.playinterface.Track;
 import team.seine.ephemelody.scenes.*;
 
@@ -11,10 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.awt.font.GlyphVector;
-import java.util.List;
+import java.sql.SQLException;
 
 // 画布类
 public class Canvas extends JLayeredPane{
@@ -24,7 +20,7 @@ public class Canvas extends JLayeredPane{
     Scenes loginComScenes = null; // 登录界面的组件所在页面
     Scenes menuOptionScenes = null;
     Scenes chooseSongScenes = null;
-    public Canvas(JFrame frame) {
+    public Canvas(JFrame frame) throws SQLException {
         /*nowScenes = new Home();
         bgScenes = new Background();*/
         /*background = new Background();
@@ -35,7 +31,7 @@ public class Canvas extends JLayeredPane{
 //        nowScenes = new PlayInterface(1, 1);
     }
 
-    public void switchScenes(String name, @Nullable Record...records) {
+    public void switchScenes(String name, @Nullable RecordTemp... recordTemps) {
         if (name.equals("Home")) {
             this.firstScenes = new Background();
             this.secondScenes = new Home();
@@ -49,12 +45,7 @@ public class Canvas extends JLayeredPane{
         } else if (name.equals("End")) {
             this.firstScenes = new Background();
             this.secondScenes = new Home();
-            if (records[0].way == 1) {
-
-            } else if (records[0].way == 2){
-
-            }
-            this.thirdScenes = new End();
+            this.thirdScenes = new End(recordTemps[0]);
             this.removeAll();
             this.add((Background) firstScenes, new Integer(0));
 //            this.add((Home) secondScenes, new Integer(1));

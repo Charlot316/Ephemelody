@@ -15,7 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Data {
     public static final int WIDTH = 1286, HEIGHT = 965, FPS = 100;
     public static Canvas canvas;
-    public static List<String> songList; // 歌曲列表，存放歌曲名
+    public static List<String> songList; // 歌曲列表，存放歌曲名，用来实现动画效果
+    public static List<String> realSongList; // 真正的歌曲列表，不会改变
     public static int offset = 0, noteVolume = 1, volume = 1; // 存放设置中的偏移、音效、音量
     public static double noteSpeed = 5.0; // 存放设置中的流速
     public static AtomicInteger[] isPressed =new AtomicInteger[200];
@@ -24,6 +25,9 @@ public class Data {
     public static AtomicInteger[] keyStatus = new AtomicInteger[200];
     public static int difficulty;
     public static int chooseSongId;
+    public static String playerId;
+    public static int songId;
+
     /*private static Image[] setupButton;
     private static Image[] ratingButton;
     private static Image[] difficultyButton;
@@ -48,7 +52,9 @@ public class Data {
         };
         backgroundImg = Load.image("home/背景.png");
         startButton = Load.image("home/开始游戏.png");*/
-        songList = Arrays.asList("第一首歌", "第二首歌", "第三首歌", "第四首歌", "第五首歌");
+        songList = Arrays.asList("第四首歌", "第五首歌", "第一首歌", "第二首歌", "第三首歌");
+        realSongList = Arrays.asList("第四首歌", "第五首歌", "第一首歌", "第二首歌", "第三首歌");
+        songId = 2;
     }
 
     public static void changeSongList(int way, int chooseSong) {

@@ -4,9 +4,10 @@ import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.scenes.Background;
 
 import javax.swing.*;
+import java.sql.SQLException;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
         JFrame frame = new JFrame("Ephemelody");
         Data.init();

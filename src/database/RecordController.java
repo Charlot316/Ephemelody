@@ -196,7 +196,29 @@ public class RecordController {
         }
         return rs;
     }
-
+    /**
+     * 从数据库中返回3条个人最好成绩
+     *
+     * @param playerID 玩家ID
+     * @param songID 音乐ID
+     * @return 成绩集
+     */
+    public static ResultSet getPersonalBestRecordsBySongId(String playerID, int songID) {
+        PreparedStatement sql;
+        ResultSet rs = null;
+        try {
+            con = DriverManager.getConnection(uri, user, password);
+            String sqlStr = "SELECT * FROM seine.personal_best_records WHERE playerID = ? and songID = ?";
+            sql = con.prepareStatement(sqlStr);
+            sql.setString(1, playerID);
+            sql.setInt(2, songID);
+            rs = sql.executeQuery();
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return rs;
+    }
     /**
      * 从数据库中返回10条最近的最好成绩
      *
