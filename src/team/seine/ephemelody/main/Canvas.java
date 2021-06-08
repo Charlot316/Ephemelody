@@ -53,7 +53,7 @@ public class Canvas extends JLayeredPane{
             this.add((End) thirdScenes, new Integer(2));
         } else if (name.equals("PlayInterface")) {
         //    this.nowScenes =
-            this.firstScenes = new PlayInterface(1, 1);
+            this.firstScenes = new PlayInterface(1, Data.difficulty);
 //            this.secondScenes =  new Track(0, 1,'c', 1230, 2230, 0.5, 0.06, 255, 160, 160);
             this.removeAll();
             this.add((PlayInterface)firstScenes, new Integer(0));
