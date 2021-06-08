@@ -309,7 +309,8 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     public void finish() {
         long time = System.currentTimeMillis();
         Record record = new Record(Data.playerId, new Timestamp(time), Data.songId, Data.difficulty,
-                pureCount.get(), farCount.get(), lostCount.get(), maxCombo.get(), 0.0, score);
+                pureCount.get(), farCount.get(), lostCount.get(), maxCombo.get(),
+                RecordController.calculatePotential(Data.songId, Data.difficulty, new AtomicInteger(score)), score);
         System.out.println(record.toString());
         RecordController.insertAllBestRecord(record);
         RecordController.insertRecentRecord(record);
