@@ -12,11 +12,10 @@ public class TestDatabase {
         PreparedStatement sql;
         ResultSet countRs;
         AtomicInteger score=new AtomicInteger();
-//        for(int i=9800000;i<10000000;i++){
-//            score.set(i);
-//            System.out.println(RecordController.calculatePotential(1,3,score));
-//        }
-    System.out.println(RecordController.setAndGetPersonPotential("charlot"));
+        for(int i=8000000;i<10000000;i+=100000){
+            score.set(i);
+            System.out.println(i+" "+RecordController.calculatePotential(1,3,score));
+        }
 
 
     }
