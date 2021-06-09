@@ -316,7 +316,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             displayer.score=score;
             displayer.repaint();
             try{
-                Thread.sleep(1);
+                Thread.sleep(8);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
