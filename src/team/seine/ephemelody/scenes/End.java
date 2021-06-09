@@ -34,35 +34,55 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
     public String songName;
     public int nowPoints;
     public int highestPoints;
+    public int nowRanking;
     public AtomicInteger pureCount;
     public AtomicInteger farCount;
     public AtomicInteger lostCount;
     public double changePotential;
     public double nowPotential;
     public int way;
+    public String[] rankingUserId;
+    public int[] rankingPoints;
     public End(RecordTemp recordTemp) {
-        AtomicInteger tmp = new AtomicInteger();
         this.pureCount = new AtomicInteger();
         this.farCount = new AtomicInteger();
         this.lostCount = new AtomicInteger();
         this.way = recordTemp.way;
+        this.rankingPoints = new int[100];
+        this.rankingUserId = new String[100];
         if (recordTemp.way == 1) {
             try {
-                ResultSet rs;
+                ResultSet rs, resultSet;
                 if (Data.nowPlayer == null) {
-                    rs = RecordController.getBestRecords(Data.songId);
+                    rs = RecordController.getBestRecords(Data.songId, Data.difficulty);
+                    System.out.println(Data.difficulty);
                 } else {
-                    rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId);
+                    rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId, Data.difficulty);
                 }
                 while (rs.next()) {
+                    AtomicInteger tmp1 = new AtomicInteger();
+                    AtomicInteger tmp2 = new AtomicInteger();
+                    AtomicInteger tmp3 = new AtomicInteger();
                     this.highestPoints = rs.getInt("score");
                     this.nowPoints = highestPoints;
-                    tmp.set(rs.getInt("pureCount"));
-                    this.pureCount = tmp;
-                    tmp.set(rs.getInt("farCount"));
-                    this.farCount = tmp;
-                    tmp.set(rs.getInt("lostCount"));
-                    this.lostCount = tmp;
+                    tmp1.set(rs.getInt("pureCount"));
+                    this.pureCount = tmp1;
+//                    System.out.println(pureCount);
+                    tmp2.set(rs.getInt("farCount"));
+                    this.farCount = tmp2;
+//                    System.out.println(farCount);;
+                    tmp3.set(rs.getInt("lostCount"));
+                    this.lostCount = tmp3;
+                }
+                resultSet = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
+                int count = 0;
+                while (resultSet.next()) {
+                    rankingUserId[count] = resultSet.getString("playerID");
+
+                    rankingPoints[count] = resultSet.getInt("score");
+
+                    System.out.println(rankingUserId[count] + rankingPoints[count]);
+                    count += 1;
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -70,7 +90,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
 
         } else {
             try {
-                ResultSet rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId);
+                ResultSet rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId, Data.difficulty);
                 System.out.println(Data.nowPlayer.getPlayerID() + " " + Data.songId);
                 this.nowPoints = recordTemp.score;
                 this.changePotential = recordTemp.changePotential;
@@ -81,6 +101,13 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                 this.pureCount = recordTemp.pureCount;
                 this.farCount = recordTemp.farCount;
                 this.lostCount = recordTemp.lostCount;
+                rs = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
+                int count = 0;
+                while (rs.next()) {
+                    rankingUserId[count] = rs.getString("playerID");
+                    rankingPoints[count] = rs.getInt("score");
+                    count += 1;
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -118,7 +145,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         g.drawImage(myGradeImg, 993, 680, null);
         g.drawImage(resultImg[resultStatus], 360, 300, null);
         int countY = 360;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             g.drawImage(gradeImg, 993, countY, null);
             countY += 60;
         }
@@ -142,11 +169,11 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         g.drawString(String.format("%08d", highestPoints), 680, 485);
 //        g.drawImage(ratingButton[0], Data.WIDTH / 2 + 50, 20, null);
 
-        g.setFont(new Font("黑体", Font.BOLD, 20));
-        g.setColor(Color.WHITE);
+
 //        g.drawString(String.format("%.2f", 2.8), Data.WIDTH / 2 - 22,  58);
         if (way == 2) {
-            //System.out.println(changePotential);
+            g.setFont(new Font("黑体", Font.BOLD, 20));
+            g.setColor(Color.WHITE);
             if (changePotential == 0) {
                 g.drawImage(ratingButton[1], Data.WIDTH / 2 + 50, 20, null);
             } else if (changePotential > 0) {
@@ -165,7 +192,16 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         g.translate(-700, -632);
         Data.canvas.paintString(String.format("%03d", lostCount.get()), f, g, 700, 695, 1, Color.WHITE, Color.BLACK);
         g.translate(-700, -695);
-
+        int count1 = 395, count2 = 420;
+        for (int i = 0; i < 3; i++) {
+            g.setFont(new Font("黑体", Font.PLAIN, 30));
+            g.setColor(Color.WHITE);
+            g.drawString(rankingUserId[i], 1050, count1);
+            g.setFont(new Font("黑体", Font.PLAIN, 25));
+            g.drawString(String.valueOf(rankingPoints[i]), 1050, count2);
+            count1 += 60;
+            count2 += 60;
+        }
 //        Data.canvas.paintString("+" + String.format("%.2f", 0.15), f, g, Data.WIDTH / 2 + 75,  58, 1, Color.WHITE, Color.BLACK);
     }
 

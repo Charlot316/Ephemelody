@@ -307,13 +307,15 @@ public class RecordController {
     /**
      * 从远程数据库中返回10条最佳成绩
      */
-    public static ResultSet getAllBestRecords() {
+    public static ResultSet getAllBestRecords(int songId, int difficulty) {
         PreparedStatement sql;
         ResultSet rs = null;
         try {
             con = DriverManager.getConnection(uri, user, password);
-            String sqlStr = "SELECT * FROM seine.all_best_records ORDER BY score DESC LIMIT 10";
+            String sqlStr = "SELECT * FROM seine.all_best_records WHERE songID = ? AND songDifficulty = ? ORDER BY score DESC LIMIT 10";
             sql = con.prepareStatement(sqlStr);
+            sql.setInt(1, songId);
+            sql.setInt(2, difficulty);
             rs = sql.executeQuery();
             con.close();
         } catch (Exception e) {
@@ -325,14 +327,15 @@ public class RecordController {
     /**
      * 从远程数据库中返回某首歌的最佳成绩
      */
-    public static ResultSet getBestRecords(int songId) {
+    public static ResultSet getBestRecords(int songId, int difficulty) {
         PreparedStatement sql;
         ResultSet rs = null;
         try {
             con = DriverManager.getConnection(uri, user, password);
-            String sqlStr = "SELECT * FROM seine.all_best_records WHERE songId = ? ORDER BY score DESC LIMIT 1";
+            String sqlStr = "SELECT * FROM seine.all_best_records WHERE songId = ? AND songDifficulty = ? ORDER BY score DESC LIMIT 1";
             sql = con.prepareStatement(sqlStr);
             sql.setInt(1, songId);
+            sql.setInt(2, difficulty);
             rs = sql.executeQuery();
             con.close();
         } catch (Exception e) {
@@ -340,4 +343,6 @@ public class RecordController {
         }
         return rs;
     }
+
+
 }
