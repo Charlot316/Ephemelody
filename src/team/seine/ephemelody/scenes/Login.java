@@ -9,7 +9,6 @@ import team.seine.ephemelody.utils.Rect;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
 
 public class Login extends JPanel implements Scenes, MouseMotionListener, MouseListener {
     String username;

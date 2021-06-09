@@ -1,7 +1,5 @@
 package team.seine.ephemelody.main;
-
 import team.seine.ephemelody.data.Data;
-
 import javax.swing.*;
 
 public class TestMain {

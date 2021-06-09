@@ -20,7 +20,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
     public Image[] difficultButton;
     public Image[] upButton;
     public Image[] downButton;
-//    public Image song1;
+    //    public Image song1;
     public Image selectedImg;
     public Image nowSongImg;
     public Image[] songInfButton;

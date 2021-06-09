@@ -1,6 +1,5 @@
 package team.seine.ephemelody.scenes;
 
-import database.Entity.Record;
 import database.RecordController;
 import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.utils.Load;

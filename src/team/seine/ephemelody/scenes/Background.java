@@ -1,6 +1,5 @@
 package team.seine.ephemelody.scenes;
 
-import com.sun.imageio.plugins.common.ImageUtil;
 import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.utils.Load;
 

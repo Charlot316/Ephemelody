@@ -35,7 +35,7 @@ public class PlayerController {
             }
             con.close();
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
         return selectedPlayer;
     }
@@ -56,7 +56,7 @@ public class PlayerController {
             sql.executeQuery();
             con.close();
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 

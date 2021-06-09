@@ -1,8 +1,8 @@
 package team.seine.ephemelody.scenes;
 
-import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.utils.Load;
 import team.seine.ephemelody.utils.Rect;
+import team.seine.ephemelody.data.Data;
 
 import javax.swing.*;
 import java.awt.*;

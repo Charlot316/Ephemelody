@@ -73,7 +73,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
         this.R = r;
         this.G = g;
         this.B = b;
-        positionY[0]=(int)(0.85*PlayInterface.finalY*(double)Data.HEIGHT);
+        positionY[0]=(int)(0.85*PlayInterface.finalY*(double) Data.HEIGHT);
         for(int i=1;i<=25;i++){
             positionY[i]=positionY[i-1]-1;
         }

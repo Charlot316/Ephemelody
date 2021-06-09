@@ -64,7 +64,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         g.drawImage(backgroundImg.get(frontBackground), 0, 0, Data.WIDTH,Data.HEIGHT,null);
         g_2d.setStroke(new BasicStroke(3.0f,CAP_BUTT, JOIN_BEVEL));
         g_2d.setColor(new Color(255,255,255));
-        g_2d.drawLine(0,(int)(PlayInterface.finalY*Data.HEIGHT),Data.WIDTH,(int)(PlayInterface.finalY*Data.HEIGHT));
+        g_2d.drawLine(0,(int)(PlayInterface.finalY* Data.HEIGHT),Data.WIDTH,(int)(PlayInterface.finalY*Data.HEIGHT));
     }
     static Comparator<Note> comparatorNote = Comparator.comparingLong(o -> o.timing);
     static Comparator<Track> comparatorTrack= Comparator.comparingLong(o -> o.startTiming);
