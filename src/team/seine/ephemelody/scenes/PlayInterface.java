@@ -243,6 +243,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         currentNoteCount.set(0);
         this.songID = songID;
         this.difficulty = difficulty;
+        finalEndTime=0;
         this.loadData();
         this.setInterface();
         this.repaint();
@@ -284,6 +285,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      * run the game
      */
     public void run() {
+        System.out.println(finalEndTime);
         assert song != null;
         song.start(); // 播放音乐
         startTime = System.currentTimeMillis();
@@ -321,6 +323,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                 e.printStackTrace();
             }
         }
+        System.out.println("finished");
         this.finish();
     }
 
