@@ -388,7 +388,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
         setOpaque(false);
         this.setVisible(true);
             this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
-            if(this.notes.isEmpty()){//虽然有很多重复的句子，但这个判断不放在while里，这样可以省下判断这条if的次数
+            if(this.notes.isEmpty()){//这个判断不放在while里，这样可以省下判断这条if的时间
                 while (this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
                     this.lastTime = this.trackCurrentTime;
                     this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
@@ -409,7 +409,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                     this.lastTime = this.trackCurrentTime;
                     this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
                     Note note;
-                    if(frontNote<this.notes.size()&&this.trackCurrentTime+350>(note=this.notes.get(frontNote)).timing){
+                    if(frontNote<this.notes.size()&&this.trackCurrentTime+250>(note=this.notes.get(frontNote)).timing){
                         this.Judge();
                     }
                     this.changeColor();
@@ -419,7 +419,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                         rearNote++;
                     }
                     if(frontNote<this.notes.size()){
-                        if (this.trackCurrentTime > (note=this.notes.get(frontNote)).timing + 300&&(note.noteType==0||note.noteType==1&&!this.isHolding)) {
+                        if (this.trackCurrentTime > (note=this.notes.get(frontNote)).timing + 250+Data.offset+delay&&(note.noteType==0||note.noteType==1&&!this.isHolding)) {
                             PlayInterface.combo.set(0);
                             PlayInterface.lostCount.getAndIncrement();
                             PlayInterface.currentNoteCount.getAndIncrement();

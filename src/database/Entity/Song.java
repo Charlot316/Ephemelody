@@ -5,10 +5,19 @@ public class Song {
     private int songDifficulty;
     private double chartConstant;
     private int noteCount;
-
+    public String name;
+    public int easy;
+    public int normal;
+    public int hard;
     public Song() {
     }
-
+    public Song(int songID, String name,int easy,int normal,int hard){
+        this.songID = songID;
+        this.name=name;
+        this.easy=easy;
+        this.normal=normal;
+        this.hard=hard;
+    }
     public Song(int songID, int songDifficulty, double chartConstant, int noteCount) {
         this.songID = songID;
         this.songDifficulty = songDifficulty;

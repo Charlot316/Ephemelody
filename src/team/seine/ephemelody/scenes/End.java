@@ -175,7 +175,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         ratingButton = new Image[]{
                 Load.image("end/rating_down.png"), Load.image("end/rating_keep.png"), Load.image("end/rating_up.png")
         };
-        songName = Data.realSongList.get(Data.songId);
+        songName = Data.currentSong.name;
         addMouseListener(this);
         addMouseMotionListener(this);
         new End.UpdateUI().start();
