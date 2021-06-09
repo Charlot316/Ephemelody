@@ -195,7 +195,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
                 if (Data.songId >= Data.realSongList.size()) {
                     Data.songId = 0;
                 }
-                System.out.println(Data.realSongList.get(Data.songId));
+//                System.out.println(Data.realSongList.get(Data.songId));
                 chooseSong.way = 1;
                 new Thread(chooseSong).start();
             }
@@ -206,7 +206,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
                 if (Data.songId < 0) {
                     Data.songId = Data.realSongList.size() - 1;
                 }
-                System.out.println(Data.realSongList.get(Data.songId));
+//                System.out.println(Data.realSongList.get(Data.songId));
                 chooseSong.way = 2;
                 new Thread(chooseSong).start();
             }
@@ -228,6 +228,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         g.drawImage(difficultButton[buttonDifficultStatus], Data.WIDTH / 2 + 400, 580, null);
         if (playFlag) {
             g.drawImage(playButton[buttonPlayStatus], Data.WIDTH / 2, 750, null);
+            g.drawImage(songInfButton[buttonSongInfStatus], 1038, 850, null);
         }
         g.drawImage(upButton[buttonUpStatus], 120, 60, null);
         g.drawImage(downButton[buttonDownStatus], 120, 800, null);
@@ -236,7 +237,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         g.drawImage(setupButton, 934, 8, null);
         g.drawImage(loginButton[buttonLoginStatus], 1080, -3, null);*/
 //        g.drawImage(selectedImg, 0, Data.HEIGHT / 2 - 30, null);
-        g.drawImage(songInfButton[buttonSongInfStatus], 1038, 850, null);
+
         /*g.drawImage(songNameImg, -100, 170, null);
         g.drawImage(songNameImg, -100, 300, null);
         g.drawImage(songNameImg, -100, 430, null);
