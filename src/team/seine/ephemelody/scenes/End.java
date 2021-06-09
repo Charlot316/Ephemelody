@@ -69,23 +69,15 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
             }
 
         } else {
-            try {
-                ResultSet rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId,Data.difficulty);
-                System.out.println(Data.nowPlayer.getPlayerID() + " " + Data.songId);
+                //System.out.println(Data.nowPlayer.getPlayerID() + " " + Data.songId);
                 this.nowPoints = recordTemp.score;
                 this.changePotential = recordTemp.changePotential;
                 this.nowPotential = recordTemp.nowPotential;
-                while (rs.next()) {
-                    this.highestPoints = rs.getInt("score");
-                }
+                this.highestPoints = recordTemp.score;
                 this.pureCount = recordTemp.pureCount;
                 this.farCount = recordTemp.farCount;
                 this.lostCount = recordTemp.lostCount;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
-
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setVisible(true);
         setOpaque(false);
