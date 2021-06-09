@@ -89,23 +89,41 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
 
         } else {
             try {
-                rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId, Data.difficulty);
-                System.out.println(Data.nowPlayer.getPlayerID() + " " + Data.songId);
-                this.nowPoints = recordTemp.score;
-                this.changePotential = recordTemp.changePotential;
-                this.nowPotential = recordTemp.nowPotential;
-                while (rs.next()) {
-                    this.highestPoints = rs.getInt("score");
+                if(Data.nowPlayer!=null){
+                    rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId, Data.difficulty);
+                    System.out.println(Data.nowPlayer.getPlayerID() + " " + Data.songId);
+                    this.nowPoints = recordTemp.score;
+                    this.changePotential = recordTemp.changePotential;
+                    this.nowPotential = recordTemp.nowPotential;
+                    while (rs.next()) {
+                        this.highestPoints = rs.getInt("score");
+                    }
+                    this.pureCount = recordTemp.pureCount;
+                    this.farCount = recordTemp.farCount;
+                    this.lostCount = recordTemp.lostCount;
+                    resultSet = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
+                    count = 0;
+                    while (resultSet.next()) {
+                        rankingUserId[count] = resultSet.getString("playerID");
+                        rankingPoints[count] = resultSet.getInt("score");
+                        count += 1;
+                    }
                 }
-                this.pureCount = recordTemp.pureCount;
-                this.farCount = recordTemp.farCount;
-                this.lostCount = recordTemp.lostCount;
-                resultSet = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
-                count = 0;
-                while (resultSet.next()) {
-                    rankingUserId[count] = resultSet.getString("playerID");
-                    rankingPoints[count] = resultSet.getInt("score");
-                    count += 1;
+                else{
+                    this.nowPoints = recordTemp.score;
+                    this.changePotential = recordTemp.changePotential;
+                    this.nowPotential = recordTemp.nowPotential;
+                    this.highestPoints = recordTemp.score;
+                    this.pureCount = recordTemp.pureCount;
+                    this.farCount = recordTemp.farCount;
+                    this.lostCount = recordTemp.lostCount;
+                    resultSet = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
+                    count = 0;
+                    while (resultSet.next()) {
+                        rankingUserId[count] = resultSet.getString("playerID");
+                        rankingPoints[count] = resultSet.getInt("score");
+                        count += 1;
+                    }
                 }
 
             } catch (SQLException e) {
@@ -196,9 +214,13 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         for (int i = 0; i < 3; i++) {
             g.setFont(new Font("黑体", Font.PLAIN, 30));
             g.setColor(Color.WHITE);
-            g.drawString(rankingUserId[i], 1050, count1);
+            if(rankingUserId[i]!=null){
+                g.drawString(rankingUserId[i], 1050, count1);
+            }
             g.setFont(new Font("黑体", Font.PLAIN, 25));
-            g.drawString(String.valueOf(rankingPoints[i]), 1050, count2);
+            if(rankingPoints[i]!=0){
+                g.drawString(String.valueOf(rankingPoints[i]), 1050, count2);
+            }
             count1 += 60;
             count2 += 60;
         }
