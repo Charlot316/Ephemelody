@@ -201,7 +201,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                 g.drawImage(ratingButton[0], Data.WIDTH / 2 + 50, 20, null);
                 g.drawString(String.format("%.2f", changePotential), Data.WIDTH / 2 + 72,  58);
             }
-            g.drawString(String.format("%.2f", nowPotential), Data.WIDTH / 2 - 22,  58);
+//            g.drawString(String.format("%.2f", nowPotential), Data.WIDTH / 2 - 22,  58);
         }
         Font f = new Font("黑体", Font.BOLD, 35);
         Data.canvas.paintString(String.format("%03d", pureCount.get()), f, g, 700, 570, 1, Color.WHITE, Color.BLACK);

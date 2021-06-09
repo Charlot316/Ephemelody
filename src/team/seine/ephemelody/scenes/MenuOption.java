@@ -28,7 +28,6 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
         if (Data.nowPlayer != null) {
             this.potential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
         }
-
         ratingButton = new Image[]{
                 Load.image("home/潜力值_0.png"), Load.image("home/潜力值_1.png"),
                 Load.image("home/潜力值_2.png"), Load.image("home/潜力值_3.png"),
@@ -45,7 +44,7 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
                 Load.image("home/退出登录.png"), Load.image("home/退出登录_鼠标悬停.png"), Load.image("home/退出登录_按下.png")
         };
         if (Data.nowPlayer != null) {
-            this.potential = Data.nowPlayer.getPotential();
+            this.potential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
             if (potential < 8){
                 buttonRatingStatus = 0;
             } else if (potential >= 8 && potential < 9) {
@@ -65,6 +64,7 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
 
         addMouseMotionListener(this);
         addMouseListener(this);
+        new UpdateUI().start();
     }
     @Override
     public void onKeyDown(int keyCode) {
@@ -144,10 +144,9 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
         g.drawImage(setupBackButton[buttonSetUpBackStatus], 900, 0, null);
         g.drawImage(setupButton, 934, 8, null);
 
-
-        g.setFont(new Font("黑体", Font.BOLD, 20));
-        g.setColor(Color.WHITE);
         if (Data.nowPlayer != null) {
+            g.setFont(new Font("黑体", Font.BOLD, 20));
+            g.setColor(Color.WHITE);
             g.drawString(String.format("%.2f", potential), Data.WIDTH / 2 - 22,  58);
             g.drawImage(quitLoginButton[buttonQuitLoginStatus], 1080, -3, null);
             g.setFont(new Font("宋体", Font.PLAIN, 40));
@@ -157,5 +156,19 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
             g.drawImage(loginButton[buttonLoginStatus], 1080, -3, null);
         }
 
+    }
+    class UpdateUI extends Thread {
+        public void run() {
+            int sleepTime = 1000 / Data.FPS;
+            while (true) {
+                try {
+                    updateUI();
+                    repaint();
+                    Thread.sleep(sleepTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

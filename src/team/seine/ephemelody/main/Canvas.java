@@ -52,6 +52,7 @@ public class Canvas extends JLayeredPane{
             this.firstScenes = new Background();
             this.secondScenes = new Home();
             this.thirdScenes = new End(recordTemps[0]);
+            this.menuOptionScenes = new MenuOption();
             this.removeAll();
             this.add((Background) firstScenes, new Integer(0));
 //            this.add((Home) secondScenes, new Integer(1));
