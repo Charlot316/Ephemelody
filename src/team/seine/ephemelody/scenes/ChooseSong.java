@@ -1,5 +1,6 @@
 package team.seine.ephemelody.scenes;
 
+import database.Entity.Song;
 import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.utils.Load;
 
@@ -15,7 +16,7 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
     public Integer x1;
     public Integer y1;
     public Integer count;
-    public String[] song;
+    public Song[] song;
     public ChooseSong() {
         setBounds(0, 180, 529, 600);
         setVisible(true);
@@ -31,7 +32,7 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
     }
 
     public void paint(Graphics g) {
-        song = new String[] {
+        song = new Song[] {
                 Data.songList.get(0), Data.songList.get(1), Data.songList.get(2), Data.songList.get(3),  Data.songList.get(4)
         };
         g.drawImage(songNameImg, x, y - count, null);
@@ -45,40 +46,21 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
 
         Font font = new Font("黑体", Font.BOLD, 45);
         FontMetrics metrics = g.getFontMetrics(font);
-        x1 = (390 - metrics.stringWidth(song[0])) / 2 + 0;
-        Data.canvas.paintString(song[0], font, g, x1, y1, 1, Color.WHITE, Color.BLACK);
+        x1 = (390 - metrics.stringWidth(song[0].name)) / 2 + 0;
+        Data.canvas.paintString(song[0].name, font, g, x1, y1, 1, Color.WHITE, Color.BLACK);
         g.translate(-x1, -y1);
-        x1 = (390 - metrics.stringWidth(song[1])) / 2 + 0;
-        Data.canvas.paintString(song[1], font, g, x1, y1 + count, 1, Color.WHITE, Color.BLACK);
+        x1 = (390 - metrics.stringWidth(song[1].name)) / 2 + 0;
+        Data.canvas.paintString(song[1].name, font, g, x1, y1 + count, 1, Color.WHITE, Color.BLACK);
         g.translate(-x1, -y1 - count);
-        x1 = (390 - metrics.stringWidth(song[2])) / 2 + 0;
-        Data.canvas.paintString(song[2], font, g, x1, y1 + count * 2, 1, Color.WHITE, Color.BLACK);
+        x1 = (390 - metrics.stringWidth(song[2].name)) / 2 + 0;
+        Data.canvas.paintString(song[2].name, font, g, x1, y1 + count * 2, 1, Color.WHITE, Color.BLACK);
         g.translate(-x1, -y1 - count * 2);
-        x1 = (390 - metrics.stringWidth(song[3])) / 2 + 0;
-        Data.canvas.paintString(song[3], font, g, x1, y1 + count * 3, 1, Color.WHITE, Color.BLACK);
+        x1 = (390 - metrics.stringWidth(song[3].name)) / 2 + 0;
+        Data.canvas.paintString(song[3].name, font, g, x1, y1 + count * 3, 1, Color.WHITE, Color.BLACK);
         g.translate(-x1, -y1 - count * 3);
-        x1 = (390 - metrics.stringWidth(song[4])) / 2 + 0;
-        Data.canvas.paintString(song[4], font, g, x1, y1 + count * 4, 1, Color.WHITE, Color.BLACK);
+        x1 = (390 - metrics.stringWidth(song[4].name)) / 2 + 0;
+        Data.canvas.paintString(song[4].name, font, g, x1, y1 + count * 4, 1, Color.WHITE, Color.BLACK);
         g.translate(-x1, -y1 - count * 4);
-        /*FontMetrics metrics = g.getFontMetrics(font);
-        for (String song : Data.songList) { // 到时候改成待展示的歌曲名单列表
-            x1 = (390 - metrics.stringWidth(song)) / 2 + 0;
-            Data.canvas.paintString(song, font, g, x1, y1, 1, Color.WHITE, Color.BLACK);
-            g.translate(-x1, -y1);
-            y1 += 130;
-        }*/
-//        x1 = (390 - metrics.stringWidth(Data.songList.get(0))) / 2 + 0;
-//        Data.canvas.paintString(Data.songList.get(0), font, g, 0, -10, 1, Color.WHITE, Color.BLACK);
-        /*g.translate(-x1, -y1);
-        System.out.println(x1 + " " + y1);*/
-        /*for (int i = 0; i < Data.songList.size(); i++) { // 到时候改成待展示的歌曲名单列表
-            System.out.println(i);
-            String song = Data.songList.get(i);
-            x1 = (390 - metrics.stringWidth(song)) / 2 + 0;
-            Data.canvas.paintString(song, font, g, x1, y1, 1, Color.WHITE, Color.BLACK);
-            g.translate(-x1, -y1);
-            y1 += 130;
-        }*/
     }
     @Override
     public void onKeyDown(int keyCode) {
