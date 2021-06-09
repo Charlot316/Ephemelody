@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: team.seine.ephemelody.main.Main
-Class-Path: mariadb-java-client-2.7.3.jar
-
