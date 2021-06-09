@@ -137,14 +137,14 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                 int noteType = Integer.parseInt(arguments[1]);
                 char key = arguments[2].charAt(0);
                 long timing = Long.parseLong(arguments[3]);
-                PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, timing+1000);
+                PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, timing+2500);
                 Track track = getTrackByID(trackID);
                 if(track!=null){
                     if (noteType==1) {
                         long endTiming = Long.parseLong(arguments[4]);
                         Note note = new Note(track, noteType, key, timing, endTiming);
                         track.notes.add(note);
-                        PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, endTiming+1000);
+                        PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, endTiming+2500);
                         track.startTiming=Math.min(track.startTiming,note.timing-PlayInterface.remainingTime-500);
                         track.endTiming=Math.max(track.endTiming,note.endTiming+500);
                     } else {
@@ -152,7 +152,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                         track.notes.add(note);
                         track.startTiming=Math.min(track.startTiming,note.timing-PlayInterface.remainingTime);
                         track.endTiming=Math.max(track.endTiming,note.timing+500);
-                        PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, timing+1000);
+                        PlayInterface.finalEndTime = Math.max(PlayInterface.finalEndTime, timing+2500);
                     }
                 }
             }
@@ -339,7 +339,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             RecordController.insertRecentRecord(record);
             RecordController.insertBestRecord(record);
             this.nowPotential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
-            Data.canvas.switchScenes("End", new RecordTemp(score, pureCount, farCount, lostCount, maxCombo,
+            Data.canvas.switchScenes("End", new RecordTemp(currentScore.get(), pureCount, farCount, lostCount, maxCombo,
                     2, nowPotential - prevPotential, nowPotential));
         }
         else{
@@ -350,7 +350,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             RecordController.insertAllBestRecord(record);
             RecordController.insertRecentRecord(record);
             RecordController.insertBestRecord(record);
-            Data.canvas.switchScenes("End", new RecordTemp(score, pureCount, farCount, lostCount, maxCombo,
+            Data.canvas.switchScenes("End", new RecordTemp(currentScore.get(), pureCount, farCount, lostCount, maxCombo,
                     2, 0, 0));
         }
 //        System.out.println(nowPotential + "------" + prevPotential);
