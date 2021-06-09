@@ -1,7 +1,6 @@
 package team.seine.ephemelody.scenes;
 
 import database.Entity.Song;
-import database.PlayerController;
 import database.RecordController;
 import database.SongController;
 import team.seine.ephemelody.data.Data;

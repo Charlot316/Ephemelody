@@ -1,11 +1,10 @@
 package team.seine.ephemelody.main;
 
 import com.sun.istack.internal.Nullable;
-import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.playinterface.RecordTemp;
 import team.seine.ephemelody.playinterface.Track;
 import team.seine.ephemelody.scenes.*;
-
+import team.seine.ephemelody.data.Data;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
