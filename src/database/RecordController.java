@@ -40,15 +40,13 @@ public class RecordController {
             B10=RecordController.getPersonalBestRecords(playerID);
             R10=RecordController.getPersonalRecentRecords(playerID);
             while (B10.next()) {
-//                BPotential+=B10.getDouble("potential");
-                System.out.println(BPotential);
+                BPotential+=B10.getDouble("potential");
             }
             while(R10.next()){
 //                System.out.println(R10.getDouble("potential"));
                 RPotential+=R10.getDouble("potential");
-                System.out.println(BPotential);
             }
-//            System.out.println(BPotential+" "+RPotential);
+//            System.out.println(BPotential+" "+RPotential) ;
             potential=(BPotential+RPotential)/20.0;
             con = DriverManager.getConnection(uri, user, password);
             String sqlStr2 = "UPDATE seine.players SET potential= ? WHERE playerID= ?";
@@ -122,7 +120,7 @@ public class RecordController {
             con.close();
             System.out.println("11");
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -180,7 +178,7 @@ public class RecordController {
             }
             con.close();
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -237,7 +235,7 @@ public class RecordController {
             }
             con.close();
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -258,7 +256,7 @@ public class RecordController {
             rs = sql.executeQuery();
             con.close();
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
         return rs;
     }
@@ -282,7 +280,7 @@ public class RecordController {
             rs = sql.executeQuery();
             con.close();
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
         return rs;
     }
@@ -303,7 +301,7 @@ public class RecordController {
             rs = sql.executeQuery();
             con.close();
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
         return rs;
     }
@@ -323,7 +321,7 @@ public class RecordController {
             rs = sql.executeQuery();
             con.close();
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
         return rs;
     }
@@ -343,7 +341,7 @@ public class RecordController {
             rs = sql.executeQuery();
             con.close();
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
         return rs;
     }

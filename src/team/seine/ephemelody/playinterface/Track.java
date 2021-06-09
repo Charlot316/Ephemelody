@@ -272,8 +272,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             }
 
             if(!isHolding&&tempJudge!=-1){
-                PlayInterface.currentNoteCount.getAndIncrement();
-                int score=(PlayInterface.currentNoteCount.get()==PlayInterface.notesCount)?PlayInterface.scoreForLastNote:PlayInterface.scorePerNote;
+                int score=(PlayInterface.currentNoteCount.incrementAndGet()==PlayInterface.notesCount)?PlayInterface.scoreForLastNote:PlayInterface.scorePerNote;
                 switch (tempJudge){
                     case 1:
                         PlayInterface.currentScore.getAndAdd(score/2);
@@ -431,7 +430,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                             this.currentJudgement=judgement[0];
                         }
                         else if((note=this.notes.get(frontNote)).noteType==1&&this.isHolding&&this.trackCurrentTime>note.endTiming){
-                            int score=(PlayInterface.currentNoteCount.get()==PlayInterface.notesCount)?PlayInterface.scoreForLastNote:PlayInterface.scorePerNote;
+                            int score=(PlayInterface.currentNoteCount.incrementAndGet()==PlayInterface.notesCount)?PlayInterface.scoreForLastNote:PlayInterface.scorePerNote;
                             switch (this.tempJudge){
                                 case 2:
                                     PlayInterface.pureCount.getAndIncrement();
@@ -447,7 +446,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                             else Data.isReleased[note.key].set(0);
                             PlayInterface.combo.getAndIncrement();
                             PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
-                            PlayInterface.currentNoteCount.getAndIncrement();
                             this.currentJudgement=judgement[tempJudge];
                             this.tempJudge=-1;
                             this.isHolding=false;
