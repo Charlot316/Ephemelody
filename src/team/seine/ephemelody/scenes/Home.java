@@ -182,12 +182,20 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         g.drawImage(upButton[buttonUpStatus], 120, 60, null);
         g.drawImage(downButton[buttonDownStatus], 120, 800, null);
         g.drawImage(hitSongImg, 380, 413, null);
-        Data.canvas.paintString(String.valueOf(Data.currentSong.easy), new Font("黑体", Font.BOLD, 65), g, 615, 675, 3, Color.WHITE, new Color(117, 188, 214));
+        Font f = new Font("黑体", Font.BOLD, 65);
+        /*Data.canvas.paintString(String.valueOf(Data.currentSong.easy), new Font("黑体", Font.BOLD, 65), g, 615, 675, 3, Color.WHITE, new Color(117, 188, 214));
         g.translate(-615, -675);
         Data.canvas.paintString(String.valueOf(Data.currentSong.normal), new Font("黑体", Font.BOLD, 65), g, 875, 675, 3, Color.WHITE, new Color(237, 114, 209));
         g.translate(-875, -675);
         Data.canvas.paintString(String.valueOf(Data.currentSong.hard), new Font("黑体", Font.BOLD, 65), g, 1135, 675, 3, Color.WHITE, new Color(245, 165, 152));
-        g.translate(-1135, -675);
+        g.translate(-1135, -675);*/
+
+        Data.canvas.drawCenteredStringByOutline(g, String.valueOf(Data.currentSong.easy), 212,Data.WIDTH / 2 - 120,
+                1, f, 675, Color.WHITE, new Color(117, 188, 214));
+        Data.canvas.drawCenteredStringByOutline(g, String.valueOf(Data.currentSong.normal), 212,Data.WIDTH / 2 + 140,
+                1, f, 675, Color.WHITE, new Color(237, 114, 209));
+        Data.canvas.drawCenteredStringByOutline(g, String.valueOf(Data.currentSong.hard), 212,Data.WIDTH / 2 + 400,
+                1,  f, 675, Color.WHITE, new Color(245, 165, 152));
     }
 
     @Override
