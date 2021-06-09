@@ -290,6 +290,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         currentTime = 0;
         this.backgroundOperations.sort(comparatorOperation);
         this.repaint();
+        System.out.println(scorePerNote+" "+scoreForLastNote);
         while (currentTime < PlayInterface.finalEndTime) {
             currentTime = System.currentTimeMillis() - startTime;
             //System.out.println(currentTime+" "+this.finalEndTime);
@@ -334,7 +335,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             Record record = new Record(Data.nowPlayer.getPlayerID(), new Timestamp(time), Data.songId, Data.difficulty,
                     pureCount.get(), farCount.get(), lostCount.get(), maxCombo.get(),
                     RecordController.calculatePotential(Data.songId, Data.difficulty, new AtomicInteger(score)), score);
-            System.out.println(record.toString());
+            //System.out.println(record.toString());
             RecordController.insertAllBestRecord(record);
             RecordController.insertRecentRecord(record);
             RecordController.insertBestRecord(record);
@@ -346,7 +347,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             Record record = new Record("null", new Timestamp(time), Data.songId, Data.difficulty,
                     pureCount.get(), farCount.get(), lostCount.get(), maxCombo.get(),
                     0, score);
-            System.out.println(record.toString());
+            //System.out.println(record.toString());
             Data.canvas.switchScenes("End", new RecordTemp(currentScore.get(), pureCount, farCount, lostCount, maxCombo,
                     2, 0, 0));
         }

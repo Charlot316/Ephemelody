@@ -55,7 +55,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
             try {
                 if (Data.nowPlayer == null) {
                     rs = RecordController.getBestRecords(Data.songId, Data.difficulty);
-                    System.out.println(Data.difficulty);
+                    //System.out.println(Data.difficulty);
                 } else {
                     rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId, Data.difficulty);
                 }
