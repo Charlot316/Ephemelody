@@ -41,18 +41,17 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
     public double changePotential;
     public double nowPotential;
     public int way;
-    public String[] rankingUserId;
-    public int[] rankingPoints;
+    public String[] rankingUserId = new String[100];
+    public int[] rankingPoints = new int[100];
     public End(RecordTemp recordTemp) {
         this.pureCount = new AtomicInteger();
         this.farCount = new AtomicInteger();
         this.lostCount = new AtomicInteger();
         this.way = recordTemp.way;
-        this.rankingPoints = new int[100];
-        this.rankingUserId = new String[100];
+        ResultSet rs, resultSet;
+        int count = 0;
         if (recordTemp.way == 1) {
             try {
-                ResultSet rs, resultSet;
                 if (Data.nowPlayer == null) {
                     rs = RecordController.getBestRecords(Data.songId, Data.difficulty);
                     System.out.println(Data.difficulty);
@@ -75,7 +74,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                     this.lostCount = tmp3;
                 }
                 resultSet = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
-                int count = 0;
+                count = 0;
                 while (resultSet.next()) {
                     rankingUserId[count] = resultSet.getString("playerID");
 
@@ -90,7 +89,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
 
         } else {
             try {
-                ResultSet rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId, Data.difficulty);
+                rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId, Data.difficulty);
                 System.out.println(Data.nowPlayer.getPlayerID() + " " + Data.songId);
                 this.nowPoints = recordTemp.score;
                 this.changePotential = recordTemp.changePotential;
@@ -101,13 +100,14 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                 this.pureCount = recordTemp.pureCount;
                 this.farCount = recordTemp.farCount;
                 this.lostCount = recordTemp.lostCount;
-                rs = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
-                int count = 0;
-                while (rs.next()) {
-                    rankingUserId[count] = rs.getString("playerID");
-                    rankingPoints[count] = rs.getInt("score");
+                resultSet = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
+                count = 0;
+                while (resultSet.next()) {
+                    rankingUserId[count] = resultSet.getString("playerID");
+                    rankingPoints[count] = resultSet.getInt("score");
                     count += 1;
                 }
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }

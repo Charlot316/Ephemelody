@@ -340,7 +340,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         this.nowPotential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
         Data.canvas.switchScenes("End", new RecordTemp(score, pureCount, farCount, lostCount, maxCombo,
                 2, nowPotential - prevPotential, nowPotential));
-
         song.stop();
     }
 
