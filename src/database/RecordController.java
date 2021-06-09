@@ -41,12 +41,10 @@ public class RecordController {
             R10=RecordController.getPersonalRecentRecords(playerID);
             while (B10.next()) {
 //                BPotential+=B10.getDouble("potential");
-                System.out.println(BPotential);
             }
             while(R10.next()){
 //                System.out.println(R10.getDouble("potential"));
                 RPotential+=R10.getDouble("potential");
-                System.out.println(BPotential);
             }
 //            System.out.println(BPotential+" "+RPotential);
             potential=(BPotential+RPotential)/20.0;

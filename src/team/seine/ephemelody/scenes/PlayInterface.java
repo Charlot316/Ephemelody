@@ -290,7 +290,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         currentTime = 0;
         this.backgroundOperations.sort(comparatorOperation);
         this.repaint();
-        System.out.println(scorePerNote+" "+scoreForLastNote);
         while (currentTime < PlayInterface.finalEndTime) {
             currentTime = System.currentTimeMillis() - startTime;
             //System.out.println(currentTime+" "+this.finalEndTime);
