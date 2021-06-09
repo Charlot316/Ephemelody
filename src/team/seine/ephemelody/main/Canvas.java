@@ -63,6 +63,7 @@ public class Canvas extends JLayeredPane{
 //            this.secondScenes =  new Track(0, 1,'c', 1230, 2230, 0.5, 0.06, 255, 160, 160);
             this.removeAll();
             this.add((PlayInterface)firstScenes, new Integer(0));
+
             for(Track i:((PlayInterface) firstScenes).allTracks){
                 this.add(i,new Integer(i.id+1));
             }

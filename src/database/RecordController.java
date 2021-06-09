@@ -40,15 +40,15 @@ public class RecordController {
             B10=RecordController.getPersonalBestRecords(playerID);
             R10=RecordController.getPersonalRecentRecords(playerID);
             while (B10.next()) {
-                BPotential+=B10.getDouble("potential");
+//                BPotential+=B10.getDouble("potential");
                 System.out.println(BPotential);
             }
             while(R10.next()){
-                System.out.println(R10.getDouble("potential"));
+//                System.out.println(R10.getDouble("potential"));
                 RPotential+=R10.getDouble("potential");
                 System.out.println(BPotential);
             }
-            System.out.println(BPotential+" "+RPotential);
+//            System.out.println(BPotential+" "+RPotential);
             potential=(BPotential+RPotential)/20.0;
             con = DriverManager.getConnection(uri, user, password);
             String sqlStr2 = "UPDATE seine.players SET potential= ? WHERE playerID= ?";
@@ -85,7 +85,7 @@ public class RecordController {
 //            sql.setString(1, record.getPlayerID());
 //            countRs=sql.executeQuery();
 //            count= countRs.getInt("count");
-            //该分数大于数据库中30条最近数据中潜力值最高的10个值最小的值，且分数大于9800000，即可插入
+            //该分数大于数据库中30条最近数据中潜力值最高的10个值最小的值，且分数大于9000000，即可插入
             if (rs.getRow()<10||record.getScore() < 9000000 || (record.getScore() >= 9000000 && rs.getDouble(9) > record.getPotential())) {
                 //查找最近记录条数
                 String sqlStr1 = "SELECT * FROM seine.personal_recent_records WHERE playerID = ? ";
@@ -103,6 +103,7 @@ public class RecordController {
                 //插入最近记录
                 String sqlStr3 = "INSERT INTO seine.personal_recent_records(playerID, time, songID, songDifficulty, pureCount, farCount, lostCount, maxCombo, potential, score) " +
                         "VALUES (?,?,?,?,?,?,?,?,?,?)";
+                System.out.println("8");
                 sql = con.prepareStatement(sqlStr3);
                 sql.setString(1, record.getPlayerID());
                 sql.setTimestamp(2, record.getTime());
@@ -115,8 +116,11 @@ public class RecordController {
                 sql.setDouble(9, record.getPotential());
                 sql.setInt(10, record.getScore());
                 sql.executeQuery();
+                System.out.println("9");
             }
+            System.out.println("10");
             con.close();
+            System.out.println("11");
         } catch (Exception e) {
             System.out.println(e);
         }
