@@ -35,6 +35,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
     public int nowPoints;
     public int highestPoints;
     public int nowRanking;
+    public boolean rankingFlag;
     public AtomicInteger pureCount;
     public AtomicInteger farCount;
     public AtomicInteger lostCount;
@@ -75,12 +76,17 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                 }
                 resultSet = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
                 count = 0;
+                rankingFlag = true;
                 while (resultSet.next()) {
                     rankingUserId[count] = resultSet.getString("playerID");
-
                     rankingPoints[count] = resultSet.getInt("score");
-
-                    System.out.println(rankingUserId[count] + rankingPoints[count]);
+                    if (Data.nowPlayer != null) {
+                        if (nowPoints == rankingPoints[count] && rankingFlag) {
+                            nowRanking = count + 1;
+                            rankingFlag = false;
+                        }
+                    }
+//                    System.out.println(rankingUserId[count] + rankingPoints[count]);
                     count += 1;
                 }
             } catch (SQLException e) {
@@ -103,9 +109,14 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                     this.lostCount = recordTemp.lostCount;
                     resultSet = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
                     count = 0;
+                    rankingFlag = true;
                     while (resultSet.next()) {
                         rankingUserId[count] = resultSet.getString("playerID");
                         rankingPoints[count] = resultSet.getInt("score");
+                        if (nowPoints == rankingPoints[count] && rankingFlag) {
+                            nowRanking = count + 1;
+                            rankingFlag = false;
+                        }
                         count += 1;
                     }
                 }
@@ -124,6 +135,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                         rankingPoints[count] = resultSet.getInt("score");
                         count += 1;
                     }
+                    rankingFlag = true;
                 }
 
             } catch (SQLException e) {
@@ -189,7 +201,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
 
 
 //        g.drawString(String.format("%.2f", 2.8), Data.WIDTH / 2 - 22,  58);
-        if (way == 2) {
+        if (way == 2 && Data.nowPlayer != null) {
             g.setFont(new Font("黑体", Font.BOLD, 20));
             g.setColor(Color.WHITE);
             if (changePotential == 0) {
@@ -210,7 +222,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         g.translate(-700, -632);
         Data.canvas.paintString(String.format("%03d", lostCount.get()), f, g, 700, 695, 1, Color.WHITE, Color.BLACK);
         g.translate(-700, -695);
-        int count1 = 395, count2 = 420;
+        int count1 = 395, count2 = 420, count3 = 408;
         for (int i = 0; i < 3; i++) {
             g.setFont(new Font("黑体", Font.PLAIN, 30));
             g.setColor(Color.WHITE);
@@ -221,9 +233,30 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
             if(rankingPoints[i]!=0){
                 g.drawString(String.valueOf(rankingPoints[i]), 1050, count2);
             }
+            g.setFont(new Font("黑体", Font.PLAIN, 30));
+            g.setColor(new Color(92, 64, 100));
+            g.drawString(String.valueOf(i + 1),1173, count3);
             count1 += 60;
             count2 += 60;
+            count3 += 60;
         }
+
+        if (!rankingFlag) {
+            g.setFont(new Font("黑体", Font.PLAIN, 25));
+            g.setColor(Color.WHITE);
+            g.drawString(String.valueOf(highestPoints), 1050, 738);
+            g.setFont(new Font("黑体", Font.PLAIN, 30));
+            g.setColor(new Color(92, 64, 100));
+            g.drawString(String.valueOf(nowRanking),1173, 730);
+        } else {
+            g.setFont(new Font("黑体", Font.PLAIN, 25));
+            g.setColor(Color.WHITE);
+            g.drawString("00000000", 1050, 738);
+            g.setFont(new Font("黑体", Font.PLAIN, 30));
+            g.setColor(new Color(92, 64, 100));
+            g.drawString("-",1173, 730);
+        }
+
 //        Data.canvas.paintString("+" + String.format("%.2f", 0.15), f, g, Data.WIDTH / 2 + 75,  58, 1, Color.WHITE, Color.BLACK);
     }
 

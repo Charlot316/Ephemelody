@@ -347,9 +347,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                     pureCount.get(), farCount.get(), lostCount.get(), maxCombo.get(),
                     0, score);
             System.out.println(record.toString());
-            RecordController.insertAllBestRecord(record);
-            RecordController.insertRecentRecord(record);
-            RecordController.insertBestRecord(record);
             Data.canvas.switchScenes("End", new RecordTemp(currentScore.get(), pureCount, farCount, lostCount, maxCombo,
                     2, 0, 0));
         }
