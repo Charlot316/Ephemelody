@@ -23,6 +23,7 @@ public class Canvas extends JLayeredPane{
     Scenes loginComScenes = null; // 登录界面的组件所在页面
     Scenes menuOptionScenes = null;
     Scenes chooseSongScenes = null;
+    public PlayInterface playInterface=new PlayInterface();
     public Canvas(JFrame frame) throws SQLException {
         /*nowScenes = new Home();
         bgScenes = new Background();*/
@@ -59,16 +60,16 @@ public class Canvas extends JLayeredPane{
             this.add((End) thirdScenes, new Integer(2));
         } else if (name.equals("PlayInterface")) {
         //    this.nowScenes =
-            this.firstScenes = new PlayInterface(Data.songId, Data.difficulty);
+            playInterface.resetPlayInterface(Data.songId, Data.difficulty);
 //            this.secondScenes =  new Track(0, 1,'c', 1230, 2230, 0.5, 0.06, 255, 160, 160);
             this.removeAll();
-            this.add((PlayInterface)firstScenes, new Integer(0));
+            this.add(playInterface, new Integer(0));
 
-            for(Track i:((PlayInterface) firstScenes).allTracks){
+            for(Track i:playInterface.allTracks){
                 this.add(i,new Integer(i.id+1));
             }
-            this.add(((PlayInterface) firstScenes).displayer,new Integer(((PlayInterface) firstScenes).allTracks.size()+1));
-            new Thread((PlayInterface) firstScenes).start();
+            this.add(playInterface.displayer,new Integer((playInterface.allTracks.size()+1)));
+            new Thread(playInterface).start();
 //            this.add((PlayInterface) nowScenes, new Integer(1));
         } else if (name.equals("Login")) {
 //            System.out.println("1");
@@ -109,7 +110,11 @@ public class Canvas extends JLayeredPane{
     class OnKeyEvent extends KeyAdapter {
 
         public void keyPressed(KeyEvent e) {
-            firstScenes.onKeyDown(e.getKeyCode());
+            try {
+                firstScenes.onKeyDown(e.getKeyCode());
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
+            }
         }
         public void keyReleased(KeyEvent e) {
             firstScenes.onKeyUp(e.getKeyCode());
