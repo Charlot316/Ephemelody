@@ -11,7 +11,7 @@ public interface Scenes  {
     static final int MOUSE_DOWN = 2, MOUSE_UP = 0, MOUSE_MOVED = 1, DOWN_LEFT = 10, DOWN_CENTER = 20, DOWN_RIGHT = 30, UP_LEFT = 11, UP_CENTER = 21, UP_RIGHT = 31;
 
     // 监听键盘按
-    void onKeyDown(int keyCode);
+    void onKeyDown(int keyCode) throws InterruptedException;
 
     // 监听键盘弹起
     void onKeyUp(int keyCode);

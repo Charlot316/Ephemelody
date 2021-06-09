@@ -3,6 +3,7 @@ package team.seine.ephemelody.scenes;
 import database.Entity.Record;
 import database.RecordController;
 import team.seine.ephemelody.data.Data;
+import team.seine.ephemelody.main.Canvas;
 import team.seine.ephemelody.playinterface.*;
 import team.seine.ephemelody.utils.Load;
 
@@ -21,6 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.awt.BasicStroke.CAP_BUTT;
 import static java.awt.BasicStroke.JOIN_BEVEL;
+import static java.awt.event.KeyEvent.VK_ESCAPE;
 import static java.lang.Thread.sleep;
 
 public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListener {//Set up the play interface
@@ -43,8 +45,10 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     public static double finalY=0.8;
     public static long remainingTime;
     public static long finalEndTime;
+    public static long pauseTime;
+    public static long resumeTime;
+    int clipTime;
     public int score=0;
-    public static Hashtable<Integer, Track> currentTracks = new Hashtable<>();
     public ArrayList<Track> allTracks = new ArrayList<>();
     ArrayList<PlayOperations> backgroundOperations = new ArrayList<>();
     ArrayList<Image> backgroundImg = new ArrayList<>();
@@ -56,6 +60,8 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     public Clip song;
     public double prevPotential;
     public double nowPotential;
+    public static boolean isPaused=false;
+    public boolean isStop=false;
     /**
      * read in information of the display
      */
@@ -234,7 +240,10 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      * @param songID     ID of the song
      * @param difficulty difficulty of the song (both are used to find the source file)
      */
-    public PlayInterface(int songID, int difficulty) {
+    public void resetPlayInterface(int songID, int difficulty) {
+        System.out.println(Thread.activeCount());
+        System.out.println(Thread.currentThread());
+        isPaused=false;
         PlayInterface.remainingTime=(long)(-600*Data.noteSpeed+4100);
         pureCount.set(0);
         farCount.set(0);
@@ -257,7 +266,11 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
 
         addKeyListener( new KeyAdapter(){
             public void keyPressed(KeyEvent e){
-                onKeyDown(e.getKeyCode());
+                try {
+                    onKeyDown(e.getKeyCode());
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
                 repaint();
             }
             public void KeyReleased(KeyEvent e) {
@@ -271,21 +284,34 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     /**
      * Stop all the operations and pop up the menu
      */
-    public void pause() throws InterruptedException {
-        for (Map.Entry<Integer, Track> entry : currentTracks.entrySet()) {
-            entry.wait();
-        }
+    synchronized public void pause() throws InterruptedException {
+        clipTime=song.getFramePosition();
+        song.stop();
+        isPaused=true;
+        Track.isPaused.set(1);
+        pauseTime=System.currentTimeMillis();
     }
 
     /**
      * Resume the game
      */
-    public void resumeGame() {
-        for (Map.Entry<Integer, Track> entry : currentTracks.entrySet()) {
-            entry.notify();
-        }
+    synchronized public void resumeGame() {
+        resumeTime=System.currentTimeMillis();
+        startTime+=(resumeTime-pauseTime);
+        song.setFramePosition(clipTime);
+        song.start();
+        Track.isPaused.set(0);
+        isPaused=false;
     }
 
+    public void stopGame() {
+        Track.isStopped.set(1);
+        isStop=true;
+        isPaused=false;
+        System.out.println(isStop);
+        song.stop();
+        this.run();
+    }
     /**
      * run the game
      */
@@ -296,9 +322,11 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         currentTime = 0;
         this.backgroundOperations.sort(comparatorOperation);
         this.repaint();
-        while (currentTime < PlayInterface.finalEndTime) {
-            currentTime = System.currentTimeMillis() - startTime;
+        while (currentTime < PlayInterface.finalEndTime&&!isStop) {
             //System.out.println(currentTime+" "+this.finalEndTime);
+            while(isPaused);
+            if(isStop) break;
+            currentTime = System.currentTimeMillis() - startTime;
             while (frontTrack<allTracks.size()&&allTracks.get(frontTrack).startTiming < currentTime) {
                 currentTime = System.currentTimeMillis() - startTime;
                 allTracks.get(frontTrack).notes.sort(comparatorNote);
@@ -306,7 +334,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                 allTracks.get(frontTrack).changeWidthOperations.sort(comparatorOperation);
                 allTracks.get(frontTrack).changeColorOperations.sort(comparatorOperation);
                 new Thread(allTracks.get(frontTrack)).start();
-                currentTracks.put(allTracks.get(frontTrack).id,allTracks.get(frontTrack));
                  frontTrack++;
             }
             if (!backgroundOperations.isEmpty() && frontOperation<backgroundOperations.size()&& backgroundOperations.get(frontOperation).startTime < currentTime) {
@@ -327,7 +354,14 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                 e.printStackTrace();
             }
         }
-        this.finish();
+        song.stop();
+        if(isStop) {
+            Data.canvas.switchScenes("Home");
+
+            Thread.interrupted();
+        }
+
+        if(!isStop)this.finish();
     }
 
     /**
@@ -369,9 +403,22 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
 
 
     @Override
-    public void onKeyDown(int keyCode) {
+    public void onKeyDown(int keyCode) throws InterruptedException {
         Data.isPressed[keyCode].set(1);
         //System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
+        if(isPaused){
+            if(keyCode==VK_ESCAPE){
+                stopGame();
+            }
+            if(keyCode=='C'){
+                resumeGame();
+            }
+        }
+        else{
+            if(keyCode=='P'){
+                pause();
+            }
+        }
     }
 
     @Override
@@ -394,7 +441,11 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
 
     @Override
     public void keyPressed(KeyEvent e) {
-        onKeyDown(e.getKeyCode());
+        try {
+            onKeyDown(e.getKeyCode());
+        } catch (InterruptedException interruptedException) {
+            interruptedException.printStackTrace();
+        }
     }
 
     @Override

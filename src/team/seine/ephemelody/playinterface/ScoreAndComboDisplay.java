@@ -28,5 +28,8 @@ public class ScoreAndComboDisplay extends JPanel {
         g.setColor(new Color(255, 255, 255, 200));
         g.drawString(String.format("%08d", score), Data.WIDTH * 4 / 5, 50);
         g.drawString(String.valueOf(combo), Data.WIDTH / 2 - 30, 50);
+        f = new Font("黑体", Font.PLAIN, 30);
+        g.setFont(f);
+        g.drawString("P:暂停", 10, 50);
     }
 }
