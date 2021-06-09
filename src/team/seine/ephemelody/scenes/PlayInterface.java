@@ -7,6 +7,7 @@ import team.seine.ephemelody.playinterface.*;
 import team.seine.ephemelody.utils.Load;
 
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -244,13 +245,16 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         this.songID = songID;
         this.difficulty = difficulty;
         finalEndTime=0;
+        this.song = Load.sound(String.valueOf(songID));
+        FloatControl gainControl = (FloatControl) song.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(-(float)(8*(10-Data.volume))); // Reduce volume by 10 decibels.
         this.loadData();
         this.setInterface();
         this.repaint();
         this.requestFocus();
         if(Data.nowPlayer!=null)this.prevPotential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
 //        System.out.println(prevPotential);
-        this.song = Load.sound(String.valueOf(songID));
+
         addKeyListener( new KeyAdapter(){
             public void keyPressed(KeyEvent e){
                 onKeyDown(e.getKeyCode());
