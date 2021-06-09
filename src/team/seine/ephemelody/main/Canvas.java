@@ -131,6 +131,18 @@ public class Canvas extends JLayeredPane{
         // Draw the String
         g.drawString(text, x, y);
     }
+    public void drawCenteredStringByOutline(Graphics g, String text, int width1, int width2, int width, Font font, int y, Color color1, Color color2) {
+        // Get the FontMetrics
+        FontMetrics metrics = g.getFontMetrics(font);
+        // Determine the X coordinate for the text
+        int x = (width1 - metrics.stringWidth(text)) / 2 + width2;
+        // Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)// Set the font
+        g.setFont(font);
+        // Draw the String
+//        g.drawString(text, x, y);
+        paintString(text, font, g, x, y, width, color1, color2);
+        g.translate(-x, -y);
+    }
 
 }
 
