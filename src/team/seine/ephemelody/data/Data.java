@@ -55,7 +55,7 @@ public class Data {
         startButton = Load.image("home/开始游戏.png");*/
 
         songList = Arrays.asList("第四首歌", "第五首歌", "第一首歌", "第二首歌", "第三首歌");
-        realSongList = Arrays.asList("第四首歌", "熱愛発覚中"," world.excute(me);", "第2首歌","第3首歌", "第4首歌","第5首歌", "第6首歌");
+        realSongList = Arrays.asList("新手引导", "熱愛発覚中"," world.excute(me);", "第2首歌","第3首歌", "第4首歌","第5首歌", "第6首歌");
         readSongList();
         songId = 2;
     }
