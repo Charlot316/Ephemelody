@@ -52,7 +52,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                 if (Data.nowPlayer == null) {
                     rs = RecordController.getBestRecords(Data.songId);
                 } else {
-                    rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId);
+                    rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId,Data.difficulty);
                 }
                 while (rs.next()) {
                     this.highestPoints = rs.getInt("score");
@@ -70,7 +70,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
 
         } else {
             try {
-                ResultSet rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId);
+                ResultSet rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId,Data.difficulty);
                 System.out.println(Data.nowPlayer.getPlayerID() + " " + Data.songId);
                 this.nowPoints = recordTemp.score;
                 this.changePotential = recordTemp.changePotential;
