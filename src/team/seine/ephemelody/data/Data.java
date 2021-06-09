@@ -31,8 +31,11 @@ public class Data {
     public static Player nowPlayer;
     public static int frontSong=0;
     public static Song currentSong;
-    public static void init() {
 
+    /**
+     *
+     */
+    public static void init() {
         songList = Arrays.asList(new Song(), new Song(), new Song(), new Song(), new Song());
         realSongList = Arrays.asList(new Song(0,"新手指导",1,2,3), new Song(1,"熱愛発覚中",2,5,9),new Song(2," world.excute(me);",3,6,10) );
         readSongList();

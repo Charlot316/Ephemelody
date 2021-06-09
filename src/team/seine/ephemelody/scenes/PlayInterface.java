@@ -265,6 +265,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                 repaint();
             }
         });
+        System.out.println(Thread.activeCount());
     }
 
     /**
