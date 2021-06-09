@@ -185,7 +185,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             }
         } else if (Rect.isInternal(x, y, 1038, 850, 230, 69)) {
             buttonSongInfStatus = buttonStruts;
-            if (struts == Scenes.MOUSE_DOWN) {
+            if (struts == Scenes.MOUSE_DOWN && playFlag) {
                 Data.canvas.switchScenes("End", new RecordTemp(1));
             }
         } else if (Rect.isInternal(x, y, 120, 60, 126, 95)) {

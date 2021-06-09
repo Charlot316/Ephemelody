@@ -1,7 +1,9 @@
 package team.seine.ephemelody.scenes;
 
+import database.Entity.Song;
 import database.PlayerController;
 import database.RecordController;
+import database.SongController;
 import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.playinterface.RecordTemp;
 import team.seine.ephemelody.utils.Load;
@@ -30,7 +32,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
     public Image[] ratingButton;
     public int buttonTryAgainStatus = 0;
     public int buttonReturnStatus = 0;
-    public int resultStatus;
+    public int resultStatus = 0;
     public String songName;
     public int nowPoints;
     public int highestPoints;
@@ -39,6 +41,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
     public AtomicInteger pureCount;
     public AtomicInteger farCount;
     public AtomicInteger lostCount;
+    public AtomicInteger maxCombo;
     public double changePotential;
     public double nowPotential;
     public int way;
@@ -50,6 +53,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         this.lostCount = new AtomicInteger();
         this.way = recordTemp.way;
         ResultSet rs, resultSet;
+        Song nowSong;
         int count = 0;
         if (recordTemp.way == 1) {
             try {
@@ -95,8 +99,9 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
 
         } else {
             try {
-                if(Data.nowPlayer!=null){
+                if (Data.nowPlayer != null) {
                     rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId, Data.difficulty);
+                    nowSong = SongController.selectSongById(Data.songId, Data.difficulty);
                     System.out.println(Data.nowPlayer.getPlayerID() + " " + Data.songId);
                     this.nowPoints = recordTemp.score;
                     this.changePotential = recordTemp.changePotential;
@@ -107,6 +112,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                     this.pureCount = recordTemp.pureCount;
                     this.farCount = recordTemp.farCount;
                     this.lostCount = recordTemp.lostCount;
+                    this.maxCombo = recordTemp.combo;
                     resultSet = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
                     count = 0;
                     rankingFlag = true;
@@ -119,8 +125,14 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                         }
                         count += 1;
                     }
-                }
-                else{
+                    if (pureCount.get() == nowSong.getNoteCount()) {
+                        resultStatus = 2;
+                    } else if (maxCombo.get() == nowSong.getNoteCount()) {
+                        resultStatus = 1;
+                    } else {
+                        resultStatus = 0;
+                    }
+                } else {
                     this.nowPoints = recordTemp.score;
                     this.changePotential = recordTemp.changePotential;
                     this.nowPotential = recordTemp.nowPotential;
@@ -151,16 +163,16 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         listImg = Load.image("end/排行榜.png");
         myGradeImg = Load.image("end/我的成绩.png");
         gradeImg = Load.image("end/成绩条.png");
-        resultImg = new Image[] {
+        resultImg = new Image[]{
                 Load.image("end/clear_normal.png"), Load.image("end/clear_full.png"), Load.image("end/clear_pure.png")
         };
-        tryAgainButton = new Image[] {
+        tryAgainButton = new Image[]{
                 Load.image("end/重试.png"), Load.image("end/重试_鼠标悬停.png"), Load.image("end/重试_按下.png")
         };
-        returnButton = new Image[] {
+        returnButton = new Image[]{
                 Load.image("end/返回.png"), Load.image("end/返回_鼠标悬停.png"), Load.image("end/返回_按下.png")
         };
-        ratingButton = new Image[] {
+        ratingButton = new Image[]{
                 Load.image("end/rating_down.png"), Load.image("end/rating_keep.png"), Load.image("end/rating_up.png")
         };
         songName = Data.realSongList.get(Data.songId);
@@ -168,6 +180,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         addMouseMotionListener(this);
         new End.UpdateUI().start();
     }
+
     public void paint(Graphics g) {
         g.drawImage(endBackgroundImg, 0, (Data.HEIGHT - 632) / 2, null);
         g.drawImage(listImg, 980, 310, null);
@@ -208,10 +221,10 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                 g.drawImage(ratingButton[1], Data.WIDTH / 2 + 50, 20, null);
             } else if (changePotential > 0) {
                 g.drawImage(ratingButton[2], Data.WIDTH / 2 + 50, 20, null);
-                g.drawString("+" + String.format("%.2f", changePotential), Data.WIDTH / 2 + 72,  58);
+                g.drawString("+" + String.format("%.2f", changePotential), Data.WIDTH / 2 + 72, 58);
             } else {
                 g.drawImage(ratingButton[0], Data.WIDTH / 2 + 50, 20, null);
-                g.drawString(String.format("%.2f", changePotential), Data.WIDTH / 2 + 72,  58);
+                g.drawString(String.format("%.2f", changePotential), Data.WIDTH / 2 + 72, 58);
             }
 //            g.drawString(String.format("%.2f", nowPotential), Data.WIDTH / 2 - 22,  58);
         }
@@ -226,16 +239,16 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         for (int i = 0; i < 3; i++) {
             g.setFont(new Font("黑体", Font.PLAIN, 30));
             g.setColor(Color.WHITE);
-            if(rankingUserId[i]!=null){
+            if (rankingUserId[i] != null) {
                 g.drawString(rankingUserId[i], 1050, count1);
             }
             g.setFont(new Font("黑体", Font.PLAIN, 25));
-            if(rankingPoints[i]!=0){
+            if (rankingPoints[i] != 0) {
                 g.drawString(String.valueOf(rankingPoints[i]), 1050, count2);
             }
             g.setFont(new Font("黑体", Font.PLAIN, 30));
             g.setColor(new Color(92, 64, 100));
-            g.drawString(String.valueOf(i + 1),1173, count3);
+            g.drawString(String.valueOf(i + 1), 1173, count3);
             count1 += 60;
             count2 += 60;
             count3 += 60;
@@ -247,14 +260,14 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
             g.drawString(String.valueOf(highestPoints), 1050, 738);
             g.setFont(new Font("黑体", Font.PLAIN, 30));
             g.setColor(new Color(92, 64, 100));
-            g.drawString(String.valueOf(nowRanking),1173, 730);
+            g.drawString(String.valueOf(nowRanking), 1173, 730);
         } else {
             g.setFont(new Font("黑体", Font.PLAIN, 25));
             g.setColor(Color.WHITE);
             g.drawString("00000000", 1050, 738);
             g.setFont(new Font("黑体", Font.PLAIN, 30));
             g.setColor(new Color(92, 64, 100));
-            g.drawString("-",1173, 730);
+            g.drawString("-", 1173, 730);
         }
 
 //        Data.canvas.paintString("+" + String.format("%.2f", 0.15), f, g, Data.WIDTH / 2 + 75,  58, 1, Color.WHITE, Color.BLACK);
@@ -276,15 +289,15 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
 //        System.out.println(buttonReturnStatus);
         int buttonStruts = struts == Scenes.MOUSE_MOVED ? 1 : struts == Scenes.MOUSE_DOWN ? 2 : 0;
 //        System.out.println(buttonStruts);
-        if(Rect.isInternal(x, y, 0, 850, 230, 69)) {
+        if (Rect.isInternal(x, y, 0, 850, 230, 69)) {
             buttonReturnStatus = buttonStruts;
 //            System.out.println(buttonReturnStatus);
-            if(struts == Scenes.MOUSE_DOWN) {
+            if (struts == Scenes.MOUSE_DOWN) {
                 Data.canvas.switchScenes("Home");
             }
         } else if (Rect.isInternal(x, y, 1038, 850, 230, 69)) {
             buttonTryAgainStatus = buttonStruts;
-            if(struts == Scenes.MOUSE_DOWN) {
+            if (struts == Scenes.MOUSE_DOWN) {
                 Data.canvas.switchScenes("PlayInterface");
             }
         }
