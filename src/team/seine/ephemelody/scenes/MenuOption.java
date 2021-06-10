@@ -23,11 +23,13 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
     public static UpdateUI updater;
     private static MenuOption menuOption=new MenuOption();
     public static AtomicInteger isRemoved=new AtomicInteger();
+
     private MenuOption(){
 
     }
 
     public void initialize(){
+        updater=null;
         updater=new UpdateUI();
         isRemoved.set(0);
     }

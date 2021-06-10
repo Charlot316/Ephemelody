@@ -249,6 +249,12 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      * @param difficulty difficulty of the song (both are used to find the source file)
      */
     public static PlayInterface getPlayInterface(int songID, int difficulty) {
+        PlayInterface.backgroundImg.clear();
+        PlayInterface.allTracks.clear();
+        PlayInterface.backgroundOperations.clear();
+        Home.isRemoved.set(1);
+        MenuOption.isRemoved.set(1);
+        End.isRemoved.set(1);
         System.out.println(Thread.activeCount());
         System.out.println("PlayInterface"+Thread.currentThread());
         isPaused=false;
@@ -330,6 +336,9 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      * run the game
      */
     public void run() {
+        Home.isRemoved.set(1);
+        MenuOption.isRemoved.set(1);
+        End.isRemoved.set(1);
         System.out.println(Thread.activeCount());
         System.out.println("PlayInterface"+Thread.currentThread());
         assert song != null;
@@ -338,6 +347,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         currentTime = 0;
         this.backgroundOperations.sort(comparatorOperation);
         this.repaint();
+        System.out.println((currentTime < PlayInterface.finalEndTime)+" "+isStop);
         while (currentTime < PlayInterface.finalEndTime&&!isStop) {
             //System.out.println(currentTime+" "+this.finalEndTime);
             while(isPaused);
@@ -371,13 +381,14 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             }
         }
         song.stop();
+        System.out.println("停止"+isStop);
         if(isStop) {
             PlayInterface.backgroundImg.clear();
             PlayInterface.allTracks.clear();
             PlayInterface.backgroundOperations.clear();
             Data.canvas.switchScenes("Home");
         }
-        if(!isStop) this.finish();
+        if(!isStop) {System.out.println("我执行了");this.finish();}
         System.out.println("无事退出");
     }
 

@@ -54,6 +54,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
     }
     public void initialize(){
         isRemoved.set(0);
+        updater=null;
         updater =new UpdateUI();
     }
     public static End getEnd(RecordTemp recordTemp) {
@@ -305,12 +306,16 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
             buttonReturnStatus = buttonStruts;
 //            System.out.println(buttonReturnStatus);
             if (struts == Scenes.MOUSE_DOWN) {
+                System.out.println("按了home");
                 Data.canvas.switchScenes("Home");
+                End.isRemoved.set(1);
             }
         } else if (Rect.isInternal(x, y, 1038, 850, 230, 69)) {
             buttonTryAgainStatus = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
+                System.out.println("按了play");
                 Data.canvas.switchScenes("PlayInterface");
+                End.isRemoved.set(1);
             }
         }
     }

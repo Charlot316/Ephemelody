@@ -35,6 +35,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
 
     }
     public void initialize(){
+        updater=null;
         updater=new UpdateUI();
         isRemoved.set(0);
     }
@@ -139,11 +140,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         }else if (Rect.isInternal(x, y, 1043, 580, 202, 125)) {
             if (buttonDifficultStatus != MOUSE_DOWN) {
                 buttonDifficultStatus = buttonStruts;
-            } /*else {
-//                buttonSetUpBackStatus = MOUSE_UP;
-                buttonEasyStatus = MOUSE_UP;
-                buttonNormalStatus = MOUSE_UP;
-            }*/
+            }
             if (buttonDifficultStatus == MOUSE_DOWN) {
                 buttonEasyStatus = MOUSE_UP;
                 buttonNormalStatus = MOUSE_UP;
@@ -155,6 +152,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             buttonPlayStatus = buttonStruts;
             playFlag = buttonEasyStatus == MOUSE_DOWN || buttonNormalStatus == MOUSE_DOWN || buttonDifficultStatus == MOUSE_DOWN;
             if(struts == Scenes.MOUSE_DOWN && playFlag) {
+                System.out.println("按了play");
                 Data.canvas.switchScenes("PlayInterface");
 //                System.exit(0);
 //                Data.canvas.switchScenes("End");
@@ -162,6 +160,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         } else if (Rect.isInternal(x, y, 1038, 850, 230, 69)) {
             buttonSongInfStatus = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN && playFlag) {
+                System.out.println("按了end");
                 Data.canvas.switchScenes("End", new RecordTemp(1));
             }
         } else if (Rect.isInternal(x, y, 120, 60, 126, 95)) {

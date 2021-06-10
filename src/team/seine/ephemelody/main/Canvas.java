@@ -23,7 +23,8 @@ public class Canvas extends JLayeredPane{
     Scenes loginComScenes = null; // 登录界面的组件所在页面
     Scenes menuOptionScenes = null;
     Scenes chooseSongScenes = null;
-    PlayInterface tempPlayInterface=null;
+    PlayInterface tempPlayInterface=PlayInterface.getPlayInterface(1, 1);
+
     public Canvas(JFrame frame) throws SQLException {
         /*nowScenes = new Home();
         bgScenes = new Background();*/
@@ -40,6 +41,7 @@ public class Canvas extends JLayeredPane{
         switch (name) {
             case "Home":
 //            frame.addKeyListener(new OnKeyEvent());
+                End.isRemoved.set(1);
                 this.removeAll();
                 this.add(Background.getTheBackground(), new Integer(0));
                 this.add(Home.getHome(), new Integer(1));
@@ -47,6 +49,8 @@ public class Canvas extends JLayeredPane{
                 this.add(ChooseSong.getChooseSong(), new Integer(3));
                 break;
             case "End":
+                Home.isRemoved.set(1);
+                MenuOption.isRemoved.set(1);
                 this.removeAll();
                 this.add(Background.getTheBackground(), new Integer(0));
 //            this.add((Home) secondScenes, new Integer(1));
@@ -54,6 +58,9 @@ public class Canvas extends JLayeredPane{
                 this.add(MenuOption.getMenuOption(), new Integer(2));
                 break;
             case "PlayInterface":
+                Home.isRemoved.set(1);
+                MenuOption.isRemoved.set(1);
+                End.isRemoved.set(1);
                 //    this.nowScenes =
 //            this.secondScenes =  new Track(0, 1,'c', 1230, 2230, 0.5, 0.06, 255, 160, 160);
                 this.removeAll();
