@@ -308,7 +308,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         song.start(); // 播放音乐
         startTime = System.currentTimeMillis();
         currentTime = 0;
-        this.backgroundOperations.sort(comparatorOperation);
+        PlayInterface.backgroundOperations.sort(comparatorOperation);
         this.repaint();
         System.out.println((currentTime < PlayInterface.finalEndTime));
         while (currentTime < PlayInterface.finalEndTime) {
@@ -327,8 +327,8 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             if (!backgroundOperations.isEmpty() && frontOperation+1<backgroundOperations.size()&& backgroundOperations.get(frontOperation).startTime < currentTime) {
                 currentTime = System.currentTimeMillis() - startTime;
                 //System.out.println(currentTime+" "+this.finalEndTime);
-                this.frontBackground++;
-                this.frontOperation++;
+                PlayInterface.frontBackground++;
+                PlayInterface.frontOperation++;
                 this.repaint();
             }
             if (score+8769<PlayInterface.currentScore.get()) score+=8769;
@@ -364,7 +364,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             RecordController.insertAllBestRecord(record);
             RecordController.insertRecentRecord(record);
             RecordController.insertBestRecord(record);
-            this.nowPotential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
+            PlayInterface.nowPotential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
             Data.canvas.switchScenes("End", new RecordTemp(currentScore.get(), pureCount, farCount, lostCount, maxCombo,
                     2, nowPotential - prevPotential, nowPotential));
         }
