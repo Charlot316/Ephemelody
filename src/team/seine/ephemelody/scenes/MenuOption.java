@@ -10,22 +10,37 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MenuOption extends JPanel implements Scenes, MouseMotionListener, MouseListener {
-    int buttonRatingStatus = 0, buttonSetUpBackStatus = 0, buttonLoginStatus = 0, buttonQuitLoginStatus = 0;
-    public Image[] ratingButton;
-    public Image setupButton;
-    public Image[] setupBackButton;
-    public Image[] loginButton;
-    public Image[] quitLoginButton;
-    public double potential;
-    public MenuOption() {
-        setBounds(0, 0, Data.WIDTH, 93);
+    static int buttonRatingStatus = 0, buttonSetUpBackStatus = 0, buttonLoginStatus = 0, buttonQuitLoginStatus = 0;
+    public static Image[] ratingButton;
+    public static Image setupButton;
+    public static Image[] setupBackButton;
+    public static Image[] loginButton;
+    public static Image[] quitLoginButton;
+    public static double potential;
+    public static UpdateUI updater;
+    private static MenuOption menuOption=new MenuOption();
+    public static AtomicInteger isRemoved=new AtomicInteger();
+
+    private MenuOption(){
+
+    }
+
+    public void initialize(){
+        updater=null;
+        updater=new UpdateUI();
+        isRemoved.set(0);
+    }
+    public static MenuOption getMenuOption () {
+        menuOption.initialize();
+        menuOption.setBounds(0, 0, Data.WIDTH, 93);
 //        setLayout(null);
-        setOpaque(false);
-        setVisible(true);
+        menuOption.setOpaque(false);
+        menuOption.setVisible(true);
         if (Data.nowPlayer != null) {
-            this.potential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
+            MenuOption.potential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
         }
         ratingButton = new Image[]{
                 Load.image("home/潜力值_0.png"), Load.image("home/潜力值_1.png"),
@@ -43,7 +58,7 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
                 Load.image("home/退出登录.png"), Load.image("home/退出登录_鼠标悬停.png"), Load.image("home/退出登录_按下.png")
         };
         if (Data.nowPlayer != null) {
-            this.potential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
+            MenuOption.potential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
             if (potential < 8){
                 buttonRatingStatus = 0;
             } else if (potential >= 8 && potential < 9) {
@@ -61,9 +76,10 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
             }
         }
 
-        addMouseMotionListener(this);
-        addMouseListener(this);
-        new UpdateUI().start();
+        menuOption.addMouseMotionListener(menuOption);
+        menuOption.addMouseListener(menuOption);
+        updater.start();
+        return menuOption;
     }
     @Override
     public void onKeyDown(int keyCode) {
@@ -86,6 +102,7 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
         if(Rect.isInternal(x, y, 900, 0, 98, 50)) {
             buttonSetUpBackStatus = buttonStruts;
             if(struts == Scenes.MOUSE_DOWN) {
+                System.out.println("Menu调用SetUp");
                 Data.canvas.switchScenes("SetUp");
             }
         } else if (Rect.isInternal(x, y, 1080, -3, 188, 69)) {
@@ -93,6 +110,7 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
             buttonQuitLoginStatus = buttonLoginStatus;
             if(struts == Scenes.MOUSE_DOWN) {
                 if (Data.nowPlayer == null) {
+                    System.out.println("Menu调用Login");
                     Data.canvas.switchScenes("Login");
                 } else {
                     Data.nowPlayer = null;
@@ -157,9 +175,13 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
 
     }
     class UpdateUI extends Thread {
+
         public void run() {
+            System.out.println("menu run");
+            System.out.println(Thread.activeCount());
+            System.out.println("Menu"+Thread.currentThread());
             int sleepTime = 1000 / Data.FPS;
-            while (true) {
+            while (isRemoved.get()!=1) {
                 try {
                     updateUI();
                     repaint();
@@ -168,6 +190,7 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
                     e.printStackTrace();
                 }
             }
+            System.out.println("Menu removed");
         }
     }
 }

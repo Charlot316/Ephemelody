@@ -12,27 +12,38 @@ import java.awt.event.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Home extends JPanel implements Scenes, MouseMotionListener, MouseListener, KeyListener {
-    int buttonRatingStatus = 0, buttonSetUpBackStatus = 0, buttonLoginStatus = 0, buttonEasyStatus = 0, buttonNormalStatus = 0, buttonDifficultStatus = 0,
+    public static int buttonRatingStatus = 0, buttonSetUpBackStatus = 0, buttonLoginStatus = 0, buttonEasyStatus = 0, buttonNormalStatus = 0, buttonDifficultStatus = 0,
             buttonPlayStatus = 0, buttonSongInfStatus = 0, buttonUpStatus = 0, buttonDownStatus = 0;
-    public Image[] playButton;
-    public Image[] easyButton;
-    public Image[] normalButton;
-    public Image[] difficultButton;
-    public Image[] upButton;
-    public Image[] downButton;
+    public static Image[] playButton;
+    public static Image[] easyButton;
+    public static Image[] normalButton;
+    public static Image[] difficultButton;
+    public static Image[] upButton;
+    public static Image[] downButton;
     //    public Image song1;
-    public Image selectedImg;
-    public Image nowSongImg;
-    public Image[] songInfButton;
-    public Image songNameImg;
-    public Image hitSongImg;
-    public Boolean playFlag;
-    public ChooseSong chooseSong;
-    public AudioClip audioClip;
-    public Home() {
-        setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
-        setLayout(null);
-        chooseSong = new ChooseSong();
+    public static Image selectedImg;
+    public static Image nowSongImg;
+    public static Image[] songInfButton;
+    public static Image songNameImg;
+    public static Image hitSongImg;
+    public static Boolean playFlag;
+    public static ChooseSong chooseSong;
+    public static UpdateUI updater;
+    private static Home home=new Home();
+    public static AtomicInteger isRemoved=new AtomicInteger();
+    private Home(){
+
+    }
+    public void initialize(){
+        updater=null;
+        updater=new UpdateUI();
+        isRemoved.set(0);
+    }
+    public static Home getHome() {
+        home.initialize();
+        home.setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
+        home.setLayout(null);
+        chooseSong = ChooseSong.getChooseSong();
         playFlag = false;
         playButton = new Image[]{
                 Load.image("home/开始游戏.png"), Load.image("home/开始游戏_鼠标悬停.png"), Load.image("home/开始游戏_按下.png")
@@ -61,10 +72,11 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         hitSongImg = Load.image("home/当前歌曲指示条.png");
 //        setBackground(null);
 //        Load.sound("1").loop(Clip.LOOP_CONTINUOUSLY); // 播放音乐
-        setOpaque(false);
-        new UpdateUI().start();
-        addMouseMotionListener(this);
-        addMouseListener(this);
+        home.setOpaque(false);
+        updater.start();
+        home.addMouseMotionListener(home);
+        home.addMouseListener(home);
+        return home;
     }
 
     @Override
@@ -128,11 +140,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         }else if (Rect.isInternal(x, y, 1043, 580, 202, 125)) {
             if (buttonDifficultStatus != MOUSE_DOWN) {
                 buttonDifficultStatus = buttonStruts;
-            } /*else {
-//                buttonSetUpBackStatus = MOUSE_UP;
-                buttonEasyStatus = MOUSE_UP;
-                buttonNormalStatus = MOUSE_UP;
-            }*/
+            }
             if (buttonDifficultStatus == MOUSE_DOWN) {
                 buttonEasyStatus = MOUSE_UP;
                 buttonNormalStatus = MOUSE_UP;
@@ -144,6 +152,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             buttonPlayStatus = buttonStruts;
             playFlag = buttonEasyStatus == MOUSE_DOWN || buttonNormalStatus == MOUSE_DOWN || buttonDifficultStatus == MOUSE_DOWN;
             if(struts == Scenes.MOUSE_DOWN && playFlag) {
+                System.out.println("按了play");
                 Data.canvas.switchScenes("PlayInterface");
 //                System.exit(0);
 //                Data.canvas.switchScenes("End");
@@ -151,6 +160,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         } else if (Rect.isInternal(x, y, 1038, 850, 230, 69)) {
             buttonSongInfStatus = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN && playFlag) {
+                System.out.println("按了end");
                 Data.canvas.switchScenes("End", new RecordTemp(1));
             }
         } else if (Rect.isInternal(x, y, 120, 60, 126, 95)) {
@@ -250,8 +260,10 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
 
     class UpdateUI extends Thread {
         public void run() {
+            System.out.println(Thread.activeCount());
+            System.out.println("End"+Thread.currentThread());
             int sleepTime = 1000 / Data.FPS;
-            while (true) {
+            while (isRemoved.get()!=1) {
                 try {
                     updateUI();
                     Thread.sleep(sleepTime);
@@ -259,6 +271,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
                     e.printStackTrace();
                 }
             }
+            System.out.println("Home removed");
         }
     }
 }

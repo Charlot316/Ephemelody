@@ -50,8 +50,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     public Image []judgement=new Image[3];
     public Image currentJudgement;
     public int delay=40;
-    public static AtomicInteger isStopped=new AtomicInteger();
-    public static AtomicInteger isPaused=new AtomicInteger();
 
     /**
      * @param id          Uniquely defines a track
@@ -66,8 +64,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * @param b           Control track's color
      */
     public Track(int id, int type, char key, long startTiming, long endTiming, double positionX, double width, int r, int g, int b) {
-        isPaused.set(0);
-        isStopped.set(0);
         this.id = id;
         this.type = type;
         this.key = key;
@@ -322,6 +318,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * Responsible for calculating the positionX at each moment, starting from positionX at currentTime, and endX at endTime
      */
     public void moveTrack() {
+        double temp1=0,temp2=0,temp3=0;
         if (moveOperations.isEmpty()) {
             return;
         }
@@ -329,7 +326,9 @@ public class Track extends JPanel implements Runnable {// The track of the note.
         if (currentMove.startTime < this.trackCurrentTime) {
             if (currentMove.startTime == currentMove.endTime) this.positionX = currentMove.endX;
             else if (currentMove.endTime - this.trackCurrentTime > 0)
+            {
                 this.positionX = this.positionX - ((this.positionX - currentMove.endX) / (double) (currentMove.endTime - this.trackCurrentTime)) * (double) (this.trackCurrentTime - this.lastTime);
+            }
         }
         if (currentMove.endTime < this.trackCurrentTime && (frontMove + 1) < this.moveOperations.size()) {
             frontMove++;
@@ -344,17 +343,19 @@ public class Track extends JPanel implements Runnable {// The track of the note.
         if (changeWidthOperations.isEmpty()) {
             return;
         }
+
         currentWidth = changeWidthOperations.get(frontWidth);
         if (currentWidth.startTime < this.trackCurrentTime) {
             if (currentWidth.startTime == currentWidth.endTime) this.width = currentWidth.endWidth;
-            else if (currentWidth.endTime - this.trackCurrentTime > 0)
+            else if (currentWidth.endTime - this.trackCurrentTime > 0){
                 this.width = this.width - ((this.width - currentWidth.endWidth) / (double) (currentWidth.endTime - this.trackCurrentTime)) * (double) (this.trackCurrentTime - this.lastTime);
-
+            }
         }
         if (currentWidth.endTime < this.trackCurrentTime && (frontWidth + 1) < this.changeWidthOperations.size()) {
             frontWidth++;
             this.width=currentWidth.endWidth;
         }
+        if(this.width<0.01) this.width=0.01;
     }
 
     /**
@@ -365,7 +366,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             return;
         }
         currentColor = changeColorOperations.get(frontColor);
-        if (currentColor.startTime < this.trackCurrentTime) {
+        if (currentColor.startTime < this.trackCurrentTime ) {
             if (currentColor.startTime == currentColor.endTime) {
                 this.R = currentColor.endR;
                 this.G = currentColor.endG;
@@ -387,15 +388,17 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * Displays the track and notes on the screen according to the positionX and width and the currentNotes list of the current frame
      * Note: display must be after the move and change operations are finished
      */
-    public void run() {
+    synchronized public void run() {
+        System.out.println(Thread.activeCount());
+        System.out.println("Track"+Thread.currentThread());
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setLayout(null);
         setOpaque(false);
         this.setVisible(true);
-            this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
+        this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
             if(this.notes.isEmpty()){//这个判断不放在while里，这样可以省下判断这条if的时间
-                while ((Track.isStopped.get()!=1)&&this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
-                    while(isPaused.get()==1&&(Track.isStopped.get()!=1));
+                while (this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
+
                     this.lastTime = this.trackCurrentTime;
                     this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
                     this.changeColor();
@@ -410,8 +413,8 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 }
             }
             else{
-                while ((Track.isStopped.get()!=1)&&this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
-                    while(isPaused.get()==1&&(Track.isStopped.get()!=1));
+                while (this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
+
                     if (displayState<99) displayState++;
                     this.lastTime = this.trackCurrentTime;
                     this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
@@ -472,11 +475,10 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             }
             this.isEnded=true;
             while(!finalEnd){
-                    this.repaint();
+                this.repaint();
             }
-            this.remove(this);
-            Thread.interrupted();
             Data.canvas.remove(this);
+            System.out.println("Track ended");
     }
 
     @Override
