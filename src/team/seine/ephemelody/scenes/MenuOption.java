@@ -19,6 +19,10 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
     public Image[] loginButton;
     public Image[] quitLoginButton;
     public double potential;
+
+    /**
+     * 菜单条构造函数
+     */
     public MenuOption() {
         setBounds(0, 0, Data.WIDTH, 93);
 //        setLayout(null);
@@ -74,6 +78,12 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
 
     }
 
+    /**
+     * 响应鼠标事件
+     * @param x 鼠标所在横坐标
+     * @param y 鼠标所在纵坐标
+     * @param struts 鼠标状态
+     */
     @Override
     public void onMouse(int x, int y, int struts) {
         if (buttonSetUpBackStatus != MOUSE_DOWN) {
@@ -136,6 +146,10 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
         onMouse(e.getX(), e.getY(), Scenes.MOUSE_MOVED);
     }
 
+    /**
+     * 绘画菜单条
+     * @param g 图形
+     */
     public void paint(Graphics g) {
         g.drawImage(ratingButton[buttonRatingStatus], Data.WIDTH / 2 - 60, -16, null);
         g.drawImage(setupBackButton[buttonSetUpBackStatus], 900, 0, null);

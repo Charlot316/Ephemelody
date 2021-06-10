@@ -83,7 +83,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
     }
 
     /**
-     * 相应键盘事件
+     * 响应键盘事件
      * @param keyCode 按键对应code
      */
     @Override
@@ -94,6 +94,10 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
     }
 
+    /**
+     * 响应键盘事件
+     * @param keyCode 按键对应code
+     */
     @Override
     public void onKeyUp(int keyCode) {
         AtomicInteger tmp = new AtomicInteger();
@@ -102,6 +106,12 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
     }
 
+    /**
+     * 响应鼠标事件
+     * @param x 鼠标所在横坐标
+     * @param y 鼠标所在纵坐标
+     * @param struts 鼠标状态
+     */
     public void onMouse(int x, int y, int struts) {
         if (buttonEasyStatus != MOUSE_DOWN) {
             buttonEasyStatus = 0;
@@ -190,6 +200,10 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         }
     }
 
+    /**
+     * 绘画主页
+     * @param g 图形
+     */
     public void paint(Graphics g) {
         playFlag = buttonEasyStatus == MOUSE_DOWN || buttonNormalStatus == MOUSE_DOWN || buttonDifficultStatus == MOUSE_DOWN;
         g.drawImage(nowSongImg, Data.WIDTH / 2, 100, null);

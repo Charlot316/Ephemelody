@@ -39,6 +39,12 @@ public class Login extends JPanel implements Scenes, MouseMotionListener, MouseL
 
     }
 
+    /**
+     * 响应鼠标事件
+     * @param x 鼠标所在横坐标
+     * @param y 鼠标所在纵坐标
+     * @param struts 鼠标状态
+     */
     @Override
     public void onMouse(int x, int y, int struts) {
         loginButtonStatus = 0;
@@ -79,6 +85,10 @@ public class Login extends JPanel implements Scenes, MouseMotionListener, MouseL
         }
     }
 
+    /**
+     * 绘画登录界面
+     * @param g 图形
+     */
     public void paint(Graphics g) {
         g.drawImage(loginBackground, 0, 0, null);
         g.drawImage(loginButton[loginButtonStatus], 100, 650, null);
