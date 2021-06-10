@@ -24,6 +24,7 @@ public class Load {
         }
         return img;
     }
+
     public static Image backgroundImage(String path) {
         BufferedImage img = null;
         URL url = Load.class.getResource("/resources/display/" + path);
@@ -34,11 +35,13 @@ public class Load {
         }
         return img;
     }
-    public static BufferedReader File(String path){
-        InputStream is=Load.class.getResourceAsStream("/resources/display/"+path);
-        BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(is));
+
+    public static BufferedReader File(String path) {
+        InputStream is = Load.class.getResourceAsStream("/resources/display/" + path);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
         return bufferedReader;
     }
+
     public static Clip sound(String path) {
         try {
             BufferedInputStream loadPath = new BufferedInputStream(Load.class.getResourceAsStream("/resources/sound/" + path + ".wav"));
@@ -56,22 +59,5 @@ public class Load {
     public static void playSound(String path) {
         new Thread(() -> Load.sound(path).start()).start();
     }
-    /*public static javafx.scene.media.AudioClip getSound(String path) {
-        try {
-            String soundSourceResource = "resources/sounds/" + path + ".wav";
-            URL url = Load.class.getClassLoader().getResource(soundSourceResource);
 
-            assert url != null;
-            return new AudioClip(url.toExternalForm());
-//            return new AudioClip( "/resources/sound/" + path + ".wav");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }*/
-    public static Media getSound(String path) {
-
-        String url = "http://www.gov.cn/guoqing/guoge/hc.mp3";
-        return new Media(url);
-    }
 }
