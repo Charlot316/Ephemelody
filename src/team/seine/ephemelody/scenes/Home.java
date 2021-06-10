@@ -30,13 +30,13 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
     public static ChooseSong chooseSong;
     public static UpdateUI updater;
     private static Home home=new Home();
-    public static boolean isRemoved=false;
+    public static AtomicInteger isRemoved=new AtomicInteger();
     private Home(){
 
     }
     public void initialize(){
         updater=new UpdateUI();
-        isRemoved=false;
+        isRemoved.set(0);
     }
     public static Home getHome() {
         home.initialize();
@@ -155,7 +155,6 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             buttonPlayStatus = buttonStruts;
             playFlag = buttonEasyStatus == MOUSE_DOWN || buttonNormalStatus == MOUSE_DOWN || buttonDifficultStatus == MOUSE_DOWN;
             if(struts == Scenes.MOUSE_DOWN && playFlag) {
-                isRemoved=true;
                 Data.canvas.switchScenes("PlayInterface");
 //                System.exit(0);
 //                Data.canvas.switchScenes("End");
@@ -163,7 +162,6 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         } else if (Rect.isInternal(x, y, 1038, 850, 230, 69)) {
             buttonSongInfStatus = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN && playFlag) {
-                isRemoved=true;
                 Data.canvas.switchScenes("End", new RecordTemp(1));
             }
         } else if (Rect.isInternal(x, y, 120, 60, 126, 95)) {
@@ -263,11 +261,10 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
 
     class UpdateUI extends Thread {
         public void run() {
-            End.isRemoved=true;
             System.out.println(Thread.activeCount());
             System.out.println("End"+Thread.currentThread());
             int sleepTime = 1000 / Data.FPS;
-            while (!isRemoved) {
+            while (isRemoved.get()!=1) {
                 try {
                     updateUI();
                     Thread.sleep(sleepTime);

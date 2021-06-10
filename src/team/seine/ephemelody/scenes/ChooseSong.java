@@ -6,6 +6,7 @@ import team.seine.ephemelody.utils.Load;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ChooseSong extends JPanel implements Scenes, Runnable{
     public static Image songNameImg;

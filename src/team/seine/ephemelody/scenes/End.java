@@ -48,12 +48,12 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
     public static int[] rankingPoints = new int[100];
     private static End end=new End();
     public static UpdateUI updater;
-    public static boolean isRemoved=false;
+    public static AtomicInteger isRemoved=new AtomicInteger();
 
     private End(){
     }
     public void initialize(){
-        isRemoved=false;
+        isRemoved.set(0);
         updater =new UpdateUI();
     }
     public static End getEnd(RecordTemp recordTemp) {
@@ -305,13 +305,11 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
             buttonReturnStatus = buttonStruts;
 //            System.out.println(buttonReturnStatus);
             if (struts == Scenes.MOUSE_DOWN) {
-                isRemoved=true;
                 Data.canvas.switchScenes("Home");
             }
         } else if (Rect.isInternal(x, y, 1038, 850, 230, 69)) {
             buttonTryAgainStatus = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
-                isRemoved=true;
                 Data.canvas.switchScenes("PlayInterface");
             }
         }
@@ -354,14 +352,12 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
 
     class UpdateUI extends Thread {
         public void run() {
-            MenuOption.isRemoved=true;
-            Home.isRemoved=true;
             System.out.println();
             System.out.println("end run");
             System.out.println(Thread.activeCount());
             System.out.println("End"+Thread.currentThread());
             int sleepTime = 1000 / Data.FPS;
-            while (!isRemoved) {
+            while (isRemoved.get()!=1) {
                 try {
                     end.updateUI();
                     Thread.sleep(sleepTime);

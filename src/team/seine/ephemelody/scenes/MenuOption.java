@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MenuOption extends JPanel implements Scenes, MouseMotionListener, MouseListener {
     static int buttonRatingStatus = 0, buttonSetUpBackStatus = 0, buttonLoginStatus = 0, buttonQuitLoginStatus = 0;
@@ -21,14 +22,14 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
     public static double potential;
     public static UpdateUI updater;
     private static MenuOption menuOption=new MenuOption();
-    public static boolean isRemoved=false;
+    public static AtomicInteger isRemoved=new AtomicInteger();
     private MenuOption(){
 
     }
 
     public void initialize(){
         updater=new UpdateUI();
-        isRemoved=false;
+        isRemoved.set(0);
     }
     public static MenuOption getMenuOption () {
         menuOption.initialize();
@@ -99,7 +100,6 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
         if(Rect.isInternal(x, y, 900, 0, 98, 50)) {
             buttonSetUpBackStatus = buttonStruts;
             if(struts == Scenes.MOUSE_DOWN) {
-                isRemoved=true;
                 Data.canvas.switchScenes("SetUp");
             }
         } else if (Rect.isInternal(x, y, 1080, -3, 188, 69)) {
@@ -107,7 +107,6 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
             buttonQuitLoginStatus = buttonLoginStatus;
             if(struts == Scenes.MOUSE_DOWN) {
                 if (Data.nowPlayer == null) {
-                    isRemoved=true;
                     Data.canvas.switchScenes("Login");
                 } else {
                     Data.nowPlayer = null;
@@ -178,7 +177,7 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
             System.out.println(Thread.activeCount());
             System.out.println("Menu"+Thread.currentThread());
             int sleepTime = 1000 / Data.FPS;
-            while (!isRemoved) {
+            while (isRemoved.get()!=1) {
                 try {
                     updateUI();
                     repaint();
