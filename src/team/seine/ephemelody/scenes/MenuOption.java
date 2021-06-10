@@ -91,7 +91,6 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
             buttonLoginStatus = buttonStruts;
             buttonQuitLoginStatus = buttonLoginStatus;
             if(struts == Scenes.MOUSE_DOWN) {
-                Home.isEnd = true;
                 if (Data.nowPlayer == null) {
                     Data.canvas.switchScenes("Login");
                 } else {
