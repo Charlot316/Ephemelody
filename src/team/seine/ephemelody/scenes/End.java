@@ -57,6 +57,9 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         updater=null;
         updater =new UpdateUI();
     }
+    public void Load(){
+
+    }
     public static End getEnd(RecordTemp recordTemp) {
         end.initialize();
         End.pureCount = new AtomicInteger();

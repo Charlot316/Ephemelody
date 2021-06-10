@@ -301,41 +301,13 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         return playinterface;
     }
 
-    /**
-     * Stop all the operations and pop up the menu
-     */
-    synchronized public void pause() throws InterruptedException {
-        clipTime=song.getFramePosition();
-        song.stop();
-        isPaused=true;
-        Track.isPaused.set(1);
-        pauseTime=System.currentTimeMillis();
-    }
 
-    /**
-     * Resume the game
-     */
-    synchronized public void resumeGame() {
-        resumeTime=System.currentTimeMillis();
-        startTime+=(resumeTime-pauseTime);
-        song.setFramePosition(clipTime);
-        song.start();
-        Track.isPaused.set(0);
-        isPaused=false;
-    }
 
-    public void stopGame() {
-        Track.isStopped.set(1);
-        isStop=true;
-        isPaused=false;
-        System.out.println(isStop);
-        song.stop();
-        this.run();
-    }
+
     /**
      * run the game
      */
-    public void run() {
+    synchronized public void run() {
         Home.isRemoved.set(1);
         MenuOption.isRemoved.set(1);
         End.isRemoved.set(1);
@@ -350,7 +322,13 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         System.out.println((currentTime < PlayInterface.finalEndTime)+" "+isStop);
         while (currentTime < PlayInterface.finalEndTime&&!isStop) {
             //System.out.println(currentTime+" "+this.finalEndTime);
-            while(isPaused);
+            if(isPaused){
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             if(isStop) break;
             currentTime = System.currentTimeMillis() - startTime;
             while (frontTrack<allTracks.size()&&allTracks.get(frontTrack).startTiming < currentTime) {
@@ -435,22 +413,35 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
 
 
     @Override
-    public void onKeyDown(int keyCode) throws InterruptedException {
+   public void onKeyDown(int keyCode) throws InterruptedException {
         Data.isPressed[keyCode].set(1);
         //System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
-        if(isPaused){
-            if(keyCode==VK_ESCAPE){
-                stopGame();
-            }
-            if(keyCode=='C'){
-                resumeGame();
-            }
-        }
-        else{
-            if(keyCode=='P'){
-                pause();
-            }
-        }
+//        if(isPaused){
+//            if(keyCode==VK_ESCAPE){
+//                Track.isStopped.set(1);
+//                isStop=true;
+//                isPaused=false;
+//                System.out.println(isStop);
+//                song.stop();
+//            }
+//            if(keyCode=='C'){
+//                resumeTime=System.currentTimeMillis();
+//                startTime+=(resumeTime-pauseTime);
+//                song.setFramePosition(clipTime);
+//                Track.isPaused.set(0);
+//                isPaused=false;
+//                notifyAll();
+//            }
+//        }
+//        else{
+//            if(keyCode=='P'){
+//                clipTime=song.getFramePosition();
+//                song.stop();
+//                isPaused=true;
+//                Track.isPaused.set(1);
+//                pauseTime=System.currentTimeMillis();
+//            }
+//        }
     }
 
     @Override
