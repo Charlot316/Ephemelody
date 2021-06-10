@@ -17,6 +17,10 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
     public Integer y1;
     public Integer count;
     public Song[] song;
+
+    /**
+     * 构造函数
+     */
     public ChooseSong() {
         setBounds(0, 180, 529, 600);
         setVisible(true);
@@ -31,6 +35,10 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
 
     }
 
+    /**
+     * 绘画左侧选择歌曲面板
+     * @param g 图形
+     */
     public void paint(Graphics g) {
         song = new Song[] {
                 Data.songList.get(0), Data.songList.get(1), Data.songList.get(2), Data.songList.get(3),  Data.songList.get(4)
@@ -77,6 +85,9 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
 
     }
 
+    /**
+     * 线程的run()函数
+     */
     @Override
     public void run() {
         System.out.println("ChooseSong线程开始了");

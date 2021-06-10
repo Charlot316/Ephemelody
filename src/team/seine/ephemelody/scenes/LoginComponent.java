@@ -8,6 +8,10 @@ import java.awt.*;
 public class LoginComponent extends JPanel implements Scenes{
     public static JTextField usernameField;
     public static JPasswordField passwordField;
+
+    /**
+     * 登录组件构造函数，添加文本框等组件
+     */
     public LoginComponent() {
         setLayout(null);
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);

@@ -48,6 +48,11 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
     public static boolean isEnd;
     public String[] rankingUserId = new String[100];
     public int[] rankingPoints = new int[100];
+
+    /**
+     * End构造函数
+     * @param recordTemp 保存玩家游玩信息的实例
+     */
     public End(RecordTemp recordTemp) {
         End.isEnd = false;
         this.pureCount = new AtomicInteger();
@@ -121,7 +126,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                     while (resultSet.next()) {
                         rankingUserId[count] = resultSet.getString("playerID");
                         rankingPoints[count] = resultSet.getInt("score");
-                        if (nowPoints == rankingPoints[count] && rankingFlag) {
+                        if (Data.nowPlayer.getPlayerID().equals(rankingUserId[count]) && rankingFlag) {
                             nowRanking = count + 1;
                             rankingFlag = false;
                         }
@@ -135,6 +140,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                         resultStatus = 0;
                     }
                 } else {
+                    System.out.println("111111111");
                     this.nowPoints = recordTemp.score;
                     this.changePotential = recordTemp.changePotential;
                     this.nowPotential = recordTemp.nowPotential;
@@ -183,6 +189,10 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         new End.UpdateUI().start();
     }
 
+    /**
+     * 绘画结算页面
+     * @param g 图形
+     */
     public void paint(Graphics g) {
         g.drawImage(endBackgroundImg, 0, (Data.HEIGHT - 632) / 2, null);
         g.drawImage(listImg, 980, 310, null);
@@ -257,22 +267,24 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         }
 
         if (!rankingFlag) {
-            g.setFont(new Font("黑体", Font.PLAIN, 25));
-            g.setColor(Color.WHITE);
-            g.drawString(String.valueOf(highestPoints), 1050, 738);
+
             g.setFont(new Font("黑体", Font.PLAIN, 30));
             g.setColor(new Color(92, 64, 100));
             g.drawString(String.valueOf(nowRanking), 1173, 730);
         } else {
-            g.setFont(new Font("黑体", Font.PLAIN, 25));
-            g.setColor(Color.WHITE);
-            g.drawString("00000000", 1050, 738);
             g.setFont(new Font("黑体", Font.PLAIN, 30));
             g.setColor(new Color(92, 64, 100));
             g.drawString("-", 1173, 730);
         }
-
-//        Data.canvas.paintString("+" + String.format("%.2f", 0.15), f, g, Data.WIDTH / 2 + 75,  58, 1, Color.WHITE, Color.BLACK);
+        if (Data.nowPlayer != null){
+            g.setFont(new Font("黑体", Font.PLAIN, 25));
+            g.setColor(Color.WHITE);
+            g.drawString(String.valueOf(highestPoints), 1050, 738);
+        } else {
+            g.setFont(new Font("黑体", Font.PLAIN, 25));
+            g.setColor(Color.WHITE);
+            g.drawString("00000000", 1050, 738);
+        }
     }
 
     @Override
@@ -285,6 +297,12 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
 
     }
 
+    /**
+     * 重写的鼠标事件
+     * @param x 鼠标点击的横坐标
+     * @param y 鼠标点击的纵坐标
+     * @param struts 鼠标的状态
+     */
     @Override
     public void onMouse(int x, int y, int struts) {
         buttonReturnStatus = buttonTryAgainStatus = 0;
