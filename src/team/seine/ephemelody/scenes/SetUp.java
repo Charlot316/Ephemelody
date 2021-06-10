@@ -11,27 +11,24 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 public class SetUp extends JPanel implements Scenes, MouseMotionListener, MouseListener {
-    public static Image setupBackground;
-    public static Image[] upButton;
-    public static Image[] downButton;
-    public static Image[] finishButton;
-    static int[] upButtonStatus;
-    static int[] downButtonStatus;
-    static int finishButtonStatus;
-    private static SetUp setUp=new SetUp();
-    private SetUp(){
+    public Image setupBackground;
+    public Image[] upButton;
+    public Image[] downButton;
+    public Image[] finishButton;
+    int[] upButtonStatus;
+    int[] downButtonStatus;
+    int finishButtonStatus;
+    public SetUp() {
 
-    }
-    public static SetUp getSetUp() {
         upButtonStatus = new int[4];
         downButtonStatus = new int[4];
         for (int i = 0; i < 4; i++) {
             upButtonStatus[i] = downButtonStatus[i] = 0;
         }
         finishButtonStatus = 0;
-        setUp.setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
-        setUp.setVisible(true);
-        setUp.setOpaque(false);
+        setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
+        setVisible(true);
+        setOpaque(false);
         setupBackground = Load.image("setup/设置背景.png");
         upButton = new Image[] {
                 Load.image("setup/上.png"), Load.image("setup/上_鼠标悬停.png"), Load.image("setup/上_按下.png")
@@ -42,9 +39,8 @@ public class SetUp extends JPanel implements Scenes, MouseMotionListener, MouseL
         finishButton = new Image[] {
                 Load.image("setup/完成.png"), Load.image("setup/完成_鼠标悬停.png"), Load.image("setup/完成_按下.png")
         };
-        setUp.addMouseMotionListener(setUp);
-        setUp.addMouseListener(setUp);
-        return setUp;
+        addMouseMotionListener(this);
+        addMouseListener(this);
     }
 
     @Override
@@ -160,7 +156,6 @@ public class SetUp extends JPanel implements Scenes, MouseMotionListener, MouseL
         } else if (Rect.isInternal(x, y, (Data.WIDTH - 988) / 2, 738, 980, 42)) {
             finishButtonStatus = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
-                System.out.println("Setup调用Home");
                 Data.canvas.switchScenes("Home");
             }
         }

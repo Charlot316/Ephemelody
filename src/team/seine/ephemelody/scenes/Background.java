@@ -8,23 +8,18 @@ import java.awt.*;
 
 public class Background extends JPanel implements Scenes{
 
-    public static Image backgroundImg;
-    public static Image menuImg;
+    public Image backgroundImg;
+    public Image menuImg;
 //    public JButton button;
-    private static Background background=new Background();
-    private Background(){
-
-    }
-    public static Background getTheBackground() {
-        background.setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
-        background.setVisible(true);
-        background.setLayout(null);
+    public Background() {
+        setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
+        setVisible(true);
+        setLayout(null);
         backgroundImg = Load.image("home/背景.png");
         menuImg = Load.image("home/菜单.png");
         /*button = new JButton("da");
         button.setBounds(100, 100, 100, 100);
         add(button);*/
-        return background;
     }
 
     public void paint(Graphics g) {

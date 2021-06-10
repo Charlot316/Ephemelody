@@ -8,6 +8,7 @@ import team.seine.ephemelody.playinterface.RecordTemp;
 import team.seine.ephemelody.utils.Load;
 import team.seine.ephemelody.utils.Rect;
 
+import javax.crypto.spec.PSource;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -18,51 +19,41 @@ import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class End extends JPanel implements Scenes, MouseMotionListener, MouseListener {
-    public static Image backgroundImg;
-    public static Image menuImg;
-    public static Image endBackgroundImg;
-    public static Image nowSongImg;
-    public static Image listImg;
-    public static Image myGradeImg;
-    public static Image gradeImg;
-    public static Image[] resultImg;
-    public static Image[] tryAgainButton;
-    public static Image[] returnButton;
-    public static Image[] ratingButton;
-    public static int buttonTryAgainStatus = 0;
-    public static int buttonReturnStatus = 0;
-    public static int resultStatus = 0;
-    public static String songName;
-    public static int nowPoints;
-    public static int highestPoints;
-    public static int nowRanking;
-    public static boolean rankingFlag;
-    public static AtomicInteger pureCount;
-    public static AtomicInteger farCount;
-    public static AtomicInteger lostCount;
-    public static AtomicInteger maxCombo;
-    public static double changePotential;
-    public static double nowPotential;
-    public static int way;
-    public static String[] rankingUserId = new String[100];
-    public static int[] rankingPoints = new int[100];
-    private static End end=new End();
-    public static UpdateUI updater;
-    public static AtomicInteger isRemoved=new AtomicInteger();
-
-    private End(){
-    }
-    public void initialize(){
-        isRemoved.set(0);
-        updater=null;
-        updater =new UpdateUI();
-    }
-    public static End getEnd(RecordTemp recordTemp) {
-        end.initialize();
-        End.pureCount = new AtomicInteger();
-        End.farCount = new AtomicInteger();
-        End.lostCount = new AtomicInteger();
-        End.way = recordTemp.way;
+    public Image backgroundImg;
+    public Image menuImg;
+    public Image endBackgroundImg;
+    public Image nowSongImg;
+    public Image listImg;
+    public Image myGradeImg;
+    public Image gradeImg;
+    public Image[] resultImg;
+    public Image[] tryAgainButton;
+    public Image[] returnButton;
+    public Image[] ratingButton;
+    public int buttonTryAgainStatus = 0;
+    public int buttonReturnStatus = 0;
+    public int resultStatus = 0;
+    public String songName;
+    public int nowPoints;
+    public int highestPoints;
+    public int nowRanking;
+    public boolean rankingFlag;
+    public AtomicInteger pureCount;
+    public AtomicInteger farCount;
+    public AtomicInteger lostCount;
+    public AtomicInteger maxCombo;
+    public double changePotential;
+    public double nowPotential;
+    public int way;
+    public static boolean isEnd;
+    public String[] rankingUserId = new String[100];
+    public int[] rankingPoints = new int[100];
+    public End(RecordTemp recordTemp) {
+        End.isEnd = false;
+        this.pureCount = new AtomicInteger();
+        this.farCount = new AtomicInteger();
+        this.lostCount = new AtomicInteger();
+        this.way = recordTemp.way;
         ResultSet rs, resultSet;
         Song nowSong;
         int count = 0;
@@ -78,16 +69,16 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                     AtomicInteger tmp1 = new AtomicInteger();
                     AtomicInteger tmp2 = new AtomicInteger();
                     AtomicInteger tmp3 = new AtomicInteger();
-                    End.highestPoints = rs.getInt("score");
-                    End.nowPoints = highestPoints;
+                    this.highestPoints = rs.getInt("score");
+                    this.nowPoints = highestPoints;
                     tmp1.set(rs.getInt("pureCount"));
-                    End.pureCount = tmp1;
+                    this.pureCount = tmp1;
 //                    System.out.println(pureCount);
                     tmp2.set(rs.getInt("farCount"));
-                    End.farCount = tmp2;
+                    this.farCount = tmp2;
 //                    System.out.println(farCount);;
                     tmp3.set(rs.getInt("lostCount"));
-                    End.lostCount = tmp3;
+                    this.lostCount = tmp3;
                 }
                 resultSet = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
                 count = 0;
@@ -114,16 +105,16 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                     rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId, Data.difficulty);
                     nowSong = SongController.selectSongById(Data.songId, Data.difficulty);
                     System.out.println(Data.nowPlayer.getPlayerID() + " " + Data.songId);
-                    End.nowPoints = recordTemp.score;
-                    End.changePotential = recordTemp.changePotential;
-                    End.nowPotential = recordTemp.nowPotential;
+                    this.nowPoints = recordTemp.score;
+                    this.changePotential = recordTemp.changePotential;
+                    this.nowPotential = recordTemp.nowPotential;
                     while (rs.next()) {
-                        End.highestPoints = rs.getInt("score");
+                        this.highestPoints = rs.getInt("score");
                     }
-                    End.pureCount = recordTemp.pureCount;
-                    End.farCount = recordTemp.farCount;
-                    End.lostCount = recordTemp.lostCount;
-                    End.maxCombo = recordTemp.combo;
+                    this.pureCount = recordTemp.pureCount;
+                    this.farCount = recordTemp.farCount;
+                    this.lostCount = recordTemp.lostCount;
+                    this.maxCombo = recordTemp.combo;
                     resultSet = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
                     count = 0;
                     rankingFlag = true;
@@ -144,13 +135,13 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                         resultStatus = 0;
                     }
                 } else {
-                    End.nowPoints = recordTemp.score;
-                    End.changePotential = recordTemp.changePotential;
-                    End.nowPotential = recordTemp.nowPotential;
-                    End.highestPoints = recordTemp.score;
-                    End.pureCount = recordTemp.pureCount;
-                    End.farCount = recordTemp.farCount;
-                    End.lostCount = recordTemp.lostCount;
+                    this.nowPoints = recordTemp.score;
+                    this.changePotential = recordTemp.changePotential;
+                    this.nowPotential = recordTemp.nowPotential;
+                    this.highestPoints = recordTemp.score;
+                    this.pureCount = recordTemp.pureCount;
+                    this.farCount = recordTemp.farCount;
+                    this.lostCount = recordTemp.lostCount;
                     resultSet = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
                     count = 0;
                     while (resultSet.next()) {
@@ -166,9 +157,9 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
             }
         }
 
-        end.setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
-        end.setVisible(true);
-        end.setOpaque(false);
+        setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
+        setVisible(true);
+        setOpaque(false);
         endBackgroundImg = Load.image("end/结算背景.png");
         nowSongImg = Load.image("song/1/song1.png"); // 到时候得改成具体的歌曲背景
         listImg = Load.image("end/排行榜.png");
@@ -187,11 +178,9 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                 Load.image("end/rating_down.png"), Load.image("end/rating_keep.png"), Load.image("end/rating_up.png")
         };
         songName = Data.currentSong.name;
-        end.addMouseListener(end);
-        end.addMouseMotionListener(end);
-
-        updater.start();
-        return end;
+        addMouseListener(this);
+        addMouseMotionListener(this);
+        new End.UpdateUI().start();
     }
 
     public void paint(Graphics g) {
@@ -306,16 +295,14 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
             buttonReturnStatus = buttonStruts;
 //            System.out.println(buttonReturnStatus);
             if (struts == Scenes.MOUSE_DOWN) {
-                System.out.println("End按了Home");
+                End.isEnd = true;
                 Data.canvas.switchScenes("Home");
-                End.isRemoved.set(1);
             }
         } else if (Rect.isInternal(x, y, 1038, 850, 230, 69)) {
             buttonTryAgainStatus = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
-                System.out.println("End按了play");
+                End.isEnd = true;
                 Data.canvas.switchScenes("PlayInterface");
-                End.isRemoved.set(1);
             }
         }
     }
@@ -357,20 +344,17 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
 
     class UpdateUI extends Thread {
         public void run() {
-            System.out.println();
-            System.out.println("end run");
-            System.out.println(Thread.activeCount());
-            System.out.println("End"+Thread.currentThread());
+            System.out.println("End的线程开始了");
             int sleepTime = 1000 / Data.FPS;
-            while (isRemoved.get()!=1) {
+            while (!isEnd) {
                 try {
-                    end.updateUI();
+                    updateUI();
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            System.out.println("End removed");
+            System.out.println("End的线程结束了");
         }
     }
 }
