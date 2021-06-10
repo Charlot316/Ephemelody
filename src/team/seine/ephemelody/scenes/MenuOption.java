@@ -89,11 +89,12 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
             }
         } else if (Rect.isInternal(x, y, 1080, -3, 188, 69)) {
             buttonLoginStatus = buttonStruts;
-            buttonQuitLoginStatus = buttonLoginStatus;
+            buttonQuitLoginStatus = buttonStruts;
             if(struts == Scenes.MOUSE_DOWN) {
                 if (Data.nowPlayer == null) {
                     Data.canvas.switchScenes("Login");
                 } else {
+                    Data.recordLoginInf("");
                     Data.nowPlayer = null;
                 }
             }

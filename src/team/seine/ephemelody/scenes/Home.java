@@ -1,5 +1,6 @@
 package team.seine.ephemelody.scenes;
 
+import database.PlayerController;
 import javafx.scene.media.AudioClip;
 import team.seine.ephemelody.data.Data;
 import team.seine.ephemelody.playinterface.RecordTemp;
@@ -9,6 +10,9 @@ import team.seine.ephemelody.utils.Rect;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Home extends JPanel implements Scenes, MouseMotionListener, MouseListener, KeyListener {
@@ -34,6 +38,10 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         Home.isEnd = false;
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setLayout(null);
+        if (Data.isFirstLogin) {
+            Data.checkLogin();
+        }
+
         chooseSong = new ChooseSong();
         playFlag = false;
         playButton = new Image[]{

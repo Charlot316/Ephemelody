@@ -1,13 +1,16 @@
 package team.seine.ephemelody.data;
 
+import com.sun.org.apache.bcel.internal.generic.FADD;
 import database.Entity.Player;
 import database.Entity.Song;
+import database.PlayerController;
 import team.seine.ephemelody.utils.Load;
 import team.seine.ephemelody.main.Canvas;
 
 import javax.swing.plaf.PanelUI;
 import java.awt.*;
 import java.awt.font.GlyphVector;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,8 +34,9 @@ public class Data {
     public static Player nowPlayer;
     public static int frontSong=0;
     public static Song currentSong;
+    public static boolean isFirstLogin;
     public static void init() {
-
+        isFirstLogin = true;
         songList = Arrays.asList(new Song(), new Song(), new Song(), new Song(), new Song());
         realSongList = Arrays.asList(new Song(0,"新手指导",1,2,3), new Song(1,"熱愛発覚中",2,5,9),new Song(2," world.excute(me);",3,6,10) );
         readSongList();
@@ -59,5 +63,58 @@ public class Data {
         Data.songId=Data.currentSong.getSongID();
     }
 
+    public static void checkLogin() {
+        isFirstLogin = false;
+        File in = new File("src/resources/inf/record.txt");
+        FileReader fileReader = null;
+        BufferedReader bufferedReader = null;
+        String s, userId = null, password = null;
+        List<String> user;
+        try {
+            fileReader = new FileReader(in);
+            bufferedReader = new BufferedReader(fileReader);
+            if ((s = bufferedReader.readLine()) != null) {
+                user = Arrays.asList(s.split("\\s+"));
+                userId = user.get(0);
+                password = user.get(1);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert fileReader != null;
+                fileReader.close();
+                assert bufferedReader != null;
+                bufferedReader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (userId != null && password != null) {
+            if (password.equals(PlayerController.selectPlayerById(userId).getPassword())) {
+                Data.nowPlayer = PlayerController.selectPlayerById(userId);
+            }
+        }
+    }
 
+    public static void recordLoginInf(String inf) {
+        File out = new File("src/resources/inf/record.txt");
+        FileWriter fileWriter = null;
+        PrintWriter printWriter = null;
+        try {
+            fileWriter = new FileWriter(out);
+            printWriter = new PrintWriter(fileWriter);
+            printWriter.write(inf);
+            printWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fileWriter.close();
+                printWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
