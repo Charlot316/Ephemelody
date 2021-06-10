@@ -254,6 +254,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         Track.isStopped.set(0);
         frontTrack=0;
         frontOperation=0;
+        frontBackground=0;
         PlayInterface.remainingTime=(long)(-600*Data.noteSpeed+4100);
         pureCount.set(0);
         farCount.set(0);
@@ -327,7 +328,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      */
     public void run() {
         System.out.println(Thread.activeCount());
-        System.out.println(Thread.currentThread());
+        System.out.println("PlayInterface"+Thread.currentThread());
         assert song != null;
         song.start(); // 播放音乐
         startTime = System.currentTimeMillis();
@@ -372,9 +373,9 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             PlayInterface.allTracks.clear();
             PlayInterface.backgroundOperations.clear();
             Data.canvas.switchScenes("Home");
-            Thread.interrupted();
         }
         if(!isStop)this.finish();
+        System.out.println("无事退出");
     }
 
     /**

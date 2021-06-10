@@ -83,6 +83,8 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
 
     @Override
     public void run() {
+        System.out.println(Thread.activeCount());
+        System.out.println("choose"+Thread.currentThread());
         if (way == 2) {
             while(true){
                 if(y >= 122){
@@ -122,6 +124,6 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
             }
             Data.changeSongList(1, 0);
         }
-        System.out.println("removed");
+        System.out.println("choose removed");
     }
 }
