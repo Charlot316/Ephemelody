@@ -37,7 +37,6 @@
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files>
-      <object connection-id="1bb00450-020e-4b43-b162-f7634922c766" object-ref="schemas/seine/tables/personal_recent_records" />
       <object connection-id="1bb00450-020e-4b43-b162-f7634922c766" object-ref="schemas/seine/tables/songs" />
     </open-files>
   </component>

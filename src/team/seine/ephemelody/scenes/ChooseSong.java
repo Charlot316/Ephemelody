@@ -109,7 +109,7 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
                     e.printStackTrace();
                 }
             }
-            Data.changeSongList(2, 0);
+            Data.changeSongList(2);
         } else if (way == 1) {
             while(true){
                 if(y <= -138){
@@ -128,7 +128,7 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
                     e.printStackTrace();
                 }
             }
-            Data.changeSongList(1, 0);
+            Data.changeSongList(1);
         }
         System.out.println("ChooseSong线程结束了");
     }

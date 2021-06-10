@@ -53,7 +53,9 @@ public class Data {
         Data.songId = Data.currentSong.getSongID();
     }
 
-
+    /**
+     * 使展示用歌曲列表读取真正的歌曲列表
+     */
     public static void readSongList() {
         for (int index = frontSong, i = 0; i < 5; i++, index++) {
             if (index >= realSongList.size()) index = 0;
@@ -61,7 +63,11 @@ public class Data {
         }
     }
 
-    public static void changeSongList(int way, int chooseSong) {
+    /**
+     * 移动歌曲列表
+     * @param way 移动歌曲列表的方式
+     */
+    public static void changeSongList(int way) {
         if (way == 1) {
             frontSong++;
             if (frontSong >= realSongList.size()) frontSong = 0;
