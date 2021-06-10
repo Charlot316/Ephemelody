@@ -65,7 +65,6 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         new UpdateUI().start();
         addMouseMotionListener(this);
         addMouseListener(this);
-
     }
 
     @Override

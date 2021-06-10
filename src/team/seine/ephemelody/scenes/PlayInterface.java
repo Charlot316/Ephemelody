@@ -241,8 +241,8 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      * @param difficulty difficulty of the song (both are used to find the source file)
      */
     public void resetPlayInterface(int songID, int difficulty) {
-        System.out.println(Thread.activeCount());
-        System.out.println(Thread.currentThread());
+        System.out.println("activeCount:" + Thread.activeCount());
+        System.out.println("currentThread:" + Thread.currentThread());
         isPaused=false;
         PlayInterface.remainingTime=(long)(-600*Data.noteSpeed+4100);
         pureCount.set(0);
@@ -353,6 +353,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
         }
         song.stop();
         if(isStop) {
@@ -362,6 +363,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         }
 
         if(!isStop)this.finish();
+        System.out.println("线程结束了");
     }
 
     /**
