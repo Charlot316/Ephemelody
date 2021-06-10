@@ -269,6 +269,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         PlayInterface.difficulty = difficulty;
         finalEndTime=0;
         PlayInterface.song = Load.sound(String.valueOf(songID));
+        System.out.println(songID);
         FloatControl gainControl = (FloatControl) song.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(-(float)(8*(10-Data.volume))); // Reduce volume by 10 decibels.
         playinterface.loadData();
