@@ -23,6 +23,8 @@ public class Canvas extends JLayeredPane{
     Scenes loginComScenes = null; // 登录界面的组件所在页面
     Scenes menuOptionScenes = null;
     Scenes chooseSongScenes = null;
+    PlayInterface tempPlayInterface=PlayInterface.getPlayInterface(1,1);
+
     public Canvas(JFrame frame) throws SQLException {
         /*nowScenes = new Home();
         bgScenes = new Background();*/
@@ -36,51 +38,51 @@ public class Canvas extends JLayeredPane{
     }
 
     public void switchScenes(String name, @Nullable RecordTemp... recordTemps) {
-        if (name.equals("Home")) {
+        switch (name) {
+            case "Home":
 //            frame.addKeyListener(new OnKeyEvent());
-            this.firstScenes = new Background();
-            this.secondScenes = new Home();
-            this.menuOptionScenes = new MenuOption();
-            this.chooseSongScenes = new ChooseSong();
-            this.removeAll();
-            this.add((Background) firstScenes, new Integer(0));
-            this.add((Home) secondScenes, new Integer(1));
-            this.add((MenuOption) menuOptionScenes, new Integer(2));
-            this.add(((Home) secondScenes).chooseSong, new Integer(3));
-        } else if (name.equals("End")) {
-            this.firstScenes = new Background();
-            this.secondScenes = new Home();
-            this.thirdScenes = new End(recordTemps[0]);
-            this.menuOptionScenes = new MenuOption();
-            this.removeAll();
-            this.add((Background) firstScenes, new Integer(0));
+                System.out.println("Home被调用了");
+                End.isRemoved.set(1);
+                this.removeAll();
+                this.add(Background.getTheBackground(), new Integer(0));
+                this.add(Home.getHome(), new Integer(1));
+                this.add(MenuOption.getMenuOption(), new Integer(2));
+                this.add(ChooseSong.getChooseSong(), new Integer(3));
+                break;
+            case "End":
+                Home.isRemoved.set(1);
+                MenuOption.isRemoved.set(1);
+                this.removeAll();
+                this.add(Background.getTheBackground(), new Integer(0));
 //            this.add((Home) secondScenes, new Integer(1));
-            this.add((MenuOption) menuOptionScenes, new Integer(1));
-            this.add((End) thirdScenes, new Integer(2));
-        } else if (name.equals("PlayInterface")) {
-        //    this.nowScenes =
-            this.firstScenes = new PlayInterface(Data.songId, Data.difficulty);
+                this.add(End.getEnd(recordTemps[0]), new Integer(1));
+                break;
+            case "PlayInterface":
+                Home.isRemoved.set(1);
+                MenuOption.isRemoved.set(1);
+                End.isRemoved.set(1);
+                //    this.nowScenes =
 //            this.secondScenes =  new Track(0, 1,'c', 1230, 2230, 0.5, 0.06, 255, 160, 160);
-            this.removeAll();
-            this.add((PlayInterface)firstScenes, new Integer(0));
-
-            for(Track i:((PlayInterface) firstScenes).allTracks){
-                this.add(i,new Integer(i.id+1));
-            }
-            this.add(((PlayInterface) firstScenes).displayer,new Integer(((PlayInterface) firstScenes).allTracks.size()+1));
-            new Thread((PlayInterface) firstScenes).start();
+                this.removeAll();
+                tempPlayInterface=PlayInterface.getPlayInterface(Data.songId, Data.difficulty);
+                this.add(tempPlayInterface, new Integer(0));
+                for (Track i : PlayInterface.allTracks) {
+                    this.add(i, new Integer(i.id + 1));
+                }
+                this.add(PlayInterface.displayer, new Integer(PlayInterface.allTracks.size() + 1));
+                new Thread(tempPlayInterface).start();
 //            this.add((PlayInterface) nowScenes, new Integer(1));
-        } else if (name.equals("Login")) {
+                break;
+            case "Login":
 //            System.out.println("1");
-            this.thirdScenes = new Login();
-            this.loginComScenes = new LoginComponent();
 //            this.removeAll();
 //            this.remove((ChooseSong) thirdScenes);
-            this.add((Login) thirdScenes, new Integer(4));
-            this.add((LoginComponent) loginComScenes, new Integer(5));
-        } else if (name.equals("SetUp")) {
-            this.thirdScenes = new SetUp();
-            this.add((SetUp) thirdScenes, new Integer(5));
+                this.add(Login.getLogin(), new Integer(4));
+                this.add( LoginComponent.getLoginComponent(), new Integer(5));
+                break;
+            case "SetUp":
+                this.add(SetUp.getSetUp(), new Integer(5));
+                break;
         }
 //        System.out.println("前面都执行完了");
     }
@@ -105,14 +107,29 @@ public class Canvas extends JLayeredPane{
         gg.setStroke(new BasicStroke(width));
         gg.draw(shape);
     }
-
+    public void drawCenteredStringByOutline(Graphics g, String text, int width1, int width2, int width, Font font, int y, Color color1, Color color2) {
+        // Get the FontMetrics
+        FontMetrics metrics = g.getFontMetrics(font);
+        // Determine the X coordinate for the text
+        int x = (width1 - metrics.stringWidth(text)) / 2 + width2;
+        // Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)// Set the font
+        g.setFont(font);
+        // Draw the String
+//        g.drawString(text, x, y);
+        paintString(text, font, g, x, y, width, color1, color2);
+        g.translate(-x, -y);
+    }
     class OnKeyEvent extends KeyAdapter {
 
         public void keyPressed(KeyEvent e) {
-            firstScenes.onKeyDown(e.getKeyCode());
+            try {
+                tempPlayInterface.onKeyDown(e.getKeyCode());
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
+            }
         }
         public void keyReleased(KeyEvent e) {
-            firstScenes.onKeyUp(e.getKeyCode());
+            tempPlayInterface.onKeyUp(e.getKeyCode());
         }
     }
 
