@@ -38,7 +38,7 @@ public class Data {
     public static void init() {
         isFirstLogin = true;
         songList = Arrays.asList(new Song(), new Song(), new Song(), new Song(), new Song());
-        realSongList = Arrays.asList(new Song(0,"新手指导",1,2,3), new Song(1,"熱愛発覚中",2,5,9),new Song(2," world.excute(me);",3,6,10) );
+        realSongList = Arrays.asList(new Song(0,"新手指导",0,0,1), new Song(1,"熱愛発覚中",2,5,9),new Song(2," world.excute(me);",3,6,10) );
         readSongList();
         currentSong=songList.get(2);
         Data.songId=Data.currentSong.getSongID();
