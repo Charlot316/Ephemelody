@@ -247,7 +247,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      */
     public static PlayInterface getPlayInterface(int songID, int difficulty) {
         System.out.println(Thread.activeCount());
-        System.out.println(Thread.currentThread());
+        System.out.println("PlayInterface"+Thread.currentThread());
         isPaused=false;
         isStop=false;
         Track.isPaused.set(0);
@@ -349,7 +349,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                 new Thread(allTracks.get(frontTrack)).start();
                  frontTrack++;
             }
-            if (!backgroundOperations.isEmpty() && frontOperation<backgroundOperations.size()&& backgroundOperations.get(frontOperation).startTime < currentTime) {
+            if (!backgroundOperations.isEmpty() && frontOperation+1<backgroundOperations.size()&& backgroundOperations.get(frontOperation).startTime < currentTime) {
                 currentTime = System.currentTimeMillis() - startTime;
                 //System.out.println(currentTime+" "+this.finalEndTime);
                 this.frontBackground++;
@@ -374,7 +374,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             PlayInterface.backgroundOperations.clear();
             Data.canvas.switchScenes("Home");
         }
-        if(!isStop)this.finish();
+        if(!isStop) this.finish();
         System.out.println("无事退出");
     }
 
@@ -409,7 +409,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         }
 //        System.out.println(nowPotential + "------" + prevPotential);
         song.stop();
-        Thread.interrupted();
+        System.out.println("无事退出");
     }
 
     public Track getTrackByID(int id) {
