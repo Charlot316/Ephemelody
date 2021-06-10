@@ -354,7 +354,10 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
 
     class UpdateUI extends Thread {
         public void run() {
-            System.out.println("为什么我会在执行");
+            MenuOption.isRemoved=true;
+            Home.isRemoved=true;
+            System.out.println();
+            System.out.println("end run");
             System.out.println(Thread.activeCount());
             System.out.println("End"+Thread.currentThread());
             int sleepTime = 1000 / Data.FPS;

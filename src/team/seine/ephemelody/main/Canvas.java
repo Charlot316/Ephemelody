@@ -23,6 +23,7 @@ public class Canvas extends JLayeredPane{
     Scenes loginComScenes = null; // 登录界面的组件所在页面
     Scenes menuOptionScenes = null;
     Scenes chooseSongScenes = null;
+    PlayInterface tempPlayInterface=null;
     public Canvas(JFrame frame) throws SQLException {
         /*nowScenes = new Home();
         bgScenes = new Background();*/
@@ -39,53 +40,41 @@ public class Canvas extends JLayeredPane{
         switch (name) {
             case "Home":
 //            frame.addKeyListener(new OnKeyEvent());
-                this.firstScenes = Background.getTheBackground();
-                this.secondScenes = Home.getHome();
-                this.menuOptionScenes = MenuOption.getMenuOption();
-                this.chooseSongScenes = ChooseSong.getChooseSong();
                 this.removeAll();
-                this.add((Background) firstScenes, new Integer(0));
-                this.add((Home) secondScenes, new Integer(1));
-                this.add((MenuOption) menuOptionScenes, new Integer(2));
-                this.add(((Home) secondScenes).chooseSong, new Integer(3));
+                this.add(Background.getTheBackground(), new Integer(0));
+                this.add(Home.getHome(), new Integer(1));
+                this.add(MenuOption.getMenuOption(), new Integer(2));
+                this.add(ChooseSong.getChooseSong(), new Integer(3));
                 break;
             case "End":
-                this.firstScenes = Background.getTheBackground();
-                this.secondScenes = Home.getHome();
-                this.thirdScenes = End.getEnd(recordTemps[0]);
-                this.menuOptionScenes = MenuOption.getMenuOption();
                 this.removeAll();
-                this.add((Background) firstScenes, new Integer(0));
+                this.add(Background.getTheBackground(), new Integer(0));
 //            this.add((Home) secondScenes, new Integer(1));
-                this.add((MenuOption) menuOptionScenes, new Integer(1));
-                this.add((End) thirdScenes, new Integer(2));
+                this.add(End.getEnd(recordTemps[0]), new Integer(1));
+                this.add(MenuOption.getMenuOption(), new Integer(2));
                 break;
             case "PlayInterface":
                 //    this.nowScenes =
-                this.firstScenes = PlayInterface.getPlayInterface(Data.songId, Data.difficulty);
 //            this.secondScenes =  new Track(0, 1,'c', 1230, 2230, 0.5, 0.06, 255, 160, 160);
                 this.removeAll();
-                this.add((PlayInterface) firstScenes, new Integer(0));
-
+                tempPlayInterface=PlayInterface.getPlayInterface(Data.songId, Data.difficulty);
+                this.add(tempPlayInterface, new Integer(0));
                 for (Track i : PlayInterface.allTracks) {
                     this.add(i, new Integer(i.id + 1));
                 }
                 this.add(PlayInterface.displayer, new Integer(PlayInterface.allTracks.size() + 1));
-                new Thread((PlayInterface) firstScenes).start();
+                new Thread(tempPlayInterface).start();
 //            this.add((PlayInterface) nowScenes, new Integer(1));
                 break;
             case "Login":
 //            System.out.println("1");
-                this.thirdScenes = Login.getLogin();
-                this.loginComScenes = LoginComponent.getLoginComponent();
 //            this.removeAll();
 //            this.remove((ChooseSong) thirdScenes);
-                this.add((Login) thirdScenes, new Integer(4));
-                this.add((LoginComponent) loginComScenes, new Integer(5));
+                this.add(Login.getLogin(), new Integer(4));
+                this.add( LoginComponent.getLoginComponent(), new Integer(5));
                 break;
             case "SetUp":
-                this.thirdScenes = SetUp.getSetUp();
-                this.add((SetUp) thirdScenes, new Integer(5));
+                this.add(SetUp.getSetUp(), new Integer(5));
                 break;
         }
 //        System.out.println("前面都执行完了");
@@ -127,13 +116,13 @@ public class Canvas extends JLayeredPane{
 
         public void keyPressed(KeyEvent e) {
             try {
-                firstScenes.onKeyDown(e.getKeyCode());
+                tempPlayInterface.onKeyDown(e.getKeyCode());
             } catch (InterruptedException interruptedException) {
                 interruptedException.printStackTrace();
             }
         }
         public void keyReleased(KeyEvent e) {
-            firstScenes.onKeyUp(e.getKeyCode());
+            tempPlayInterface.onKeyUp(e.getKeyCode());
         }
     }
 

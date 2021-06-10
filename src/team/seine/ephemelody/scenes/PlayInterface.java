@@ -78,6 +78,9 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     static Comparator<Track> comparatorTrack= Comparator.comparingLong(o -> o.startTiming);
     static Comparator<PlayOperations> comparatorOperation= (o1, o2) -> Long.compare(o1.startTime,o2.endTime);
     public void loadData() {
+        PlayInterface.backgroundImg.clear();
+        PlayInterface.allTracks.clear();
+        PlayInterface.backgroundOperations.clear();
         for(int i=0;i<200;i++){
             Data.isPressed[i]=new AtomicInteger();
             Data.isReleased[i]=new AtomicInteger();

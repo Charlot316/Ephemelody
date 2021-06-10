@@ -174,6 +174,7 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
     class UpdateUI extends Thread {
 
         public void run() {
+            System.out.println("menu run");
             System.out.println(Thread.activeCount());
             System.out.println("Menu"+Thread.currentThread());
             int sleepTime = 1000 / Data.FPS;

@@ -263,6 +263,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
 
     class UpdateUI extends Thread {
         public void run() {
+            End.isRemoved=true;
             System.out.println(Thread.activeCount());
             System.out.println("End"+Thread.currentThread());
             int sleepTime = 1000 / Data.FPS;
