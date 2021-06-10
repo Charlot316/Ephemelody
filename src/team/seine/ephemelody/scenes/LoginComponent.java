@@ -10,7 +10,6 @@ public class LoginComponent extends JPanel implements Scenes{
     public static JPasswordField passwordField;
     private static LoginComponent loginComponent=new LoginComponent();
     private LoginComponent(){
-
     }
     public static LoginComponent getLoginComponent() {
         loginComponent.setLayout(null);

@@ -50,8 +50,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     public Image []judgement=new Image[3];
     public Image currentJudgement;
     public int delay=40;
-    public static AtomicInteger isStopped=new AtomicInteger();
-    public static AtomicInteger isPaused=new AtomicInteger();
 
     /**
      * @param id          Uniquely defines a track
@@ -66,8 +64,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * @param b           Control track's color
      */
     public Track(int id, int type, char key, long startTiming, long endTiming, double positionX, double width, int r, int g, int b) {
-        isPaused.set(0);
-        isStopped.set(0);
         this.id = id;
         this.type = type;
         this.key = key;
@@ -401,14 +397,8 @@ public class Track extends JPanel implements Runnable {// The track of the note.
         this.setVisible(true);
         this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
             if(this.notes.isEmpty()){//这个判断不放在while里，这样可以省下判断这条if的时间
-                while ((Track.isStopped.get()!=1)&&this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
-                    if(isPaused.get()==1&&(Track.isStopped.get()!=1)){
-                        try {
-                            wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                while (this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
+
                     this.lastTime = this.trackCurrentTime;
                     this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
                     this.changeColor();
@@ -423,14 +413,8 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 }
             }
             else{
-                while ((Track.isStopped.get()!=1)&&this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
-                    if(isPaused.get()==1&&(Track.isStopped.get()!=1)){
-                        try {
-                            wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                while (this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
+
                     if (displayState<99) displayState++;
                     this.lastTime = this.trackCurrentTime;
                     this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
@@ -490,7 +474,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 }
             }
             this.isEnded=true;
-            while(!finalEnd&&(isStopped.get()==0)){
+            while(!finalEnd){
                 this.repaint();
             }
             Data.canvas.remove(this);

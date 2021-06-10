@@ -160,6 +160,7 @@ public class SetUp extends JPanel implements Scenes, MouseMotionListener, MouseL
         } else if (Rect.isInternal(x, y, (Data.WIDTH - 988) / 2, 738, 980, 42)) {
             finishButtonStatus = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
+                System.out.println("Setup调用Home");
                 Data.canvas.switchScenes("Home");
             }
         }

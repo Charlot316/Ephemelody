@@ -61,8 +61,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     public static Clip song;
     public static double prevPotential;
     public static double nowPotential;
-    public static boolean isPaused=false;
-    public static boolean isStop=false;
     private static PlayInterface playinterface=new PlayInterface();
     /**
      * read in information of the display
@@ -257,10 +255,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         End.isRemoved.set(1);
         System.out.println(Thread.activeCount());
         System.out.println("PlayInterface"+Thread.currentThread());
-        isPaused=false;
-        isStop=false;
-        Track.isPaused.set(0);
-        Track.isStopped.set(0);
         frontTrack=0;
         frontOperation=0;
         frontBackground=0;
@@ -301,9 +295,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         return playinterface;
     }
 
-
-
-
     /**
      * run the game
      */
@@ -319,17 +310,10 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         currentTime = 0;
         this.backgroundOperations.sort(comparatorOperation);
         this.repaint();
-        System.out.println((currentTime < PlayInterface.finalEndTime)+" "+isStop);
-        while (currentTime < PlayInterface.finalEndTime&&!isStop) {
+        System.out.println((currentTime < PlayInterface.finalEndTime));
+        while (currentTime < PlayInterface.finalEndTime) {
             //System.out.println(currentTime+" "+this.finalEndTime);
-            if(isPaused){
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(isStop) break;
+
             currentTime = System.currentTimeMillis() - startTime;
             while (frontTrack<allTracks.size()&&allTracks.get(frontTrack).startTiming < currentTime) {
                 currentTime = System.currentTimeMillis() - startTime;
@@ -359,15 +343,8 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             }
         }
         song.stop();
-        System.out.println("停止"+isStop);
-        if(isStop) {
-            PlayInterface.backgroundImg.clear();
-            PlayInterface.allTracks.clear();
-            PlayInterface.backgroundOperations.clear();
-            Data.canvas.switchScenes("Home");
-        }
-        if(!isStop) {System.out.println("我执行了");this.finish();}
-        System.out.println("无事退出");
+        this.finish();
+        System.out.println("PlayInterface终止了");
     }
 
     /**

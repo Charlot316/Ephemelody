@@ -41,6 +41,7 @@ public class Canvas extends JLayeredPane{
         switch (name) {
             case "Home":
 //            frame.addKeyListener(new OnKeyEvent());
+                System.out.println("Home被调用了");
                 End.isRemoved.set(1);
                 this.removeAll();
                 this.add(Background.getTheBackground(), new Integer(0));

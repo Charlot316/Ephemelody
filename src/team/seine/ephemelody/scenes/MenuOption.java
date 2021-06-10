@@ -102,6 +102,7 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
         if(Rect.isInternal(x, y, 900, 0, 98, 50)) {
             buttonSetUpBackStatus = buttonStruts;
             if(struts == Scenes.MOUSE_DOWN) {
+                System.out.println("Menu调用SetUp");
                 Data.canvas.switchScenes("SetUp");
             }
         } else if (Rect.isInternal(x, y, 1080, -3, 188, 69)) {
@@ -109,6 +110,7 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
             buttonQuitLoginStatus = buttonLoginStatus;
             if(struts == Scenes.MOUSE_DOWN) {
                 if (Data.nowPlayer == null) {
+                    System.out.println("Menu调用Login");
                     Data.canvas.switchScenes("Login");
                 } else {
                     Data.nowPlayer = null;
