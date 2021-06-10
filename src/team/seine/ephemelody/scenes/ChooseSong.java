@@ -6,34 +6,29 @@ import team.seine.ephemelody.utils.Load;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ChooseSong extends JPanel implements Scenes, Runnable{
-    public static Image songNameImg;
-    public static Image hitSongImg;
-    public static Integer way;
-    public static Integer x;
-    public static Integer y;
-    public static Integer x1;
-    public static Integer y1;
-    public static Integer count;
-    public static Song[] song;
-    private static ChooseSong chooseSong=new ChooseSong();
-    private ChooseSong(){
-
-    }
-    public static ChooseSong getChooseSong() {
-        chooseSong.setBounds(0, 180, 529, 600);
-        chooseSong.setVisible(true);
-        chooseSong.setOpaque(false);
-        ChooseSong.x = -100;
-        ChooseSong.y = -8;
-        ChooseSong.x1 = 0;
-        ChooseSong.y1 = 60;
-        ChooseSong.count = 130;
+    public Image songNameImg;
+    public Image hitSongImg;
+    public Integer way;
+    public Integer x;
+    public Integer y;
+    public Integer x1;
+    public Integer y1;
+    public Integer count;
+    public Song[] song;
+    public ChooseSong() {
+        setBounds(0, 180, 529, 600);
+        setVisible(true);
+        setOpaque(false);
+        this.x = -100;
+        this.y = -8;
+        this.x1 = 0;
+        this.y1 = 60;
+        this.count = 130;
         hitSongImg = Load.image("home/当前歌曲指示条.png");
         songNameImg = Load.image("home/歌曲条.png");
-        return chooseSong;
+
     }
 
     public void paint(Graphics g) {
@@ -84,8 +79,7 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
 
     @Override
     public void run() {
-        System.out.println(Thread.activeCount());
-        System.out.println("choose"+Thread.currentThread());
+        System.out.println("ChooseSong线程开始了");
         if (way == 2) {
             while(true){
                 if(y >= 122){
@@ -125,6 +119,6 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
             }
             Data.changeSongList(1, 0);
         }
-        System.out.println("choose removed");
+        System.out.println("ChooseSong线程结束了");
     }
 }
