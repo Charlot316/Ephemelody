@@ -24,45 +24,55 @@ public class Data {
     public static List<Song> realSongList; // 真正的歌曲列表，不会改变
     public static int offset = 0, noteVolume = 10, volume = 10; // 存放设置中的偏移、音效、音量
     public static double noteSpeed = 5.0; // 存放设置中的流速
-    public static AtomicInteger[] isPressed =new AtomicInteger[200];
-    public static AtomicInteger[] isReleased =new AtomicInteger[200];
+    public static AtomicInteger[] isPressed = new AtomicInteger[200];
+    public static AtomicInteger[] isReleased = new AtomicInteger[200];
     public static AtomicInteger[] isUsing = new AtomicInteger[200];
     public static AtomicInteger[] keyStatus = new AtomicInteger[200];
     public static int difficulty;
     public static int chooseSongId;
     public static int songId;
     public static Player nowPlayer;
-    public static int frontSong=0;
+    public static int frontSong = 0;
     public static Song currentSong;
     public static boolean isFirstLogin;
+
+    /**
+     * 初始化游戏的基础信息
+     */
     public static void init() {
         isFirstLogin = true;
         songList = Arrays.asList(new Song(), new Song(), new Song(), new Song(), new Song());
-        realSongList = Arrays.asList(new Song(0,"新手指导",1,2,3), new Song(1,"熱愛発覚中",2,5,9),new Song(2," world.excute(me);",3,6,10) );
+        realSongList = Arrays.asList(new Song(0, "新手指导", 1, 2, 3), new Song(1, "熱愛発覚中", 2, 5, 9), new Song(2, " world.excute(me);", 3, 6, 10));
         readSongList();
-        currentSong=songList.get(2);
-        Data.songId=Data.currentSong.getSongID();
+        currentSong = songList.get(2);
+        Data.songId = Data.currentSong.getSongID();
     }
-    public static void readSongList(){
-        for(int index=frontSong, i=0;i<5;i++,index++){
-            if(index>=realSongList.size()) index=0;
-            songList.set(i,realSongList.get(index));
+
+
+    public static void readSongList() {
+        for (int index = frontSong, i = 0; i < 5; i++, index++) {
+            if (index >= realSongList.size()) index = 0;
+            songList.set(i, realSongList.get(index));
         }
     }
+
     public static void changeSongList(int way, int chooseSong) {
         if (way == 1) {
             frontSong++;
-            if(frontSong>=realSongList.size()) frontSong=0;
+            if (frontSong >= realSongList.size()) frontSong = 0;
             readSongList();
         } else if (way == 2) {
             frontSong--;
-            if(frontSong<0) frontSong=realSongList.size()-1;
+            if (frontSong < 0) frontSong = realSongList.size() - 1;
             readSongList();
         }
-        Data.currentSong=Data.songList.get(2);
-        Data.songId=Data.currentSong.getSongID();
+        Data.currentSong = Data.songList.get(2);
+        Data.songId = Data.currentSong.getSongID();
     }
 
+    /**
+     * 检查用户是否登录过，若登录过则自动登录
+     */
     public static void checkLogin() {
         isFirstLogin = false;
         File in = new File("src/resources/inf/record.txt");
@@ -97,6 +107,10 @@ public class Data {
         }
     }
 
+    /**
+     * 记录当前用户的登录信息
+     * @param inf 用户账号加密码的String类型
+     */
     public static void recordLoginInf(String inf) {
         File out = new File("src/resources/inf/record.txt");
         FileWriter fileWriter = null;

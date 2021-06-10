@@ -10,7 +10,10 @@ public class Background extends JPanel implements Scenes{
 
     public Image backgroundImg;
     public Image menuImg;
-//    public JButton button;
+
+    /**
+     * 构造函数
+     */
     public Background() {
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setVisible(true);
@@ -22,6 +25,10 @@ public class Background extends JPanel implements Scenes{
         add(button);*/
     }
 
+    /**
+     * 绘画初始背景
+     * @param g 图形
+     */
     public void paint(Graphics g) {
         g.drawImage(backgroundImg, 0, 0, null);
         g.drawImage(menuImg, 0, 0, null);

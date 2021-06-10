@@ -34,6 +34,10 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
     public ChooseSong chooseSong;
     public AudioClip audioClip;
     public static boolean isEnd;
+
+    /**
+     * Home构造函数
+     */
     public Home() {
         Home.isEnd = false;
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
@@ -47,22 +51,22 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         playButton = new Image[]{
                 Load.image("home/开始游戏.png"), Load.image("home/开始游戏_鼠标悬停.png"), Load.image("home/开始游戏_按下.png")
         };
-        easyButton = new Image[] {
+        easyButton = new Image[]{
                 Load.image("home/简单.png"), Load.image("home/简单_鼠标悬停.png"), Load.image("home/简单_按下.png")
         };
-        normalButton = new Image[] {
+        normalButton = new Image[]{
                 Load.image("home/普通.png"), Load.image("home/普通_鼠标悬停.png"), Load.image("home/普通_按下.png")
         };
-        difficultButton = new Image[] {
+        difficultButton = new Image[]{
                 Load.image("home/困难.png"), Load.image("home/困难_鼠标悬停.png"), Load.image("home/困难_按下.png")
         };
-        songInfButton = new Image[] {
+        songInfButton = new Image[]{
                 Load.image("home/歌曲详情.png"), Load.image("home/歌曲详情_鼠标悬停.png"), Load.image("home/歌曲详情_按下.png")
         };
-        upButton = new Image[] {
+        upButton = new Image[]{
                 Load.image("home/up.png"), Load.image("home/up_鼠标悬停.png"), Load.image("home/up_按下.png")
         };
-        downButton = new Image[] {
+        downButton = new Image[]{
                 Load.image("home/down.png"), Load.image("home/down_鼠标悬停.png"), Load.image("home/down_按下.png")
         };
         nowSongImg = Load.image("home/song1.png");
@@ -78,6 +82,10 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
 
     }
 
+    /**
+     * 相应键盘事件
+     * @param keyCode 按键对应code
+     */
     @Override
     public void onKeyDown(int keyCode) {
         AtomicInteger tmp = new AtomicInteger();
@@ -121,10 +129,10 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
                 buttonNormalStatus = MOUSE_UP;
                 buttonDifficultStatus = MOUSE_UP;
             }
-            if(struts == Scenes.MOUSE_DOWN) {
+            if (struts == Scenes.MOUSE_DOWN) {
                 Data.difficulty = 1;
             }
-        }else if (Rect.isInternal(x, y, 783, 580, 202, 125)) {
+        } else if (Rect.isInternal(x, y, 783, 580, 202, 125)) {
 
             if (buttonNormalStatus != MOUSE_DOWN) {
                 buttonNormalStatus = buttonStruts;
@@ -133,10 +141,10 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
                 buttonEasyStatus = MOUSE_UP;
                 buttonDifficultStatus = MOUSE_UP;
             }
-            if(struts == Scenes.MOUSE_DOWN) {
+            if (struts == Scenes.MOUSE_DOWN) {
                 Data.difficulty = 2;
             }
-        }else if (Rect.isInternal(x, y, 1043, 580, 202, 125)) {
+        } else if (Rect.isInternal(x, y, 1043, 580, 202, 125)) {
             if (buttonDifficultStatus != MOUSE_DOWN) {
                 buttonDifficultStatus = buttonStruts;
             } /*else {
@@ -148,13 +156,13 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
                 buttonEasyStatus = MOUSE_UP;
                 buttonNormalStatus = MOUSE_UP;
             }
-            if(struts == Scenes.MOUSE_DOWN) {
+            if (struts == Scenes.MOUSE_DOWN) {
                 Data.difficulty = 3;
             }
         } else if (Rect.isInternal(x, y, 643, 750, 500, 114)) {
             buttonPlayStatus = buttonStruts;
             playFlag = buttonEasyStatus == MOUSE_DOWN || buttonNormalStatus == MOUSE_DOWN || buttonDifficultStatus == MOUSE_DOWN;
-            if(struts == Scenes.MOUSE_DOWN && playFlag) {
+            if (struts == Scenes.MOUSE_DOWN && playFlag) {
                 Home.isEnd = true;
                 Data.canvas.switchScenes("PlayInterface");
 //                System.exit(0);
@@ -181,6 +189,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
 
         }
     }
+
     public void paint(Graphics g) {
         playFlag = buttonEasyStatus == MOUSE_DOWN || buttonNormalStatus == MOUSE_DOWN || buttonDifficultStatus == MOUSE_DOWN;
         g.drawImage(nowSongImg, Data.WIDTH / 2, 100, null);
@@ -195,12 +204,12 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         g.drawImage(downButton[buttonDownStatus], 120, 800, null);
         g.drawImage(hitSongImg, 380, 413, null);
         Font f = new Font("黑体", Font.BOLD, 65);
-        Data.canvas.drawCenteredStringByOutline(g, String.valueOf(Data.currentSong.easy), 212,Data.WIDTH / 2 - 120,
+        Data.canvas.drawCenteredStringByOutline(g, String.valueOf(Data.currentSong.easy), 212, Data.WIDTH / 2 - 120,
                 1, f, 675, Color.WHITE, new Color(117, 188, 214));
-        Data.canvas.drawCenteredStringByOutline(g, String.valueOf(Data.currentSong.normal), 212,Data.WIDTH / 2 + 140,
+        Data.canvas.drawCenteredStringByOutline(g, String.valueOf(Data.currentSong.normal), 212, Data.WIDTH / 2 + 140,
                 1, f, 675, Color.WHITE, new Color(237, 114, 209));
-        Data.canvas.drawCenteredStringByOutline(g, String.valueOf(Data.currentSong.hard), 212,Data.WIDTH / 2 + 400,
-                1,  f, 675, Color.WHITE, new Color(245, 165, 152));
+        Data.canvas.drawCenteredStringByOutline(g, String.valueOf(Data.currentSong.hard), 212, Data.WIDTH / 2 + 400,
+                1, f, 675, Color.WHITE, new Color(245, 165, 152));
     }
 
     @Override
