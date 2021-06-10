@@ -18,39 +18,50 @@ import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class End extends JPanel implements Scenes, MouseMotionListener, MouseListener {
-    public Image backgroundImg;
-    public Image menuImg;
-    public Image endBackgroundImg;
-    public Image nowSongImg;
-    public Image listImg;
-    public Image myGradeImg;
-    public Image gradeImg;
-    public Image[] resultImg;
-    public Image[] tryAgainButton;
-    public Image[] returnButton;
-    public Image[] ratingButton;
-    public int buttonTryAgainStatus = 0;
-    public int buttonReturnStatus = 0;
-    public int resultStatus = 0;
-    public String songName;
-    public int nowPoints;
-    public int highestPoints;
-    public int nowRanking;
-    public boolean rankingFlag;
-    public AtomicInteger pureCount;
-    public AtomicInteger farCount;
-    public AtomicInteger lostCount;
-    public AtomicInteger maxCombo;
-    public double changePotential;
-    public double nowPotential;
-    public int way;
-    public String[] rankingUserId = new String[100];
-    public int[] rankingPoints = new int[100];
-    public End(RecordTemp recordTemp) {
-        this.pureCount = new AtomicInteger();
-        this.farCount = new AtomicInteger();
-        this.lostCount = new AtomicInteger();
-        this.way = recordTemp.way;
+    public static Image backgroundImg;
+    public static Image menuImg;
+    public static Image endBackgroundImg;
+    public static Image nowSongImg;
+    public static Image listImg;
+    public static Image myGradeImg;
+    public static Image gradeImg;
+    public static Image[] resultImg;
+    public static Image[] tryAgainButton;
+    public static Image[] returnButton;
+    public static Image[] ratingButton;
+    public static int buttonTryAgainStatus = 0;
+    public static int buttonReturnStatus = 0;
+    public static int resultStatus = 0;
+    public static String songName;
+    public static int nowPoints;
+    public static int highestPoints;
+    public static int nowRanking;
+    public static boolean rankingFlag;
+    public static AtomicInteger pureCount;
+    public static AtomicInteger farCount;
+    public static AtomicInteger lostCount;
+    public static AtomicInteger maxCombo;
+    public static double changePotential;
+    public static double nowPotential;
+    public static int way;
+    public static String[] rankingUserId = new String[100];
+    public static int[] rankingPoints = new int[100];
+    private static End end=new End();
+    public static UpdateUI updater;
+    public static boolean isRemoved=false;
+
+    private End(){
+    }
+    public void initialize(){
+        isRemoved=false;
+        updater =new UpdateUI();
+    }
+    public static End getEnd(RecordTemp recordTemp) {
+        end.initialize();
+        End.pureCount = new AtomicInteger();
+        End.farCount = new AtomicInteger();
+        End.lostCount = new AtomicInteger();
+        End.way = recordTemp.way;
         ResultSet rs, resultSet;
         Song nowSong;
         int count = 0;
@@ -66,16 +77,16 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                     AtomicInteger tmp1 = new AtomicInteger();
                     AtomicInteger tmp2 = new AtomicInteger();
                     AtomicInteger tmp3 = new AtomicInteger();
-                    this.highestPoints = rs.getInt("score");
-                    this.nowPoints = highestPoints;
+                    End.highestPoints = rs.getInt("score");
+                    End.nowPoints = highestPoints;
                     tmp1.set(rs.getInt("pureCount"));
-                    this.pureCount = tmp1;
+                    End.pureCount = tmp1;
 //                    System.out.println(pureCount);
                     tmp2.set(rs.getInt("farCount"));
-                    this.farCount = tmp2;
+                    End.farCount = tmp2;
 //                    System.out.println(farCount);;
                     tmp3.set(rs.getInt("lostCount"));
-                    this.lostCount = tmp3;
+                    End.lostCount = tmp3;
                 }
                 resultSet = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
                 count = 0;
@@ -102,16 +113,16 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                     rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId, Data.difficulty);
                     nowSong = SongController.selectSongById(Data.songId, Data.difficulty);
                     System.out.println(Data.nowPlayer.getPlayerID() + " " + Data.songId);
-                    this.nowPoints = recordTemp.score;
-                    this.changePotential = recordTemp.changePotential;
-                    this.nowPotential = recordTemp.nowPotential;
+                    End.nowPoints = recordTemp.score;
+                    End.changePotential = recordTemp.changePotential;
+                    End.nowPotential = recordTemp.nowPotential;
                     while (rs.next()) {
-                        this.highestPoints = rs.getInt("score");
+                        End.highestPoints = rs.getInt("score");
                     }
-                    this.pureCount = recordTemp.pureCount;
-                    this.farCount = recordTemp.farCount;
-                    this.lostCount = recordTemp.lostCount;
-                    this.maxCombo = recordTemp.combo;
+                    End.pureCount = recordTemp.pureCount;
+                    End.farCount = recordTemp.farCount;
+                    End.lostCount = recordTemp.lostCount;
+                    End.maxCombo = recordTemp.combo;
                     resultSet = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
                     count = 0;
                     rankingFlag = true;
@@ -132,13 +143,13 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                         resultStatus = 0;
                     }
                 } else {
-                    this.nowPoints = recordTemp.score;
-                    this.changePotential = recordTemp.changePotential;
-                    this.nowPotential = recordTemp.nowPotential;
-                    this.highestPoints = recordTemp.score;
-                    this.pureCount = recordTemp.pureCount;
-                    this.farCount = recordTemp.farCount;
-                    this.lostCount = recordTemp.lostCount;
+                    End.nowPoints = recordTemp.score;
+                    End.changePotential = recordTemp.changePotential;
+                    End.nowPotential = recordTemp.nowPotential;
+                    End.highestPoints = recordTemp.score;
+                    End.pureCount = recordTemp.pureCount;
+                    End.farCount = recordTemp.farCount;
+                    End.lostCount = recordTemp.lostCount;
                     resultSet = RecordController.getAllBestRecords(Data.songId, Data.difficulty);
                     count = 0;
                     while (resultSet.next()) {
@@ -154,9 +165,9 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
             }
         }
 
-        setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
-        setVisible(true);
-        setOpaque(false);
+        end.setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
+        end.setVisible(true);
+        end.setOpaque(false);
         endBackgroundImg = Load.image("end/结算背景.png");
         nowSongImg = Load.image("song/1/song1.png"); // 到时候得改成具体的歌曲背景
         listImg = Load.image("end/排行榜.png");
@@ -175,9 +186,11 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                 Load.image("end/rating_down.png"), Load.image("end/rating_keep.png"), Load.image("end/rating_up.png")
         };
         songName = Data.currentSong.name;
-        addMouseListener(this);
-        addMouseMotionListener(this);
-        new End.UpdateUI().start();
+        end.addMouseListener(end);
+        end.addMouseMotionListener(end);
+
+        updater.start();
+        return end;
     }
 
     public void paint(Graphics g) {
@@ -292,11 +305,13 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
             buttonReturnStatus = buttonStruts;
 //            System.out.println(buttonReturnStatus);
             if (struts == Scenes.MOUSE_DOWN) {
+                isRemoved=true;
                 Data.canvas.switchScenes("Home");
             }
         } else if (Rect.isInternal(x, y, 1038, 850, 230, 69)) {
             buttonTryAgainStatus = buttonStruts;
             if (struts == Scenes.MOUSE_DOWN) {
+                isRemoved=true;
                 Data.canvas.switchScenes("PlayInterface");
             }
         }
@@ -339,15 +354,18 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
 
     class UpdateUI extends Thread {
         public void run() {
+            System.out.println(Thread.activeCount());
+            System.out.println(Thread.currentThread());
             int sleepTime = 1000 / Data.FPS;
-            while (true) {
+            while (!isRemoved) {
                 try {
-                    updateUI();
+                    end.updateUI();
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+            System.out.println("removed");
         }
     }
 }

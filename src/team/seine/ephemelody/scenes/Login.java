@@ -11,23 +11,28 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Login extends JPanel implements Scenes, MouseMotionListener, MouseListener {
-    String username;
-    String password;
-    public Image loginBackground;
-    public Image[] loginButton;
-    public Integer loginButtonStatus;
-    public Login() {
-        setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
-        setVisible(true);
-        setOpaque(false);
+    static String username;
+    static String password;
+    public static Image loginBackground;
+    public static Image[] loginButton;
+    public static Integer loginButtonStatus;
+    private static Login login=new Login();
+    private Login(){
+
+    }
+    public static Login getLogin() {
+        login.setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
+        login.setVisible(true);
+        login.setOpaque(false);
         loginButtonStatus = 0;
         loginBackground = Load.image("login/登录背景.png");
         loginButton = new Image[] {
                 Load.image("login/登录或注册.png"), Load.image("login/登录或注册_鼠标悬停.png"), Load.image("login/登录或注册_按下.png")
         };
 //        new Home.UpdateUI().start();
-        addMouseMotionListener(this);
-        addMouseListener(this);
+        login.addMouseMotionListener(login);
+        login.addMouseListener(login);
+        return login;
     }
     @Override
     public void onKeyDown(int keyCode) {

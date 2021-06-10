@@ -8,11 +8,15 @@ import java.awt.*;
 public class LoginComponent extends JPanel implements Scenes{
     public static JTextField usernameField;
     public static JPasswordField passwordField;
-    public LoginComponent() {
-        setLayout(null);
-        setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
-        setVisible(true);
-        setOpaque(false);
+    private static LoginComponent loginComponent=new LoginComponent();
+    private LoginComponent(){
+
+    }
+    public static LoginComponent getLoginComponent() {
+        loginComponent.setLayout(null);
+        loginComponent.setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
+        loginComponent.setVisible(true);
+        loginComponent.setOpaque(false);
         usernameField = new JTextField();
         usernameField.setBounds(230, 335, 200, 50);
         usernameField.setFont(new Font("宋体", Font.PLAIN, 30));
@@ -23,8 +27,9 @@ public class LoginComponent extends JPanel implements Scenes{
         passwordField.setFont(new Font("宋体", Font.PLAIN, 30));
         passwordField.setForeground(Color.WHITE);
         passwordField.setOpaque(false);
-        add(usernameField);
-        add(passwordField);
+        loginComponent.add(usernameField);
+        loginComponent.add(passwordField);
+        return loginComponent;
     }
 
     @Override

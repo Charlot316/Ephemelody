@@ -388,14 +388,17 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * Note: display must be after the move and change operations are finished
      */
     public void run() {
+        System.out.println(Thread.activeCount());
+        System.out.println(Thread.currentThread());
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setLayout(null);
         setOpaque(false);
         this.setVisible(true);
+        System.out.println((Track.isStopped.get()!=1)+" "+(this.trackCurrentTime < this.endTiming)+" "+(this.startTiming <= this.trackCurrentTime));
             this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
             if(this.notes.isEmpty()){//这个判断不放在while里，这样可以省下判断这条if的时间
                 while ((Track.isStopped.get()!=1)&&this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
-                    while(isPaused.get()==1&&(Track.isStopped.get()!=1));
+                    while(isPaused.get()==1&&(Track.isStopped.get()!=1))
                     this.lastTime = this.trackCurrentTime;
                     this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
                     this.changeColor();
@@ -411,7 +414,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             }
             else{
                 while ((Track.isStopped.get()!=1)&&this.trackCurrentTime < this.endTiming && this.startTiming <= this.trackCurrentTime) {
-                    while(isPaused.get()==1&&(Track.isStopped.get()!=1));
+                    while(isPaused.get()==1&&(Track.isStopped.get()!=1))
                     if (displayState<99) displayState++;
                     this.lastTime = this.trackCurrentTime;
                     this.trackCurrentTime = System.currentTimeMillis() - PlayInterface.startTime;
@@ -470,6 +473,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                     }
                 }
             }
+            System.out.println("removed");
             this.isEnded=true;
             while(!finalEnd){
                     this.repaint();

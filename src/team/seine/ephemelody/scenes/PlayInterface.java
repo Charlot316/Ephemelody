@@ -26,11 +26,11 @@ import static java.awt.event.KeyEvent.VK_ESCAPE;
 import static java.lang.Thread.sleep;
 
 public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListener {//Set up the play interface
-    int songID;
-    int difficulty;
-    int trackCount;
+    public static int songID;
+    public static int difficulty;
+    public static int trackCount;
     public static int notesCount;
-    int operationsCount;
+    public static int operationsCount;
     public static int scorePerNote;
     public static int scoreForLastNote;
     public static AtomicInteger pureCount = new AtomicInteger();
@@ -47,21 +47,23 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     public static long finalEndTime;
     public static long pauseTime;
     public static long resumeTime;
-    int clipTime;
-    public int score=0;
-    public ArrayList<Track> allTracks = new ArrayList<>();
-    ArrayList<PlayOperations> backgroundOperations = new ArrayList<>();
-    ArrayList<Image> backgroundImg = new ArrayList<>();
-    int frontTrack = 0;
-    int frontOperation = 0;
-    int frontBackground = 0;
-    public String Path;
-    public ScoreAndComboDisplay displayer = new ScoreAndComboDisplay();
-    public Clip song;
-    public double prevPotential;
-    public double nowPotential;
+
+    static int clipTime;
+    public static int score=0;
+    public static ArrayList<Track> allTracks = new ArrayList<>();
+    public static ArrayList<PlayOperations> backgroundOperations = new ArrayList<>();
+    public static ArrayList<Image> backgroundImg = new ArrayList<>();
+    public static int frontTrack = 0;
+    public static int frontOperation = 0;
+    public static int frontBackground = 0;
+    public static String Path;
+    public static ScoreAndComboDisplay displayer = new ScoreAndComboDisplay();
+    public static Clip song;
+    public static double prevPotential;
+    public static double nowPotential;
     public static boolean isPaused=false;
-    public boolean isStop=false;
+    public static boolean isStop=false;
+    private static PlayInterface playinterface=new PlayInterface();
     /**
      * read in information of the display
      */
@@ -84,21 +86,21 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             Data.isReleased[i].set(0);
             Data.isUsing[i].set(0);
         }
-        this.Path = this.songID + "/";
-        String displayPath = this.Path + this.difficulty + ".txt";
+        PlayInterface.Path = PlayInterface.songID + "/";
+        String displayPath = PlayInterface.Path + PlayInterface.difficulty + ".txt";
         BufferedReader bufferedReader = Load.File(displayPath);
         try {
             String command = bufferedReader.readLine();
             String[] arguments = command.split("\\s+");
-            this.trackCount = Integer.parseInt(arguments[0]);
+            PlayInterface.trackCount = Integer.parseInt(arguments[0]);
             PlayInterface.notesCount = Integer.parseInt(arguments[1]);
-            this.operationsCount = Integer.parseInt(arguments[2]);
-            this.backgroundImg.add(Load.backgroundImage(this.Path + arguments[3]));
+            PlayInterface.operationsCount = Integer.parseInt(arguments[2]);
+            PlayInterface.backgroundImg.add(Load.backgroundImage(PlayInterface.Path + arguments[3]));
             if (PlayInterface.notesCount != 0) {
                 PlayInterface.scorePerNote = (10000000 / PlayInterface.notesCount);
                 PlayInterface.scoreForLastNote =(PlayInterface.notesCount * PlayInterface.scorePerNote==10000000)? PlayInterface.scorePerNote:(10000000 - PlayInterface.notesCount * PlayInterface.scorePerNote+PlayInterface.scorePerNote);
             }
-            for (int i = 0; i < this.trackCount; i++) {
+            for (int i = 0; i < PlayInterface.trackCount; i++) {
                 command = bufferedReader.readLine();
                 arguments = command.split("\\s+");
                 if(arguments.length<6) {i--;continue;}
@@ -133,7 +135,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                 }
 
                 Track track = new Track(id, type, key, startTiming, endTiming, positionX, width, R, G, B);
-                this.allTracks.add(track);
+                PlayInterface.allTracks.add(track);
             }
 
             for (int i = 0; i < PlayInterface.notesCount; i++) {
@@ -164,7 +166,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                 }
             }
 
-            for (int i = 0; i < this.operationsCount; i++) {
+            for (int i = 0; i < PlayInterface.operationsCount; i++) {
                 command = bufferedReader.readLine();
                 arguments = command.split("\\s+");
                 if(arguments.length<4) {i--;continue;}
@@ -205,15 +207,15 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                         case 4:
                             tempBackground = arguments[3];
                             operation = new PlayOperations(trackID, type, startTiming, endTiming, endX, width, R, G, B, tempBackground);
-                            this.backgroundOperations.add(operation);
-                            this.backgroundImg.add(Load.backgroundImage(this.Path + tempBackground));
+                            PlayInterface.backgroundOperations.add(operation);
+                            PlayInterface.backgroundImg.add(Load.backgroundImage(PlayInterface.Path + tempBackground));
                             break;
                         default:
                             break;
                     }
                 }
             }
-            this.allTracks.sort(comparatorTrack);
+            PlayInterface.allTracks.sort(comparatorTrack);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -234,16 +236,24 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         setLayout(null);
     }
 
+    private PlayInterface(){
+
+    }
     /**
      * Initialize PlayInterface and run the game
      *
      * @param songID     ID of the song
      * @param difficulty difficulty of the song (both are used to find the source file)
      */
-    public void resetPlayInterface(int songID, int difficulty) {
+    public static PlayInterface getPlayInterface(int songID, int difficulty) {
         System.out.println(Thread.activeCount());
         System.out.println(Thread.currentThread());
         isPaused=false;
+        isStop=false;
+        Track.isPaused.set(0);
+        Track.isStopped.set(0);
+        frontTrack=0;
+        frontOperation=0;
         PlayInterface.remainingTime=(long)(-600*Data.noteSpeed+4100);
         pureCount.set(0);
         farCount.set(0);
@@ -251,33 +261,34 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         combo.set(0);
         currentScore.set(0);
         currentNoteCount.set(0);
-        this.songID = songID;
-        this.difficulty = difficulty;
+        PlayInterface.songID = songID;
+        PlayInterface.difficulty = difficulty;
         finalEndTime=0;
-        this.song = Load.sound(String.valueOf(songID));
+        PlayInterface.song = Load.sound(String.valueOf(songID));
         FloatControl gainControl = (FloatControl) song.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(-(float)(8*(10-Data.volume))); // Reduce volume by 10 decibels.
-        this.loadData();
-        this.setInterface();
-        this.repaint();
-        this.requestFocus();
-        if(Data.nowPlayer!=null)this.prevPotential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
+        playinterface.loadData();
+        playinterface.setInterface();
+        playinterface.repaint();
+        playinterface.requestFocus();
+        if(Data.nowPlayer!=null)PlayInterface.prevPotential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
 //        System.out.println(prevPotential);
 
-        addKeyListener( new KeyAdapter(){
+        playinterface.addKeyListener( new KeyAdapter(){
             public void keyPressed(KeyEvent e){
                 try {
-                    onKeyDown(e.getKeyCode());
+                    playinterface.onKeyDown(e.getKeyCode());
                 } catch (InterruptedException interruptedException) {
                     interruptedException.printStackTrace();
                 }
-                repaint();
+                playinterface.repaint();
             }
             public void KeyReleased(KeyEvent e) {
-                onKeyUp(e.getKeyCode());
-                repaint();
+                playinterface.onKeyUp(e.getKeyCode());
+                playinterface.repaint();
             }
         });
+        return playinterface;
     }
 
     /**
@@ -315,6 +326,8 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      * run the game
      */
     public void run() {
+        System.out.println(Thread.activeCount());
+        System.out.println(Thread.currentThread());
         assert song != null;
         song.start(); // 播放音乐
         startTime = System.currentTimeMillis();
@@ -355,11 +368,12 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         }
         song.stop();
         if(isStop) {
+            PlayInterface.backgroundImg.clear();
+            PlayInterface.allTracks.clear();
+            PlayInterface.backgroundOperations.clear();
             Data.canvas.switchScenes("Home");
-
             Thread.interrupted();
         }
-
         if(!isStop)this.finish();
     }
 
@@ -367,6 +381,9 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      * Finish the play and go to the next interface
      */
     public void finish() {
+        PlayInterface.backgroundImg.clear();
+        PlayInterface.allTracks.clear();
+        PlayInterface.backgroundOperations.clear();
         long time = System.currentTimeMillis();
 
         if(Data.nowPlayer!=null){
@@ -391,6 +408,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         }
 //        System.out.println(nowPotential + "------" + prevPotential);
         song.stop();
+        Thread.interrupted();
     }
 
     public Track getTrackByID(int id) {
