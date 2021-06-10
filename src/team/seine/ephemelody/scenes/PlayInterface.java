@@ -272,6 +272,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         FloatControl gainControl = (FloatControl) song.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(-(float)(8*(10-Data.volume))); // Reduce volume by 10 decibels.
         playinterface.loadData();
+        song.start(); // 播放音乐
         playinterface.setInterface();
         playinterface.repaint();
         playinterface.requestFocus();
@@ -305,7 +306,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         System.out.println(Thread.activeCount());
         System.out.println("PlayInterface"+Thread.currentThread());
         assert song != null;
-        song.start(); // 播放音乐
+
         startTime = System.currentTimeMillis();
         currentTime = 0;
         PlayInterface.backgroundOperations.sort(comparatorOperation);
@@ -324,7 +325,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
                 new Thread(allTracks.get(frontTrack)).start();
                  frontTrack++;
             }
-            if (!backgroundOperations.isEmpty() && frontOperation+1<backgroundOperations.size()&& backgroundOperations.get(frontOperation).startTime < currentTime) {
+            if (!backgroundOperations.isEmpty() && frontOperation<backgroundOperations.size()&& backgroundOperations.get(frontOperation).startTime < currentTime) {
                 currentTime = System.currentTimeMillis() - startTime;
                 //System.out.println(currentTime+" "+this.finalEndTime);
                 PlayInterface.frontBackground++;
