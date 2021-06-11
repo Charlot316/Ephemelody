@@ -37,9 +37,7 @@
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="1bb00450-020e-4b43-b162-f7634922c766" object-ref="schemas/seine/tables/songs" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="1bb00450-020e-4b43-b162-f7634922c766" />
@@ -56,7 +54,9 @@
     <filter-actions connection-id="1bb00450-020e-4b43-b162-f7634922c766" dataset="librarysystem.key_word" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
-    <last-used-providers />
+    <last-used-providers>
+      <object-type object-type="TABLE" editor-provider="DATA" />
+    </last-used-providers>
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />
