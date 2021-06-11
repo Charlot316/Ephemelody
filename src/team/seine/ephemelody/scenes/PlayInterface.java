@@ -69,6 +69,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     static Comparator<Note> comparatorNote = Comparator.comparingLong(o -> o.timing);
     static Comparator<Track> comparatorTrack= Comparator.comparingLong(o -> o.startTiming);
     static Comparator<PlayOperations> comparatorOperation= (o1, o2) -> Long.compare(o1.startTime,o2.endTime);
+
     public void loadData() {
         for(int i=0;i<200;i++){
             Data.isPressed[i]=new AtomicInteger();
@@ -246,9 +247,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         this.songID = songID;
         this.difficulty = difficulty;
         finalEndTime=0;
-        this.song = Load.sound(String.valueOf(songID));
-        FloatControl gainControl = (FloatControl) song.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(-(float)(8*(10-Data.volume))); // Reduce volume by 10 decibels.
+        this.song = Data.Songs[songID];
         this.loadData();
         this.setInterface();
         this.repaint();
@@ -290,9 +289,12 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
      * run the game
      */
     public void run() {
-        System.out.println("PlayInterface线程开始了");
+        FloatControl gainControl = (FloatControl) song.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(-(float)(8*(10-Data.volume))); // Reduce volume by 10 decibels.
         assert song != null;
-        song.start(); // 播放音乐
+        song.setFramePosition(0); // 播放音乐
+        song.start();
+        System.out.println("PlayInterface线程开始了");
         startTime = System.currentTimeMillis();
         currentTime = 0;
         this.backgroundOperations.sort(comparatorOperation);
