@@ -104,7 +104,6 @@ public class MenuOption extends JPanel implements Scenes, MouseMotionListener, M
                 if (Data.nowPlayer == null) {
                     Data.canvas.switchScenes("Login");
                 } else {
-                    Data.recordLoginInf("");
                     Data.nowPlayer = null;
                 }
             }

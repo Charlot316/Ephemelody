@@ -42,9 +42,6 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         Home.isEnd = false;
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setLayout(null);
-        if (Data.isFirstLogin) {
-            Data.checkLogin();
-        }
 
         chooseSong = new ChooseSong();
         playFlag = false;
