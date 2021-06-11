@@ -12,10 +12,13 @@ import java.awt.*;
 import java.awt.font.GlyphVector;
 import java.io.*;
 import java.lang.reflect.Array;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.jar.JarOutputStream;
 
 public class Data {
     public static final int WIDTH = 1286, HEIGHT = 965, FPS = 100;
@@ -86,14 +89,11 @@ public class Data {
      */
     public static void checkLogin() {
         isFirstLogin = false;
-        File in = new File("src/resources/inf/record.txt");
-        FileReader fileReader = null;
-        BufferedReader bufferedReader = null;
+        InputStream inputStream = Data.class.getResourceAsStream("/resources/inf/record.txt");
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String s, userId = null, password = null;
         List<String> user;
         try {
-            fileReader = new FileReader(in);
-            bufferedReader = new BufferedReader(fileReader);
             if ((s = bufferedReader.readLine()) != null) {
                 user = Arrays.asList(s.split("\\s+"));
                 userId = user.get(0);
@@ -103,8 +103,6 @@ public class Data {
             e.printStackTrace();
         } finally {
             try {
-                assert fileReader != null;
-                fileReader.close();
                 assert bufferedReader != null;
                 bufferedReader.close();
             } catch (IOException e) {
@@ -123,11 +121,14 @@ public class Data {
      * @param inf 用户账号加密码的String类型
      */
     public static void recordLoginInf(String inf) {
-        File out = new File("src/resources/inf/record.txt");
+//        String filePath = Objects.requireNonNull(Data.class.getClassLoader().getResource("/resources/inf/record.txt")).getPath();
+//        URL url = Data.class.getResource("/resources/inf/record.txt");
+//        InputStream inputStream = Data.class.getResourceAsStream("/resources/inf/record.txt");
+        File file = new File("/resources/inf/record.txt");
         FileWriter fileWriter = null;
         PrintWriter printWriter = null;
         try {
-            fileWriter = new FileWriter(out);
+            fileWriter = new FileWriter(file);
             printWriter = new PrintWriter(fileWriter);
             printWriter.write(inf);
             printWriter.flush();
