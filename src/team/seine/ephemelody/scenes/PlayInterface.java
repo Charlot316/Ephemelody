@@ -247,7 +247,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         this.songID = songID;
         this.difficulty = difficulty;
         finalEndTime=0;
-        this.song = Data.Songs[songID];
+        this.song = Load.sound(String.valueOf(songID));
         this.loadData();
         this.setInterface();
         this.repaint();
@@ -302,6 +302,10 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         while (currentTime < PlayInterface.finalEndTime) {
             currentTime = System.currentTimeMillis() - startTime;
             //System.out.println(currentTime+" "+this.finalEndTime);
+            if(Math.abs(song.getMicrosecondPosition()-currentTime*1000)>500000&&currentTime*1000<song.getMicrosecondLength()) {
+                song.setMicrosecondPosition(currentTime*1000);
+                song.start();
+            }
             while (frontTrack<allTracks.size()&&allTracks.get(frontTrack).startTiming < currentTime) {
                 currentTime = System.currentTimeMillis() - startTime;
                 allTracks.get(frontTrack).notes.sort(comparatorNote);
@@ -361,8 +365,8 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             Data.canvas.switchScenes("End", new RecordTemp(currentScore.get(), pureCount, farCount, lostCount, maxCombo,
                     2, 0, 0));
         }
+        song.close();
 //        System.out.println(nowPotential + "------" + prevPotential);
-        song.stop();
     }
 
     public Track getTrackByID(int id) {
