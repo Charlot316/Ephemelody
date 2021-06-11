@@ -7,6 +7,8 @@ import database.PlayerController;
 import team.seine.ephemelody.utils.Load;
 import team.seine.ephemelody.main.Canvas;
 
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.swing.plaf.PanelUI;
 import java.awt.*;
 import java.awt.font.GlyphVector;
@@ -38,7 +40,7 @@ public class Data {
     public static int frontSong = 0;
     public static Song currentSong;
     public static boolean isFirstLogin;
-
+    public static Clip []Songs=new Clip[100];
     /**
      * 初始化游戏的基础信息
      */
@@ -51,6 +53,12 @@ public class Data {
                 new Song(2, " world.excute(me);", 3, 6, 10),
                 new Song(3, "迷える音色は恋の歌", 3, 6, 11)
         );
+        for(int i=0;i<realSongList.size();i++){
+            Songs[i]=Load.sound(String.valueOf(realSongList.get(i).getSongID()));
+            FloatControl gainControl = (FloatControl) Songs[i].getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(-(float)(80));
+            Songs[i].start();
+        }
         readSongList();
         currentSong = songList.get(2);
         Data.songId = Data.currentSong.getSongID();
