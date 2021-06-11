@@ -1,26 +1,16 @@
 package team.seine.ephemelody.data;
 
-import com.sun.org.apache.bcel.internal.generic.FADD;
 import database.Entity.Player;
 import database.Entity.Song;
 import database.PlayerController;
-import team.seine.ephemelody.utils.Load;
 import team.seine.ephemelody.main.Canvas;
+import team.seine.ephemelody.utils.Load;
 
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.swing.plaf.PanelUI;
-import java.awt.*;
-import java.awt.font.GlyphVector;
 import java.io.*;
-import java.lang.reflect.Array;
-import java.net.URL;
-import java.util.ArrayList;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.jar.JarOutputStream;
 
 public class Data {
     public static final int WIDTH = 1286, HEIGHT = 965, FPS = 100;
@@ -34,13 +24,11 @@ public class Data {
     public static AtomicInteger[] isUsing = new AtomicInteger[200];
     public static AtomicInteger[] keyStatus = new AtomicInteger[200];
     public static int difficulty;
-    public static int chooseSongId;
     public static int songId;
     public static Player nowPlayer;
     public static int frontSong = 0;
     public static Song currentSong;
     public static boolean isFirstLogin;
-    public static Clip []Songs=new Clip[100];
     /**
      * 初始化游戏的基础信息
      */
@@ -85,6 +73,74 @@ public class Data {
         }
         Data.currentSong = Data.songList.get(2);
         Data.songId = Data.currentSong.getSongID();
+    }
+    /**
+     * 检查用户是否登录过，若登录过则自动登录
+     */
+    public static void checkLogin() {
+        isFirstLogin = false;
+        InputStream is = Load.class.getResourceAsStream("team/seine/ephemelody/data/inf/record.txt");
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
+        String s, userId = null, password = null;
+        List<String> user;
+        try {
+            if ((s = bufferedReader.readLine()) != null) {
+                user = Arrays.asList(s.split("\\s+"));
+                userId = user.get(0);
+                password = user.get(1);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert bufferedReader != null;
+                bufferedReader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (userId != null && password != null) {
+            if (password.equals(PlayerController.selectPlayerById(userId).getPassword())) {
+                Data.nowPlayer = PlayerController.selectPlayerById(userId);
+            }
+        }
+    }
+
+    /**
+     * 记录当前用户的登录信息
+     * @param inf 用户账号加密码的String类型
+     */
+    public static void recordLoginInf(String inf) {
+//        String filePath = Objects.requireNonNull(Data.class.getClassLoader().getResource("/resources/inf/record.txt")).getPath();
+//        URL url = Data.class.getResource("/resources/inf/record.txt");
+//        InputStream inputStream = Data.class.getResourceAsStream("/resources/inf/record.txt");
+        String filepath= null;
+        try {
+            filepath = Data.class.getResource("").toURI().getPath()+ "/inf/record.txt";
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        File file = new File(filepath);
+        FileWriter fileWriter = null;
+        PrintWriter printWriter = null;
+        try {
+            fileWriter = new FileWriter(file);
+            printWriter = new PrintWriter(fileWriter);
+            printWriter.write(inf);
+            printWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert fileWriter != null;
+                fileWriter.close();
+                assert printWriter != null;
+                printWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
