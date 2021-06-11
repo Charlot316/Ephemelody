@@ -54,12 +54,6 @@ public class Data {
                 new Song(3, "迷える音色は恋の歌", 4, 7, 11),
                 new Song(4, "Aegleseeker", 3, 4, 11)
         );
-//        for(int i=0;i<realSongList.size();i++){
-//            Songs[i]=Load.sound(String.valueOf(realSongList.get(i).getSongID()));
-//            FloatControl gainControl = (FloatControl) Songs[i].getControl(FloatControl.Type.MASTER_GAIN);
-//            gainControl.setValue(-(float)(80));
-//            Songs[i].start();
-//        }
         readSongList();
         currentSong = songList.get(2);
         Data.songId = Data.currentSong.getSongID();
