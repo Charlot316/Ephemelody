@@ -383,7 +383,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
      * Note: display must be after the move and change operations are finished
      */
     public void run() {
-        System.out.println("Track线程开始了");
+//        System.out.println("Track线程开始了");
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setLayout(null);
         setOpaque(false);
@@ -470,7 +470,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             }
             Data.canvas.remove(this);
             PlayInterface.currentTracks.remove(this.id);
-        System.out.println("Track线程结束了");
+//        System.out.println("Track线程结束了");
     }
 
     @Override

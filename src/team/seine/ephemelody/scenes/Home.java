@@ -243,7 +243,6 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
 
     @Override
     public void mousePressed(MouseEvent e) {
-//        onMouse(e.getX(), e.getY(), Scenes.MOUSE_DOWN);
     }
 
     @Override
@@ -279,7 +278,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
 
     class UpdateUI extends Thread {
         public void run() {
-            System.out.println("Home的线程开始了");
+//            System.out.println("Home的线程开始了");
             int sleepTime = 1000 / Data.FPS;
             while (!isEnd) {
                 try {
@@ -289,7 +288,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
                     e.printStackTrace();
                 }
             }
-            System.out.println("Home的线程结束了");
+//            System.out.println("Home的线程结束了");
         }
     }
 }

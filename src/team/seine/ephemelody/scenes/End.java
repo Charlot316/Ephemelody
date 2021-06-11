@@ -362,7 +362,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
 
     class UpdateUI extends Thread {
         public void run() {
-            System.out.println("End的线程开始了");
+//            System.out.println("End的线程开始了");
             int sleepTime = 1000 / Data.FPS;
             while (!isEnd) {
                 try {
@@ -372,7 +372,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                     e.printStackTrace();
                 }
             }
-            System.out.println("End的线程结束了");
+//            System.out.println("End的线程结束了");
         }
     }
 }
