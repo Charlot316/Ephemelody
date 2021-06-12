@@ -36,11 +36,13 @@ public class Data {
         isFirstLogin = true;
         songList = Arrays.asList(new Song(), new Song(), new Song(), new Song(), new Song());
         realSongList = Arrays.asList(
+                new Song(3, "迷える音色は恋の歌", 4, 7, 11),
+                new Song(4, "Aegleseeker", 3, 4, 11),
                 new Song(0, "新手指导", 0, 0, 1),
                 new Song(1, "熱愛発覚中", 2, 8, 10),
-                new Song(2, " world.excute(me);", 5, 6, 9),
-                new Song(3, "迷える音色は恋の歌", 4, 7, 11),
-                new Song(4, "Aegleseeker", 3, 4, 11)
+                new Song(2, " world.excute(me);", 5, 6, 9)
+
+
         );
         readSongList();
         currentSong = songList.get(2);
