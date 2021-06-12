@@ -21,9 +21,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.awt.BasicStroke.CAP_BUTT;
 import static java.awt.BasicStroke.JOIN_BEVEL;
-import static java.lang.Thread.sleep;
 
-public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListener {//Set up the play interface
+public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListener {
     int songID;//当前音乐的ID
     int difficulty;//当前难度
     int trackCount;
@@ -299,7 +298,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         assert song != null;
         song.setFramePosition(0); // 播放音乐
         song.start();
-        System.out.println("PlayInterface线程开始了");
         startTime = System.currentTimeMillis();
         currentTime = 0;
         this.backgroundOperations.sort(comparatorOperation);
@@ -339,7 +337,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         }
 
         this.finish();
-        System.out.println("PlayInterface线程结束了");
     }
 
     /**

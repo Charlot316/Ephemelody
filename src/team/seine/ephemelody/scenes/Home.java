@@ -24,7 +24,6 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
     public Image[] difficultButton;
     public Image[] upButton;
     public Image[] downButton;
-    //    public Image song1;
     public Image selectedImg;
     public Image[] nowSongImg;
     public Image[] songInfButton;
@@ -73,8 +72,6 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         selectedImg = Load.image("home/被选中的.png");
         songNameImg = Load.image("home/歌曲条.png");
         hitSongImg = Load.image("home/当前歌曲指示条.png");
-//        setBackground(null);
-//        Load.sound("1").loop(Clip.LOOP_CONTINUOUSLY); // 播放音乐
         setOpaque(false);
         new UpdateUI().start();
         addMouseMotionListener(this);
@@ -157,11 +154,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         } else if (Rect.isInternal(x, y, 1043, 580, 202, 125)) {
             if (buttonDifficultStatus != MOUSE_DOWN) {
                 buttonDifficultStatus = buttonStruts;
-            } /*else {
-//                buttonSetUpBackStatus = MOUSE_UP;
-                buttonEasyStatus = MOUSE_UP;
-                buttonNormalStatus = MOUSE_UP;
-            }*/
+            }
             if (buttonDifficultStatus == MOUSE_DOWN) {
                 buttonEasyStatus = MOUSE_UP;
                 buttonNormalStatus = MOUSE_UP;
@@ -175,8 +168,6 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
             if (struts == Scenes.MOUSE_DOWN && playFlag) {
                 Home.isEnd = true;
                 Data.canvas.switchScenes("PlayInterface");
-//                System.exit(0);
-//                Data.canvas.switchScenes("End");
             }
         } else if (Rect.isInternal(x, y, 1038, 850, 230, 69)) {
             buttonSongInfStatus = buttonStruts;
@@ -278,7 +269,6 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
 
     class UpdateUI extends Thread {
         public void run() {
-//            System.out.println("Home的线程开始了");
             int sleepTime = 1000 / Data.FPS;
             while (!isEnd) {
                 try {
@@ -288,7 +278,6 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
                     e.printStackTrace();
                 }
             }
-//            System.out.println("Home的线程结束了");
         }
     }
 }

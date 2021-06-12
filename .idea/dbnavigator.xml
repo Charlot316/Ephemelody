@@ -27,7 +27,7 @@
     <loaded-nodes>
       <connection connection-id="1bb00450-020e-4b43-b162-f7634922c766">
         <schema name="librarysystem" object-types="table, view" />
-        <schema name="seine" object-types="table, view" />
+        <schema name="seine" object-types="table, view, procedure, function, constraint, index, column, dataset trigger" />
       </connection>
     </loaded-nodes>
   </component>
@@ -37,7 +37,10 @@
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files />
+    <open-files>
+      <object connection-id="1bb00450-020e-4b43-b162-f7634922c766" object-ref="schemas/seine/tables/personal_best_records" />
+      <object connection-id="1bb00450-020e-4b43-b162-f7634922c766" object-ref="schemas/seine/tables/personal_recent_records" />
+    </open-files>
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="1bb00450-020e-4b43-b162-f7634922c766" />
