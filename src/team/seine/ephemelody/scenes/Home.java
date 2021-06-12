@@ -26,7 +26,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
     public Image[] downButton;
     //    public Image song1;
     public Image selectedImg;
-    public Image nowSongImg;
+    public Image[] nowSongImg;
     public Image[] songInfButton;
     public Image songNameImg;
     public Image hitSongImg;
@@ -66,7 +66,10 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         downButton = new Image[]{
                 Load.image("home/down.png"), Load.image("home/down_鼠标悬停.png"), Load.image("home/down_按下.png")
         };
-        nowSongImg = Load.image("home/song1.png");
+        nowSongImg = new Image[] {
+                Load.image("cover/0.jpg"), Load.image("cover/1.jpg"), Load.image("cover/2.jpg"),
+                Load.image("cover/3.jpg"), Load.image("cover/4.jpg")
+        };
         selectedImg = Load.image("home/被选中的.png");
         songNameImg = Load.image("home/歌曲条.png");
         hitSongImg = Load.image("home/当前歌曲指示条.png");
@@ -203,7 +206,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
      */
     public void paint(Graphics g) {
         playFlag = buttonEasyStatus == MOUSE_DOWN || buttonNormalStatus == MOUSE_DOWN || buttonDifficultStatus == MOUSE_DOWN;
-        g.drawImage(nowSongImg, Data.WIDTH / 2, 100, null);
+        g.drawImage(nowSongImg[Data.songId], Data.WIDTH / 2, 100, 450, 450, null);
         g.drawImage(easyButton[buttonEasyStatus], Data.WIDTH / 2 - 120, 580, null);
         g.drawImage(normalButton[buttonNormalStatus], Data.WIDTH / 2 + 140, 580, null);
         g.drawImage(difficultButton[buttonDifficultStatus], Data.WIDTH / 2 + 400, 580, null);

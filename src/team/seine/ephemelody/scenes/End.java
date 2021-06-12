@@ -22,7 +22,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
     public Image backgroundImg;
     public Image menuImg;
     public Image endBackgroundImg;
-    public Image nowSongImg;
+    public Image[] nowSongImg;
     public Image listImg;
     public Image myGradeImg;
     public Image gradeImg;
@@ -167,7 +167,10 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         setVisible(true);
         setOpaque(false);
         endBackgroundImg = Load.image("end/结算背景.png");
-        nowSongImg = Load.image("song/1/song1.png"); // 到时候得改成具体的歌曲背景
+        nowSongImg = new Image[] {
+                Load.image("cover/0.jpg"), Load.image("cover/1.jpg"), Load.image("cover/2.jpg"),
+                Load.image("cover/3.jpg"), Load.image("cover/4.jpg")
+        };
         listImg = Load.image("end/排行榜.png");
         myGradeImg = Load.image("end/我的成绩.png");
         gradeImg = Load.image("end/成绩条.png");
@@ -196,7 +199,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
     public void paint(Graphics g) {
         g.drawImage(endBackgroundImg, 0, (Data.HEIGHT - 632) / 2, null);
         g.drawImage(listImg, 980, 310, null);
-        g.drawImage(nowSongImg, 90, 369, null);
+        g.drawImage(nowSongImg[Data.songId], 90, 369, 350, 350, null);
         g.drawImage(myGradeImg, 993, 680, null);
         g.drawImage(resultImg[resultStatus], 360, 300, null);
         int countY = 360;

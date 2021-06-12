@@ -54,7 +54,7 @@ public class Login extends JPanel implements Scenes, MouseMotionListener, MouseL
             if (struts == Scenes.MOUSE_DOWN) {
                 username = LoginComponent.usernameField.getText();
                 password = String.valueOf(LoginComponent.passwordField.getPassword());
-                System.out.println(username + "---" + password);
+//                System.out.println(username + "---" + password);
                 Player player = PlayerController.selectPlayerById(username);
                 if (player != null) {
                     if (player.getPassword().equals(password)) {
@@ -65,16 +65,22 @@ public class Login extends JPanel implements Scenes, MouseMotionListener, MouseL
                         Data.canvas.switchScenes("Home"); // 到时候改成如果登录成功，用户名显示出来
 //                        Data.recordLoginInf(username+" "+password);
                     } else {
-                        System.out.println("用户名已存在, 注册失败");
+                        System.out.println("密码错误，登录失败");
                     }
                 } else {
                     PlayerController.insertPlayer(username, password);
-                    System.out.println("注册成功");
-                    Data.nowPlayer = PlayerController.selectPlayerById(username);
-                    Data.canvas.frame.setFocusable(true);
-                    Home.isEnd = true;
-                    Data.canvas.switchScenes("Home"); // 到时候改成如果登录成功，用户名显示出来
-//                    Data.recordLoginInf(username+" "+password);
+                    if (username.length() < 3 || password.length() < 3) {
+                        System.out.println("用户名与密码的位数不得小于3，请重新输入");
+                        LoginComponent.usernameField.setText("");
+                        LoginComponent.passwordField.setText("");
+                    } else {
+                        System.out.println("注册成功");
+                        Data.nowPlayer = PlayerController.selectPlayerById(username);
+                        Data.canvas.frame.setFocusable(true);
+                        Home.isEnd = true;
+                        Data.canvas.switchScenes("Home"); // 到时候改成如果登录成功，用户名显示出来
+                    }
+
                 }
 
             }
