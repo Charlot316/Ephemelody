@@ -310,7 +310,7 @@ public class RecordController {
     }
 
     /**
-     * 从远程数据库中返回10条最佳成绩
+     * 从数据库中返回10条最佳成绩
      */
     public static ResultSet getAllBestRecords(int songId, int difficulty) {
         PreparedStatement sql;
