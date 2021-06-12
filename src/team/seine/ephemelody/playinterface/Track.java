@@ -12,7 +12,7 @@ import javax.swing.*;
 
 import static java.awt.BasicStroke.*;
 
-public class Track extends JPanel implements Runnable {// The track of the note.
+public class Track extends JPanel implements Runnable {
     public int id;
     public int type;
     public char key;
@@ -23,13 +23,13 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     public int R;
     public int G;
     public int B;
-    public int currentKey;//Equals to the key of the first note
-    public boolean isHolding=false;//Check if is holding a note
+    public int currentKey;//当前待判定的音符的键
+    public boolean isHolding=false;//确认当前是否在判定长键
     public boolean isStarted=false;
     public boolean isEnded=false;
     public boolean finalEnd=false;
     public int tempJudge=-1;
-    public ArrayList<Note> notes = new ArrayList<>();//Notes that this track contains
+    public ArrayList<Note> notes = new ArrayList<>();//所含有的音符
     public ArrayList<PlayOperations> moveOperations = new ArrayList<>();
     public ArrayList<PlayOperations> changeWidthOperations = new ArrayList<>();
     public ArrayList<PlayOperations> changeColorOperations = new ArrayList<>();
@@ -51,16 +51,16 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     public int delay=60;
 
     /**
-     * @param id          Uniquely defines a track
-     * @param type        Denotes the type of the track. type=0 virtual track type=1 real track
-     * @param key         The keyboard key corresponding to the track, it is only used to present the indicating key below the real track, and the key corresponding to the note shall prevail in the judgment
-     * @param startTiming The start timing of the track
-     * @param endTiming   The end timing of the track
-     * @param positionX   The ratio of the horizontal axis of middle of the track to the length of the entire screen
-     * @param width       The ratio of the half width from the middle of the track to the length of the entire screen
-     * @param r           Control track's color
-     * @param g           Control track's color
-     * @param b           Control track's color
+     * @param id          轨道id
+     * @param type        指明轨道类型。type=0 虚轨，type=1 实轨
+     * @param key         轨道与键盘对应的键
+     * @param startTiming 轨道的开始时机
+     * @param endTiming   轨道的结束时机
+     * @param positionX   轨道的横坐标
+     * @param width       轨道的宽度
+     * @param r           控制轨道颜色
+     * @param g           控制轨道颜色
+     * @param b           控制轨道颜色
      */
     public Track(int id, int type, char key, long startTiming, long endTiming, double positionX, double width, int r, int g, int b) {
         this.id = id;
@@ -87,9 +87,8 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     }
 
     /**
-     * Paint the notes
-     *
-     * @param g the brush
+     * 绘制音符
+     * @param g 画笔
      */
     public void getImg(Graphics g, Note note) {
         Graphics2D g_2d = (Graphics2D) g;
@@ -155,8 +154,8 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     }
 
     /**
-     * Paint the track
-     * @param g the brush
+     * 绘制轨道
+     * @param g 画笔
      */
     public void paint(Graphics g) {
         Graphics2D g_2d = (Graphics2D) g;
@@ -219,7 +218,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     }
 
     /**
-     * Judge the timing;
+     * 判定时机
      */
     public void Judge() {
         if(this.frontNote<this.notes.size()) {
@@ -256,11 +255,9 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                 }
                 else if(Math.abs(this.trackCurrentTime -Data.offset-this.delay-note.timing)>200){
                     this.tempJudge=1;
-//                    if(this.notes.get(frontNote).noteType==1)System.out.println("tempFar");
                 }
                 else {
                     this.tempJudge=2;
-//                    if(this.notes.get(frontNote).noteType==1)System.out.println("tempPure");
                 }
                 if(note.noteType==1&&this.tempJudge>0){
                     this.isHolding=true;
@@ -279,28 +276,16 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                         PlayInterface.combo.getAndIncrement();
                         PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
                         PlayInterface.farCount.getAndIncrement();
-//                        if(this.notes.get(frontNote).noteType==1) {
-//                            System.out.println("far"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
-//                        }
-//                        else System.out.println("far"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
                         break;
                     case 2:
                         PlayInterface.currentScore.getAndAdd(score);
                         PlayInterface.combo.getAndIncrement();
                         PlayInterface.maxCombo.set(Math.max(PlayInterface.combo.get(),PlayInterface.maxCombo.get()));
                         PlayInterface.pureCount.getAndIncrement();
-//                        if(this.notes.get(frontNote).noteType==1) {
-//                            System.out.println("pure"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
-//                        }
-//                        else System.out.println("pure"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
                         break;
                     case 0:
                         PlayInterface.combo.set(0);
                         PlayInterface.lostCount.getAndIncrement();
-//                        if(this.notes.get(frontNote).noteType==1) {
-//                            System.out.println("lost"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
-//                        }
-//                        else System.out.println("lost"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
                         break;
                     default:
                         tempJudge=-1;
@@ -314,7 +299,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
 
 
     /**
-     * Responsible for calculating the positionX at each moment, starting from positionX at currentTime, and endX at endTime
+     * 负责实现轨道移动，时时计算移动时轨道的横坐标
      */
     public void moveTrack() {
         if (moveOperations.isEmpty()) {
@@ -333,7 +318,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     }
 
     /**
-     * Responsible for calculating the width at each moment, starting from width at currentTime, and endWidth at endTime
+     * 负责实现轨道宽度改变，时时计算移动时轨道的宽度
      */
     public void changeWidth() {
         if (changeWidthOperations.isEmpty()) {
@@ -353,7 +338,7 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     }
 
     /**
-     * Responsible for calculating the current color at each moment, starting from width at currentTime, and endWidth at endTime
+     * 负责实现轨道颜色改变，时时计算移动时轨道的颜色
      */
     public void changeColor() {
         if (changeColorOperations.isEmpty()) {
@@ -379,11 +364,9 @@ public class Track extends JPanel implements Runnable {// The track of the note.
     }
 
     /**
-     * Displays the track and notes on the screen according to the positionX and width and the currentNotes list of the current frame
-     * Note: display must be after the move and change operations are finished
+     * 运行轨道，进行音符判定、轨道的移动等各种操作、以及轨道和音符的绘制
      */
     public void run() {
-//        System.out.println("Track线程开始了");
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setLayout(null);
         setOpaque(false);
@@ -425,7 +408,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                             PlayInterface.lostCount.getAndIncrement();
                             PlayInterface.currentNoteCount.getAndIncrement();
                             this.tempJudge=-1;
-//                        System.out.println("type2 lost"+this.notes.get(frontNote).timing+" "+(this.trackCurrentTime-Data.offset-this.delay));
                             frontNote++;
                             this.displayState=0;
                             this.currentJudgement=judgement[0];
@@ -454,7 +436,6 @@ public class Track extends JPanel implements Runnable {// The track of the note.
                             this.displayState=0;
 
                         }
-                        //if(frontNote<this.notes.size()&&this.notes.get(frontNote).noteType==1) System.out.println(this.isHolding+" "+this.trackCurrentTime+" "+note.endTiming);
                     }
                     this.repaint();
                     try{
@@ -470,9 +451,12 @@ public class Track extends JPanel implements Runnable {// The track of the note.
             }
             Data.canvas.remove(this);
             PlayInterface.currentTracks.remove(this.id);
-//        System.out.println("Track线程结束了");
     }
 
+    /**
+     * 测试用的轨道的toString
+     * @return 返回轨道信息
+     */
     @Override
     public String toString() {
         return "Track{" +
