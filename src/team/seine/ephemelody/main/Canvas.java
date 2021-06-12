@@ -30,15 +30,10 @@ public class Canvas extends JLayeredPane{
      * @throws SQLException 抛出SQLException
      */
     public Canvas(JFrame frame) throws SQLException {
-        /*nowScenes = new Home();
-        bgScenes = new Background();*/
-        /*background = new Background();
-        home = new Home();*/
         this.frame = frame;
         switchScenes("Home");
         setVisible(true);
         frame.addKeyListener(new OnKeyEvent());
-//        nowScenes = new PlayInterface(1, 1);
     }
 
     /**
@@ -48,11 +43,9 @@ public class Canvas extends JLayeredPane{
      */
     public void switchScenes(String name, @Nullable RecordTemp... recordTemps) {
         if (name.equals("Home")) {
-//            frame.addKeyListener(new OnKeyEvent());
             this.firstScenes = new Background();
             this.secondScenes = new Home();
             this.menuOptionScenes = new MenuOption();
-            this.chooseSongScenes = new ChooseSong();
             this.removeAll();
             this.add((Background) firstScenes, new Integer(0));
             this.add((Home) secondScenes, new Integer(1));
@@ -60,40 +53,30 @@ public class Canvas extends JLayeredPane{
             this.add(((Home) secondScenes).chooseSong, new Integer(3));
         } else if (name.equals("End")) {
             this.firstScenes = new Background();
-//            this.secondScenes = new Home();
             this.thirdScenes = new End(recordTemps[0]);
             this.menuOptionScenes = new MenuOption();
             this.removeAll();
             this.add((Background) firstScenes, new Integer(0));
-//            this.add((Home) secondScenes, new Integer(1));
             this.add((MenuOption) menuOptionScenes, new Integer(1));
             this.add((End) thirdScenes, new Integer(2));
         } else if (name.equals("PlayInterface")) {
-        //    this.nowScenes =
             this.firstScenes = new PlayInterface(Data.songId, Data.difficulty);
-//            this.secondScenes =  new Track(0, 1,'c', 1230, 2230, 0.5, 0.06, 255, 160, 160);
             this.removeAll();
             this.add((PlayInterface)firstScenes, new Integer(0));
-
             for(Track i:((PlayInterface) firstScenes).allTracks){
                 this.add(i,new Integer(i.id+1));
             }
             this.add(((PlayInterface) firstScenes).displayer,new Integer(((PlayInterface) firstScenes).allTracks.size()+1));
             new Thread((PlayInterface) firstScenes).start();
-//            this.add((PlayInterface) nowScenes, new Integer(1));
         } else if (name.equals("Login")) {
-//            System.out.println("1");
             this.thirdScenes = new Login();
             this.loginComScenes = new LoginComponent();
-//            this.removeAll();
-//            this.remove((ChooseSong) thirdScenes);
             this.add((Login) thirdScenes, new Integer(4));
             this.add((LoginComponent) loginComScenes, new Integer(5));
         } else if (name.equals("SetUp")) {
             this.thirdScenes = new SetUp();
             this.add((SetUp) thirdScenes, new Integer(5));
         }
-//        System.out.println("前面都执行完了");
     }
 
     /**
@@ -111,16 +94,11 @@ public class Canvas extends JLayeredPane{
     public void paintString(String str, Font f, Graphics g, Integer x, Integer y, Integer width, Color color1, Color color2) {
         GlyphVector v = f.createGlyphVector(getFontMetrics(f).getFontRenderContext(), str);
         Shape shape = v.getOutline();
-
         Rectangle bounds = shape.getBounds();
-
         Graphics2D gg = (Graphics2D) g;
         gg.translate(
                 x, y
-                /*(getWidth() - bounds.width) / 2 - bounds.x,
-                (getHeight() - bounds.height) / 2 - bounds.y*/
         );
-//        gg.setClip(x, y, x, y);
         gg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         gg.setColor(color1);
         gg.fill(shape);
@@ -130,7 +108,6 @@ public class Canvas extends JLayeredPane{
     }
 
     class OnKeyEvent extends KeyAdapter {
-
         public void keyPressed(KeyEvent e) {
             firstScenes.onKeyDown(e.getKeyCode());
         }
@@ -149,13 +126,9 @@ public class Canvas extends JLayeredPane{
      * @param y 纵坐标
      */
     public void drawCenteredString(Graphics g, String text, int width1, int width2, Font font, int y) {
-        // Get the FontMetrics
         FontMetrics metrics = g.getFontMetrics(font);
-        // Determine the X coordinate for the text
         int x = (width1 - metrics.stringWidth(text)) / 2 + width2;
-        // Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)// Set the font
         g.setFont(font);
-        // Draw the String
         g.drawString(text, x, y);
     }
 
@@ -172,14 +145,9 @@ public class Canvas extends JLayeredPane{
      * @param color2 描边颜色
      */
     public void drawCenteredStringByOutline(Graphics g, String text, int width1, int width2, int width, Font font, int y, Color color1, Color color2) {
-        // Get the FontMetrics
         FontMetrics metrics = g.getFontMetrics(font);
-        // Determine the X coordinate for the text
         int x = (width1 - metrics.stringWidth(text)) / 2 + width2;
-        // Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)// Set the font
         g.setFont(font);
-        // Draw the String
-//        g.drawString(text, x, y);
         paintString(text, font, g, x, y, width, color1, color2);
         g.translate(-x, -y);
     }

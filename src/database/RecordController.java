@@ -149,7 +149,6 @@ public class RecordController {
             rs.last();
             int row = rs.getRow();
             rs.beforeFirst();
-            //System.out.println(rs.getRow());
             //没有最佳记录就插入
             if (row == 0) {
                 String sqlStr1 = "INSERT INTO seine.personal_best_records(playerID, time, songID, songDifficulty, pureCount, farCount, lostCount, maxCombo, potential, score) " +
@@ -169,7 +168,6 @@ public class RecordController {
             }
             //有记录且刷新纪录就更新
             else if (rs.next()) {
-                //System.out.println(record.getScore()+" "+rs.getInt(10));
                 if (record.getScore() > rs.getInt(10)) {
                     String sqlStr2 = "UPDATE seine.personal_best_records SET score = ?,time = ? WHERE playerID = ? and songID = ? and songDifficulty = ?";
                     sql = con.prepareStatement(sqlStr2);

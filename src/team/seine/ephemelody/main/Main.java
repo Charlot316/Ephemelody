@@ -10,10 +10,8 @@ public class Main {
         Data.init();
         frame.setVisible(true);
         Data.canvas = new Canvas(frame);
-//        Background background = new Background();
         frame.setContentPane(Data.canvas);
         frame.setVisible(true);
-//        frame.add(background);
         frame.setSize(Data.WIDTH, Data.HEIGHT);
         // 窗口大小固定
         frame.setResizable(false);

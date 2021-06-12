@@ -108,41 +108,4 @@ public class Data {
         }
     }
 
-    /**
-     * 记录当前用户的登录信息
-     * @param inf 用户账号加密码的String类型
-     */
-    public static void recordLoginInf(String inf) {
-//        String filePath = Objects.requireNonNull(Data.class.getClassLoader().getResource("/resources/inf/record.txt")).getPath();
-//        URL url = Data.class.getResource("/resources/inf/record.txt");
-//        InputStream inputStream = Data.class.getResourceAsStream("/resources/inf/record.txt");
-        String filepath= null;
-        try {
-            filepath = Data.class.getResource("").toURI().getPath()+ "/inf/record.txt";
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        File file = new File(filepath);
-        FileWriter fileWriter = null;
-        PrintWriter printWriter = null;
-        try {
-            fileWriter = new FileWriter(file);
-            printWriter = new PrintWriter(fileWriter);
-            printWriter.write(inf);
-            printWriter.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                assert fileWriter != null;
-                fileWriter.close();
-                assert printWriter != null;
-                printWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
 }

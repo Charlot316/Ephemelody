@@ -19,6 +19,4 @@ public interface Scenes  {
     // 监听鼠标左键弹起
     void onMouse(int x, int y, int struts);
 
-    /*// 绘制自身
-    void draw(Graphics g);*/
 }

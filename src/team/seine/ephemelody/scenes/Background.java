@@ -20,9 +20,6 @@ public class Background extends JPanel implements Scenes{
         setLayout(null);
         backgroundImg = Load.image("home/背景.png");
         menuImg = Load.image("home/菜单.png");
-        /*button = new JButton("da");
-        button.setBounds(100, 100, 100, 100);
-        add(button);*/
     }
 
     /**

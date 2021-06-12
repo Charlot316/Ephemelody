@@ -185,16 +185,11 @@ public class SetUp extends JPanel implements Scenes, MouseMotionListener, MouseL
             buttonX += 245;
         }
         g.drawImage(finishButton[finishButtonStatus], (Data.WIDTH - 988) / 2, 738, null);
-//        Data.canvas.paintString(String.valueOf(Data.offset), g, 250, 505, 50);
         g.setFont(new Font("黑体", Font.PLAIN, 80));
         g.setColor(new Color(119, 97, 125));
         Data.canvas.drawCenteredString(g, String.valueOf(Data.offset), 247, 149, new Font("黑体", Font.PLAIN, 80), 550);
-//        g.drawString(String.valueOf(Data.offset), 253, 550);
         Data.canvas.drawCenteredString(g, String.format("%.1f", Data.noteSpeed), 247, 396, new Font("黑体", Font.PLAIN, 80), 550);
         Data.canvas.drawCenteredString(g, String.valueOf(Data.noteVolume), 247, 643, new Font("黑体", Font.PLAIN, 80), 550);
         Data.canvas.drawCenteredString(g, String.valueOf(Data.volume), 247, 890, new Font("黑体", Font.PLAIN, 80), 550);
-        /*g.drawString(String.format("%.1f", Data.noteSpeed), 460, 550);
-        g.drawString(String.valueOf(Data.noteVolume), 740, 550);
-        g.drawString(String.valueOf(Data.volume), 990, 550);*/
     }
 }

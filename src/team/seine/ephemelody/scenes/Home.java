@@ -187,7 +187,6 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
                 chooseSong.way = 2;
                 new Thread(chooseSong).start();
             }
-
         }
     }
 

@@ -62,7 +62,7 @@ public class Login extends JPanel implements Scenes, MouseMotionListener, MouseL
                         Data.nowPlayer = PlayerController.selectPlayerById(username);
                         Data.canvas.frame.setFocusable(true);
                         Home.isEnd = true;
-                        Data.canvas.switchScenes("Home"); // 到时候改成如果登录成功，用户名显示出来
+                        Data.canvas.switchScenes("Home");
                     } else {
                         message = "密码错误，登录失败";
                         this.repaint();
@@ -79,7 +79,7 @@ public class Login extends JPanel implements Scenes, MouseMotionListener, MouseL
                         Data.nowPlayer = PlayerController.selectPlayerById(username);
                         Data.canvas.frame.setFocusable(true);
                         Home.isEnd = true;
-                        Data.canvas.switchScenes("Home"); // 到时候改成如果登录成功，用户名显示出来
+                        Data.canvas.switchScenes("Home");
                     }
 
                 }
