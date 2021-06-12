@@ -14,6 +14,11 @@ import java.net.URL;
 import java.util.Objects;
 
 public class Load {
+    /**
+     * 绘制图片
+     * @param path 文件路径
+     * @return Image图片
+     */
     public static Image image(String path) {
         BufferedImage img = null;
         URL url = Load.class.getResource("/resources/img/" + path);
@@ -25,6 +30,11 @@ public class Load {
         return img;
     }
 
+    /**
+     * 绘制背景图片
+     * @param path 图片路径
+     * @return Image图片
+     */
     public static Image backgroundImage(String path) {
         BufferedImage img = null;
         URL url = Load.class.getResource("/resources/display/" + path);
@@ -36,12 +46,22 @@ public class Load {
         return img;
     }
 
+    /**
+     * 读取歌曲谱
+     * @param path 所在路径
+     * @return 谱子的BufferReader
+     */
     public static BufferedReader File(String path) {
         InputStream is = Load.class.getResourceAsStream("/resources/display/" + path);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
         return bufferedReader;
     }
 
+    /**
+     * 导入音乐
+     * @param path 音乐所在路径
+     * @return 音乐的Clip
+     */
     public static Clip sound(String path) {
         try {
             BufferedInputStream loadPath = new BufferedInputStream(Load.class.getResourceAsStream("/resources/sound/" + path + ".wav"));
@@ -54,10 +74,6 @@ public class Load {
         }
 
         return null;
-    }
-
-    public static void playSound(String path) {
-        new Thread(() -> Load.sound(path).start()).start();
     }
 
 }
