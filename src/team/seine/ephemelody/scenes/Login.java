@@ -16,6 +16,7 @@ public class Login extends JPanel implements Scenes, MouseMotionListener, MouseL
     public Image loginBackground;
     public Image[] loginButton;
     public Integer loginButtonStatus;
+    public String message;
     public Login() {
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
         setVisible(true);
@@ -25,7 +26,7 @@ public class Login extends JPanel implements Scenes, MouseMotionListener, MouseL
         loginButton = new Image[] {
                 Load.image("login/登录或注册.png"), Load.image("login/登录或注册_鼠标悬停.png"), Load.image("login/登录或注册_按下.png")
         };
-//        new Home.UpdateUI().start();
+        message = "";
         addMouseMotionListener(this);
         addMouseListener(this);
     }
@@ -54,25 +55,33 @@ public class Login extends JPanel implements Scenes, MouseMotionListener, MouseL
             if (struts == Scenes.MOUSE_DOWN) {
                 username = LoginComponent.usernameField.getText();
                 password = String.valueOf(LoginComponent.passwordField.getPassword());
-                System.out.println(username + "---" + password);
                 Player player = PlayerController.selectPlayerById(username);
                 if (player != null) {
                     if (player.getPassword().equals(password)) {
-                        System.out.println("登录成功");
+                        message = "登录成功";
                         Data.nowPlayer = PlayerController.selectPlayerById(username);
                         Data.canvas.frame.setFocusable(true);
                         Home.isEnd = true;
                         Data.canvas.switchScenes("Home"); // 到时候改成如果登录成功，用户名显示出来
                     } else {
-                        System.out.println("用户名已存在, 注册失败");
+                        message = "密码错误，登录失败";
+                        this.repaint();
                     }
                 } else {
-                    PlayerController.insertPlayer(username, password);
-                    System.out.println("注册成功");
-                    Data.nowPlayer = PlayerController.selectPlayerById(username);
-                    Data.canvas.frame.setFocusable(true);
-                    Home.isEnd = true;
-                    Data.canvas.switchScenes("Home"); // 到时候改成如果登录成功，用户名显示出来
+                    if (username.length() < 3 || password.length() < 3) {
+                        message = "用户名与密码的位数不得小于3";
+                        LoginComponent.usernameField.setText("");
+                        LoginComponent.passwordField.setText("");
+                        this.repaint();
+                    } else {
+                        PlayerController.insertPlayer(username, password);
+                        message = "注册成功";
+                        Data.nowPlayer = PlayerController.selectPlayerById(username);
+                        Data.canvas.frame.setFocusable(true);
+                        Home.isEnd = true;
+                        Data.canvas.switchScenes("Home"); // 到时候改成如果登录成功，用户名显示出来
+                    }
+
                 }
 
             }
@@ -90,6 +99,9 @@ public class Login extends JPanel implements Scenes, MouseMotionListener, MouseL
     public void paint(Graphics g) {
         g.drawImage(loginBackground, 0, 0, null);
         g.drawImage(loginButton[loginButtonStatus], 100, 650, null);
+        g.setFont(new Font("黑体", Font.PLAIN, 40));
+        g.setColor(Color.WHITE);
+        g.drawString(message, 100, 200);
     }
 
     @Override

@@ -90,7 +90,6 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
      */
     @Override
     public void run() {
-//        System.out.println("ChooseSong线程开始了");
         if (way == 2) {
             while(true){
                 if(y >= 122){
@@ -130,6 +129,5 @@ public class ChooseSong extends JPanel implements Scenes, Runnable{
             }
             Data.changeSongList(1);
         }
-//        System.out.println("ChooseSong线程结束了");
     }
 }

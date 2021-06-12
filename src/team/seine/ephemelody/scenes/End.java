@@ -22,7 +22,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
     public Image backgroundImg;
     public Image menuImg;
     public Image endBackgroundImg;
-    public Image nowSongImg;
+    public Image[] nowSongImg;
     public Image listImg;
     public Image myGradeImg;
     public Image gradeImg;
@@ -66,7 +66,6 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
             try {
                 if (Data.nowPlayer == null) {
                     rs = RecordController.getBestRecords(Data.songId, Data.difficulty);
-                    //System.out.println(Data.difficulty);
                 } else {
                     rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId, Data.difficulty);
                 }
@@ -78,10 +77,8 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                     this.nowPoints = highestPoints;
                     tmp1.set(rs.getInt("pureCount"));
                     this.pureCount = tmp1;
-//                    System.out.println(pureCount);
                     tmp2.set(rs.getInt("farCount"));
                     this.farCount = tmp2;
-//                    System.out.println(farCount);;
                     tmp3.set(rs.getInt("lostCount"));
                     this.lostCount = tmp3;
                 }
@@ -97,7 +94,6 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                             rankingFlag = false;
                         }
                     }
-//                    System.out.println(rankingUserId[count] + rankingPoints[count]);
                     count += 1;
                 }
             } catch (SQLException e) {
@@ -109,7 +105,6 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                 if (Data.nowPlayer != null) {
                     rs = RecordController.getPersonalBestRecordsBySongId(Data.nowPlayer.getPlayerID(), Data.songId, Data.difficulty);
                     nowSong = SongController.selectSongById(Data.songId, Data.difficulty);
-                    System.out.println(Data.nowPlayer.getPlayerID() + " " + Data.songId);
                     this.nowPoints = recordTemp.score;
                     this.changePotential = recordTemp.changePotential;
                     this.nowPotential = recordTemp.nowPotential;
@@ -140,7 +135,6 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                         resultStatus = 0;
                     }
                 } else {
-                    System.out.println("111111111");
                     this.nowPoints = recordTemp.score;
                     this.changePotential = recordTemp.changePotential;
                     this.nowPotential = recordTemp.nowPotential;
@@ -167,7 +161,10 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         setVisible(true);
         setOpaque(false);
         endBackgroundImg = Load.image("end/结算背景.png");
-        nowSongImg = Load.image("song/1/song1.png"); // 到时候得改成具体的歌曲背景
+        nowSongImg = new Image[] {
+                Load.image("cover/0.jpg"), Load.image("cover/1.jpg"), Load.image("cover/2.jpg"),
+                Load.image("cover/3.jpg"), Load.image("cover/4.jpg")
+        };
         listImg = Load.image("end/排行榜.png");
         myGradeImg = Load.image("end/我的成绩.png");
         gradeImg = Load.image("end/成绩条.png");
@@ -196,7 +193,7 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
     public void paint(Graphics g) {
         g.drawImage(endBackgroundImg, 0, (Data.HEIGHT - 632) / 2, null);
         g.drawImage(listImg, 980, 310, null);
-        g.drawImage(nowSongImg, 90, 369, null);
+        g.drawImage(nowSongImg[Data.songId], 90, 369, 350, 350, null);
         g.drawImage(myGradeImg, 993, 680, null);
         g.drawImage(resultImg[resultStatus], 360, 300, null);
         int countY = 360;
@@ -204,8 +201,8 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
             g.drawImage(gradeImg, 993, countY, null);
             countY += 60;
         }
-        g.drawImage(returnButton[buttonReturnStatus], 0, 850, null);
-        g.drawImage(tryAgainButton[buttonTryAgainStatus], 1038, 850, null);
+        g.drawImage(returnButton[buttonReturnStatus], 0, 860, null);
+        g.drawImage(tryAgainButton[buttonTryAgainStatus], 1038, 860, null);
 
         g.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 20));
         g.setColor(new Color(119, 97, 125));
@@ -222,10 +219,6 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
         g.setFont(new Font("黑体", Font.PLAIN, 35));
         g.setColor(new Color(255, 255, 255));
         g.drawString(String.format("%08d", highestPoints), 680, 485);
-//        g.drawImage(ratingButton[0], Data.WIDTH / 2 + 50, 20, null);
-
-
-//        g.drawString(String.format("%.2f", 2.8), Data.WIDTH / 2 - 22,  58);
         if (way == 2 && Data.nowPlayer != null) {
             g.setFont(new Font("黑体", Font.BOLD, 20));
             g.setColor(Color.WHITE);
@@ -238,7 +231,6 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                 g.drawImage(ratingButton[0], Data.WIDTH / 2 + 50, 20, null);
                 g.drawString(String.format("%.2f", changePotential), Data.WIDTH / 2 + 72, 58);
             }
-//            g.drawString(String.format("%.2f", nowPotential), Data.WIDTH / 2 - 22,  58);
         }
         Font f = new Font("黑体", Font.BOLD, 35);
         Data.canvas.paintString(String.format("%03d", pureCount.get()), f, g, 700, 570, 1, Color.WHITE, Color.BLACK);
@@ -306,12 +298,9 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
     @Override
     public void onMouse(int x, int y, int struts) {
         buttonReturnStatus = buttonTryAgainStatus = 0;
-//        System.out.println(buttonReturnStatus);
         int buttonStruts = struts == Scenes.MOUSE_MOVED ? 1 : struts == Scenes.MOUSE_DOWN ? 2 : 0;
-//        System.out.println(buttonStruts);
         if (Rect.isInternal(x, y, 0, 850, 230, 69)) {
             buttonReturnStatus = buttonStruts;
-//            System.out.println(buttonReturnStatus);
             if (struts == Scenes.MOUSE_DOWN) {
                 End.isEnd = true;
                 Data.canvas.switchScenes("Home");
@@ -362,7 +351,6 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
 
     class UpdateUI extends Thread {
         public void run() {
-//            System.out.println("End的线程开始了");
             int sleepTime = 1000 / Data.FPS;
             while (!isEnd) {
                 try {
@@ -372,7 +360,6 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
                     e.printStackTrace();
                 }
             }
-//            System.out.println("End的线程结束了");
         }
     }
 }

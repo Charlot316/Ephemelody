@@ -13,6 +13,13 @@ public class RecordController {
     static String user = "root";
     static String password = "123456";
 
+    /**
+     * 计算单首歌的潜力值
+     * @param SongID 歌曲ID
+     * @param SongDifficulty 歌曲难度
+     * @param score 歌曲分数
+     * @return 潜力值
+     */
     public static double calculatePotential(int SongID,int SongDifficulty,AtomicInteger score){
         double chartConstant;
         Song song=SongController.selectSongById(SongID,SongDifficulty);
@@ -31,7 +38,12 @@ public class RecordController {
         return potential;
     }
 
-
+    /**
+     * 计算一个玩家的潜力值
+     * 潜力值=（最好的10次结果+最近的30次里最好的10次结果）/20
+     * @param playerID 用户ID
+     * @return 用户潜力值
+     */
     public static double setAndGetPersonPotential(String playerID){
         PreparedStatement sql;
         ResultSet B10, R10;
@@ -43,10 +55,8 @@ public class RecordController {
                 BPotential+=B10.getDouble("potential");
             }
             while(R10.next()){
-//                System.out.println(R10.getDouble("potential"));
                 RPotential+=R10.getDouble("potential");
             }
-//            System.out.println(BPotential+" "+RPotential) ;
             potential=(BPotential+RPotential)/20.0;
             con = DriverManager.getConnection(uri, user, password);
             String sqlStr2 = "UPDATE seine.players SET potential= ? WHERE playerID= ?";
@@ -78,11 +88,6 @@ public class RecordController {
             sql.setString(1, record.getPlayerID());
             rs = sql.executeQuery();
             rs.last();
-//            String sqlStr4="SELECT COUNT(*) as count FROM seine.personal_recent_records WHERE playerID = ?";
-//            sql = con.prepareStatement(sqlStr4);
-//            sql.setString(1, record.getPlayerID());
-//            countRs=sql.executeQuery();
-//            count= countRs.getInt("count");
             //该分数大于数据库中30条最近数据中潜力值最高的10个值最小的值，且分数大于9000000，即可插入
             if (rs.getRow()<10||record.getScore() < 9000000 || (record.getScore() >= 9000000 && rs.getDouble(9) > record.getPotential())) {
                 //查找最近记录条数
@@ -295,7 +300,7 @@ public class RecordController {
         ResultSet rs = null;
         try {
             con = DriverManager.getConnection(uri, user, password);
-            String sqlStr = "SELECT * FROM seine.personal_recent_records WHERE playerID = ? ORDER BY score DESC LIMIT 10";
+            String sqlStr = "SELECT * FROM seine.personal_recent_records WHERE playerID = ? ORDER BY potential DESC LIMIT 10";
             sql = con.prepareStatement(sqlStr);
             sql.setString(1, playerID);
             rs = sql.executeQuery();

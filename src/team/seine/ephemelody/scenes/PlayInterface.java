@@ -21,11 +21,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.awt.BasicStroke.CAP_BUTT;
 import static java.awt.BasicStroke.JOIN_BEVEL;
-import static java.lang.Thread.sleep;
 
-public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListener {//Set up the play interface
-    int songID;
-    int difficulty;
+public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListener {
+    int songID;//当前音乐的ID
+    int difficulty;//当前难度
     int trackCount;
     public static int notesCount;
     int operationsCount;
@@ -39,7 +38,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     public static AtomicInteger maxCombo = new AtomicInteger();
     public static AtomicInteger currentScore = new AtomicInteger();
     public static long startTime;
-    public static long currentTime;//Used to tell the current time
+    public static long currentTime;//指示当前时间
     public static double finalY=0.8;
     public static long remainingTime;
     public static long finalEndTime;
@@ -56,8 +55,10 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     public Clip song;
     public double prevPotential;
     public double nowPotential;
+
     /**
-     * read in information of the display
+     * 更换背景
+     * @param g 画笔
      */
     public void paint(Graphics g) {
         Graphics2D g_2d = (Graphics2D) g;
@@ -66,10 +67,17 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         g_2d.setColor(new Color(255,255,255));
         g_2d.drawLine(0,(int)(PlayInterface.finalY* Data.HEIGHT),Data.WIDTH,(int)(PlayInterface.finalY*Data.HEIGHT));
     }
+
+    /**
+     * 给音符、轨道、操作排序的比较器
+     */
     static Comparator<Note> comparatorNote = Comparator.comparingLong(o -> o.timing);
     static Comparator<Track> comparatorTrack= Comparator.comparingLong(o -> o.startTiming);
     static Comparator<PlayOperations> comparatorOperation= (o1, o2) -> Long.compare(o1.startTime,o2.endTime);
 
+    /**
+     * 读入谱面信息
+     */
     public void loadData() {
         for(int i=0;i<200;i++){
             Data.isPressed[i]=new AtomicInteger();
@@ -221,7 +229,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     }
 
     /**
-     * Set up the interface of the play
+     * 建立游戏画布的画面
      */
     public void setInterface() {
         setBounds(0, 0, Data.WIDTH, Data.HEIGHT);
@@ -230,13 +238,11 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     }
 
     /**
-     * Initialize PlayInterface and run the game
-     *
-     * @param songID     ID of the song
-     * @param difficulty difficulty of the song (both are used to find the source file)
+     * 初始化游戏界面
+     * @param songID  当前游玩的曲目ID
+     * @param difficulty 曲目的难度
      */
     public PlayInterface(int songID, int difficulty) {
-        System.out.println(Thread.currentThread() + " --- " + Thread.activeCount());
         PlayInterface.remainingTime=(long)(-600*Data.noteSpeed+4100);
         pureCount.set(0);
         farCount.set(0);
@@ -253,8 +259,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         this.repaint();
         this.requestFocus();
         if(Data.nowPlayer!=null)this.prevPotential = RecordController.setAndGetPersonPotential(Data.nowPlayer.getPlayerID());
-//        System.out.println(prevPotential);
-
         addKeyListener( new KeyAdapter(){
             public void keyPressed(KeyEvent e){
                 onKeyDown(e.getKeyCode());
@@ -268,7 +272,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     }
 
     /**
-     * Stop all the operations and pop up the menu
+     * 停止所有操作
      */
     public void pause() throws InterruptedException {
         for (Map.Entry<Integer, Track> entry : currentTracks.entrySet()) {
@@ -277,7 +281,7 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     }
 
     /**
-     * Resume the game
+     * 继续游戏
      */
     public void resumeGame() {
         for (Map.Entry<Integer, Track> entry : currentTracks.entrySet()) {
@@ -286,22 +290,20 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     }
 
     /**
-     * run the game
+     * 运行游戏
      */
     public void run() {
         FloatControl gainControl = (FloatControl) song.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(-(float)(8*(10-Data.volume))); // Reduce volume by 10 decibels.
+        gainControl.setValue(-(float)(8*(10-Data.volume))); // 设置音量
         assert song != null;
         song.setFramePosition(0); // 播放音乐
         song.start();
-        System.out.println("PlayInterface线程开始了");
         startTime = System.currentTimeMillis();
         currentTime = 0;
         this.backgroundOperations.sort(comparatorOperation);
         this.repaint();
         while (currentTime < PlayInterface.finalEndTime) {
             currentTime = System.currentTimeMillis() - startTime;
-            //System.out.println(currentTime+" "+this.finalEndTime);
             if(Math.abs(song.getMicrosecondPosition()-currentTime*1000)>500000&&currentTime*1000<song.getMicrosecondLength()) {
                 song.setMicrosecondPosition(currentTime*1000);
                 song.start();
@@ -318,7 +320,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             }
             if (!backgroundOperations.isEmpty() && frontOperation<backgroundOperations.size()&& backgroundOperations.get(frontOperation).startTime < currentTime) {
                 currentTime = System.currentTimeMillis() - startTime;
-                //System.out.println(currentTime+" "+this.finalEndTime);
                 this.frontBackground++;
                 this.frontOperation++;
                 this.repaint();
@@ -336,11 +337,10 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         }
 
         this.finish();
-        System.out.println("PlayInterface线程结束了");
     }
 
     /**
-     * Finish the play and go to the next interface
+     * 结束游戏
      */
     public void finish() {
         long time = System.currentTimeMillis();
@@ -349,7 +349,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             Record record = new Record(Data.nowPlayer.getPlayerID(), new Timestamp(time), Data.songId, Data.difficulty,
                     pureCount.get(), farCount.get(), lostCount.get(), maxCombo.get(),
                     RecordController.calculatePotential(Data.songId, Data.difficulty, new AtomicInteger(score)), score);
-            //System.out.println(record.toString());
             RecordController.insertAllBestRecord(record);
             RecordController.insertRecentRecord(record);
             RecordController.insertBestRecord(record);
@@ -361,14 +360,17 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
             Record record = new Record("null", new Timestamp(time), Data.songId, Data.difficulty,
                     pureCount.get(), farCount.get(), lostCount.get(), maxCombo.get(),
                     0, score);
-            //System.out.println(record.toString());
             Data.canvas.switchScenes("End", new RecordTemp(currentScore.get(), pureCount, farCount, lostCount, maxCombo,
                     2, 0, 0));
         }
         song.close();
-//        System.out.println(nowPotential + "------" + prevPotential);
     }
 
+    /**
+     * 获取轨道id
+     * @param id 轨道id
+     * @return 对应轨道
+     */
     public Track getTrackByID(int id) {
         for(Track i:allTracks){
             if(i.id==id) return i;
@@ -380,7 +382,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
     @Override
     public void onKeyDown(int keyCode) {
         Data.isPressed[keyCode].set(1);
-        //System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
     }
 
     @Override
@@ -388,7 +389,6 @@ public class PlayInterface extends JPanel implements Scenes, Runnable, KeyListen
         AtomicInteger tmp = new AtomicInteger();
         tmp.set(0);
         Data.isReleased[keyCode].set(1);
-        //System.out.println(keyCode + " " + Data.keyStatus[keyCode]);
     }
 
     @Override
