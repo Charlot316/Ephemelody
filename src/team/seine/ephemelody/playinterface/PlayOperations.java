@@ -1,6 +1,6 @@
 package team.seine.ephemelody.playinterface;
 
-public class PlayOperations {//Denotes the operations the game should implement
+public class PlayOperations {
     public int trackId;
     public int type;
     public long startTime;
@@ -14,16 +14,16 @@ public class PlayOperations {//Denotes the operations the game should implement
 
     /**
      * Constructor of the operation
-     * @param trackId Indicates the track it related to
-     * @param type Define which type of operation it is. 1:move 2:change width 3: change color 4:change background
-     * @param startTime Define the start timing of the operation
-     * @param endTime Define the end timing of the operation
-     * @param endX Define the final state of track's X
-     * @param endWidth Define the final state of track's width
-     * @param endR Define the final color of the track
-     * @param endG Define the final color of the track
-     * @param endB Define the final color of the track
-     * @param background Define the path of the background
+     * @param trackId 需要操作的轨道
+     * @param type 操作类型 type: 1:移动 2:改变宽度 3: 变色 4:换背景
+     * @param startTime 操作的起始时间
+     * @param endTime 操作的终止时间
+     * @param endX 平移的终点
+     * @param endWidth 宽度改变的终点
+     * @param endR 颜色R改变的终点
+     * @param endG 颜色G改变的终点
+     * @param endB 颜色B改变的终点
+     * @param background 需要更换的背景的地址
      */
     public PlayOperations(int trackId, int type, long startTime, long endTime, double endX,double endWidth,int endR, int endG, int endB,String background) {
         this.trackId = trackId;
@@ -38,6 +38,10 @@ public class PlayOperations {//Denotes the operations the game should implement
         this.background = background;
     }
 
+    /**
+     * 测试用的操作的toString
+     * @return 返回操作信息
+     */
     @Override
     public String toString() {
         return "PlayOperations{" +

@@ -21,6 +21,10 @@ public class ScoreAndComboDisplay extends JPanel {
         this.setOpaque(false);
     }
 
+    /**
+     * 用于展示当前分数与连击数
+     * @param g 画笔
+     */
     public void paint(Graphics g) {
         g.drawImage(scoreBackgroundImg, 0, 0, null);
         Font f = new Font("Artifakt Element", Font.PLAIN, 50);

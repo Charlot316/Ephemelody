@@ -2,18 +2,17 @@ package team.seine.ephemelody.playinterface;
 
 import team.seine.ephemelody.scenes.PlayInterface;
 
-public class Note extends Thread {//Note, main article of the play interface
-    public Track basedTrack;//Track that this note belongs to
-    public double positionX;//The ratio of the horizontal axis of the note to the the length of the entire screen, equals to the x of the track which it belongs to
-    public double positionY;//The ratio of the vertical axis of the note to the the width of the entire screen
-    public int noteType;//Denotes the type of the note. type=0 "hit" type=1 "hold"
-    public char key;//The keyboard keys corresponding to that note
-    public long timing;//The standard timing of a note
-    public long endTiming;//
-    public double length;//The length of a hold calculated from startTiming and endTiming
-    public long lastTime;
-    public long currentTime;
-    public boolean printed=false;
+public class Note extends Thread {
+    public Track basedTrack;//指明所属的轨道
+    public double positionX;//音符的横坐标，恒等于其所属轨道
+    public double positionY;//音符的纵坐标
+    public int noteType;//指明音符类型。 noteType=0 "单点" noteType=1 "长按"
+    public char key;//与音符对应的键盘按钮
+    public long timing;//音符的标准时机
+    public long endTiming;//长键的结束时机
+    public double length;//长键的长度
+    public long lastTime;//上一时刻
+    public long currentTime;//这一时刻
 
     public Note(Track basedTrack, int noteType, char key, long timing) {
         this.basedTrack = basedTrack;
@@ -34,8 +33,8 @@ public class Note extends Thread {//Note, main article of the play interface
     }
 
     /**
-     * Responsible for calculating the positionY of the note at each moment, and synchronizing the positionX with the track of the note.
-     * Refer to the formula: current position = last time position - ((last time position - final position)/(retention time - (standard time of the note - current time))* (1/ screen refresh rate)
+     * 实时更新音符的坐标
+     * 相关公式： 当前位置 = 上一位置 - ((上一位置 - 终点位置)/(标准时间 - 当前时间)* (当前时间 - 上一时刻时间)
      */
 
     public void moveNote(){
@@ -54,6 +53,10 @@ public class Note extends Thread {//Note, main article of the play interface
         }
     }
 
+    /**
+     * 测试用的音符toString
+     * @return 返回音符信息
+     */
     @Override
     public String toString() {
         return "Note{" +
@@ -67,7 +70,6 @@ public class Note extends Thread {//Note, main article of the play interface
                 ", length=" + length +
                 ", lastTime=" + lastTime +
                 ", currentTime=" + currentTime +
-                ", printed=" + printed +
                 '}';
     }
 }
