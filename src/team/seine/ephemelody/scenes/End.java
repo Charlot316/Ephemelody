@@ -207,8 +207,8 @@ public class End extends JPanel implements Scenes, MouseMotionListener, MouseLis
             g.drawImage(gradeImg, 993, countY, null);
             countY += 60;
         }
-        g.drawImage(returnButton[buttonReturnStatus], 0, 850, null);
-        g.drawImage(tryAgainButton[buttonTryAgainStatus], 1038, 850, null);
+        g.drawImage(returnButton[buttonReturnStatus], 0, 860, null);
+        g.drawImage(tryAgainButton[buttonTryAgainStatus], 1038, 860, null);
 
         g.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 20));
         g.setColor(new Color(119, 97, 125));

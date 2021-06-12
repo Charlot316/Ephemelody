@@ -212,7 +212,7 @@ public class Home extends JPanel implements Scenes, MouseMotionListener, MouseLi
         g.drawImage(difficultButton[buttonDifficultStatus], Data.WIDTH / 2 + 400, 580, null);
         if (playFlag) {
             g.drawImage(playButton[buttonPlayStatus], Data.WIDTH / 2, 750, null);
-            g.drawImage(songInfButton[buttonSongInfStatus], 1038, 850, null);
+            g.drawImage(songInfButton[buttonSongInfStatus], 1038, 860, null);
         }
         g.drawImage(upButton[buttonUpStatus], 120, 60, null);
         g.drawImage(downButton[buttonDownStatus], 120, 800, null);

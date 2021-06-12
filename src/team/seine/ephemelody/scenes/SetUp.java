@@ -18,6 +18,10 @@ public class SetUp extends JPanel implements Scenes, MouseMotionListener, MouseL
     int[] upButtonStatus;
     int[] downButtonStatus;
     int finishButtonStatus;
+
+    /**
+     * 设置界面构造函数
+     */
     public SetUp() {
 
         upButtonStatus = new int[4];
@@ -88,6 +92,12 @@ public class SetUp extends JPanel implements Scenes, MouseMotionListener, MouseL
 
     }
 
+    /**
+     * 设置界面鼠标事件
+     * @param x 鼠标所在横坐标
+     * @param y 鼠标所在纵坐标
+     * @param struts 鼠标状态
+     */
     @Override
     public void onMouse(int x, int y, int struts) {
         for (int i = 0; i < 4; i++) {
@@ -162,6 +172,10 @@ public class SetUp extends JPanel implements Scenes, MouseMotionListener, MouseL
         }
     }
 
+    /**
+     * 绘制设置界面
+     * @param g 图形
+     */
     public void paint(Graphics g) {
         g.drawImage(setupBackground, (Data.WIDTH - 988) / 2, (Data.HEIGHT - 605) / 2, null);
         int buttonX = 233;
