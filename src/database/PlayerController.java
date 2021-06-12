@@ -1,7 +1,7 @@
 package database;
 
 import database.Entity.Player;
-
+import org.mariadb.jdbc.Driver;
 import java.sql.*;
 
 public class PlayerController {
